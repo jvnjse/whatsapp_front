@@ -7,3 +7,21 @@
 *{
   font-family: 'Montserrat', sans-serif;
 }
+
+.excel-bg,.excel-bg-1{
+  background-image: url("./Icons/excellogo.png");
+  background-size: cover;
+  background-position:  center center;
+  background-repeat: no-repeat;
+}
+.excel-bg::after{
+  content: "Choose Excel File";
+  margin-top: -20px;
+  color: rgb(2, 61, 2);
+  font-weight: 500;
+}
+.wallpaper-bg{
+  background-image: url("./Icons/whatsappwallpaper.jpg");
+  background-size: cover;
+
+}

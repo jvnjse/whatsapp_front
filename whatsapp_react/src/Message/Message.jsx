@@ -6,6 +6,11 @@ function Message() {
     const [phoneNumberInput, setPhoneNumberInput] = useState('');
     const [messagingbox, setMessagingbox] = useState(true)
     const [numberdata, setNumberdata] = useState([])
+    const [templateData, setTemplateData] = useState();
+    const [templateName, setTemplateName] = useState('');
+    const [componentData, setcomponentData] = useState()
+
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -33,7 +38,15 @@ function Message() {
                 console.log(error.data)
             })
 
+        axios.get('http://127.0.0.1:8000/get_templates/')
+            .then((response) => {
+                console.log(response.data.data)
+                setTemplateData(response.data.data)
 
+            })
+            .catch((error) => {
+                console.log(error)
+            })
     }, [])
 
 
@@ -41,20 +54,23 @@ function Message() {
         axios.post('http://127.0.0.1:8000/sent-messages/data/')
             .then((response) => {
                 console.log(response.data)
+
             })
             .catch((error) => {
                 console.log(error.data)
             })
     }
 
-
+    const handleSelectChange = (event) => {
+        setTemplateName(event.target.value);
+    };
 
     return (
         <div className=' p-5'>
-            <div className=' text-[#0d291a] text-4xl font-bold'>Send WhatsApp Message Templates</div>
+            <div className=' text-[#0d291a] text-4xl font-bold select-none'>Send WhatsApp Message Templates</div>
             <div className=' flex gap-10 mt-4'>
-                <div className={messagingbox ? 'py-1 px-2 text-lg bg-[#064A42] text-white rounded-md hover:shadow-xl' : 'py-1 px-2 text-lg bg-[white] rounded-md hover:shadow-xl'} onClick={() => { setMessagingbox(true) }}>Individual Messaging</div>
-                <div className={messagingbox ? 'py-1 px-2 text-lg bg-white rounded-md hover:shadow-xl' : 'py-1 px-2 text-lg bg-[#064A42] text-white rounded-md hover:shadow-xl'} onClick={() => { setMessagingbox(false) }}>Bulk Messaging</div>
+                <div className={messagingbox ? 'cursor-pointer select-none py-1 px-2 text-lg bg-[#064A42] text-white rounded-md hover:shadow-xl' : 'py-1 px-2 text-lg bg-[white] rounded-md hover:shadow-xl'} onClick={() => { setMessagingbox(true) }}>Individual Messaging</div>
+                <div className={messagingbox ? 'cursor-pointer select-none py-1 px-2 text-lg bg-white rounded-md hover:shadow-xl' : 'py-1 px-2 text-lg bg-[#064A42] text-white rounded-md hover:shadow-xl'} onClick={() => { setMessagingbox(false) }}>Bulk Messaging</div>
             </div>
             {messagingbox ?
                 <>
@@ -78,16 +94,29 @@ function Message() {
                         </div>
                         <div>
                             <div>Select Templates</div>
-                            <select className=' text-sm'>
-                                <option value="">Select a Template</option>
-                                <option value="developer_test">developer_test</option>
+                            <select value={templateName} onChange={handleSelectChange}>
+                                <option value="">Select a name</option>
+
+                                {templateData && templateData.map((item, index) => (
+                                    <option key={index} value={item.name}>
+                                        {item.name}
+                                    </option>
+                                ))}
                             </select>
+                            {templateName && <p>Selected Name: {templateName}</p>}
+                            <div class="bg-[#262d31] text-gray-300 rounded-tr-lg  rounded-bl-lg rounded-br-lg mb-4 px-4 py-2 mt-4">
+                                <div className='font-bold'>Altos Test</div>
+                                <div>
+                                    This is a test message which is for testing the WhatsApp business API management.
+                                </div>
+                                <div className='font-thin text-xs'>Do not Reply</div>
+                            </div>
                         </div>
                     </div>
                 </> :
                 <>
                     <div className='flex justify-between px-10 mt-7'>
-                        <div className='flex-1'>
+                        <div className='flex flex-col gap-1 w-full'>
                             <div className=' text-base font-semibold'>List of Numbers</div>
                             <div className=' bg-white w-3/6 h-[400px] flex flex-col gap-1 items-center p-3 overflow-y-scroll'>
                                 {numberdata.map((number) =>
@@ -102,10 +131,22 @@ function Message() {
                         </div>
                         <div>
                             <div>Select Templates</div>
-                            <select className=' text-sm'>
-                                <option value="">Select a Template</option>
-                                <option value="developer_test">developer_test</option>
+                            <select value={templateName} onChange={handleSelectChange}>
+                                <option value="">Select a name</option>
+                                {templateData && templateData.map((item, index) => (
+                                    <option key={index} value={item.name}>
+                                        {item.name}
+                                    </option>
+                                ))}
                             </select>
+                            {templateName && <p>Selected Name: {templateName}</p>}
+                            <div class="bg-[#262d31] text-gray-300 rounded-tr-lg  rounded-bl-lg rounded-br-lg mb-4 px-4 py-2 mt-4 tra">
+                                <div className='font-bold'>Altos Test</div>
+                                <div>
+                                    This is a test message which is for testing the WhatsApp business API management.
+                                </div>
+                                <div className='font-thin text-xs'>Do not Reply</div>
+                            </div>
                         </div>
                     </div>
                 </>}
