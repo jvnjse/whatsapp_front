@@ -7,7 +7,9 @@
 *{
   font-family: 'Montserrat', sans-serif;
 }
-
+body{
+  background-color: #363636;
+}
 .excel-bg,.excel-bg-1{
   background-image: url("./Icons/excellogo.png");
   background-size: cover;

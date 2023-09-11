@@ -6,8 +6,12 @@ function Template() {
     const [templates, setTemplates] = useState([]);
     const [create_template, setCreateTemplate] = useState(false)
 
+    const handleClick = (event) => {
+        event.stopPropagation();
+    };
+
     useEffect(() => {
-        axios.get('http://127.0.0.1:8000/get_templates/')
+        axios.get('http://127.0.0.1:8000/get_templates/lists')
             .then((response) => {
                 const extractedData = response.data.data.map((template) => ({
                     id: template.id,
@@ -50,8 +54,8 @@ function Template() {
                 </div>
             </div>
             {create_template &&
-                <div className='absolute w-full h-full bg-black/30 top-0 left-0 flex justify-center'>
-                    <CreateTemplate />
+                <div className='absolute w-full h-full bg-black/30 top-0 left-0 flex justify-center' onClick={() => { setCreateTemplate(false) }} >
+                    <CreateTemplate handleClick={handleClick} setCreateTemplate={setCreateTemplate} />
                 </div>
             }
         </>
