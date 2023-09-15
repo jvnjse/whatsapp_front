@@ -12,6 +12,7 @@ function ContainerBox() {
     };
     return (
         <div className=' w-11/12 bg-[#ECE5DD] flex justify-between min-h-[95%] rounded-2xl'>
+            <img src="" alt="" />
             <div className='bg-[#064A42] pt-5  rounded-s-2xl'>
                 <div className=' px-5'>
                     <img src={logo} alt="" className='h-10 object-contain' />

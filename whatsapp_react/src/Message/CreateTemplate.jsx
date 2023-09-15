@@ -8,8 +8,8 @@ function CreateTemplate(props) {
     const [headertext, setheadertext] = useState(' ')
     const [bodytext, setbodytext] = useState(' ')
     const [footertext, setfootertext] = useState(' ')
-    const [buttontext, setbuttontext] = useState(' ')
-    const [buttoncontent, setbuttoncontent] = useState(' ')
+    const [buttontext, setbuttontext] = useState(null)
+    const [buttoncontent, setbuttoncontent] = useState(null)
     const getApiUrl = (option) => {
         switch (option) {
             case 'URL':
@@ -48,7 +48,7 @@ function CreateTemplate(props) {
         setSelectedOption(event.target.value);
     };
     return (
-        <div className='w-10/12 bg-white mt-10 p-5 rounded-xl min-h-fit' onClick={props.handleClick}>
+        <div className='w-10/12 bg-white mt-10 p-10 rounded-xl min-h-fit' onClick={props.handleClick}>
             <div className=' text-[#0d291a] text-2xl font-bold select-none'>Create Template</div>
             <div>
                 <div className=' flex justify-between'>
@@ -98,8 +98,8 @@ function CreateTemplate(props) {
                     <label className=' flex flex-col' htmlFor='button-text'>Button Text
                         <input type="text" name="" id="button-text" className='border border-gray-400 rounded-md h-9 px-3' onChange={(e) => { setbuttontext(e.target.value) }} />
                     </label>
-                    <label className=' flex flex-col' htmlFor='button-text'>Button Text
-                        <input type="text" name="" id="button-text" className='border border-gray-400 rounded-md h-9 px-3' onChange={(e) => { setbuttoncontent(e.target.value) }} />
+                    <label className=' flex flex-col' htmlFor='button-text'>Button Url/Number
+                        <input type="text" name="" placeholder='add number with country code' id="button-text" className='border border-gray-400 rounded-md h-9 px-3' onChange={(e) => { setbuttoncontent(e.target.value) }} />
                     </label>
                     <button onClick={CreateTemplateApi} className='bg-[#064A42] text-white rounded-md'>submit</button>
                 </div>

@@ -27,3 +27,7 @@ body{
   background-size: cover;
 
 }
+.background-doodle{
+  background-image: url("./Icons/whatsappwallpaper.jpg");
+  background-size: contain;
+}

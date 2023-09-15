@@ -6,6 +6,7 @@ function Template() {
     const [templates, setTemplates] = useState([]);
     const [create_template, setCreateTemplate] = useState(false)
 
+
     const handleClick = (event) => {
         event.stopPropagation();
     };
@@ -27,10 +28,21 @@ function Template() {
     }, []);
     return (
         <>
-            <div className='p-5'>
+            <div className='p-5' onClick={() => {
+                if (create_template == true) {
+                    setCreateTemplate(false)
+                }
+            }}>
                 <div className='flex items-center justify-between px-4'>
                     <div className=' text-[#0d291a] text-4xl font-bold select-none'>Message Templates</div>
-                    <div className=' bg-[#0d291a] text-white px-2 py-1 rounded-lg cursor-pointer select-none' onClick={() => { setCreateTemplate(true) }}>Create Template</div>
+                    <div className='relative'>
+                        <div className=' bg-[#0d291a] text-white px-2 py-1 rounded-lg cursor-pointer select-none ' onClick={() => { setCreateTemplate(!create_template) }}>Create Template
+                        </div>
+                        {create_template && <div className='w-full bg-white absolute top-2 right-2' onClick={handleClick}>
+                            <li className='list-none border-b border-gray-500 text-center px-3 py-2 whitespace-nowrap select-none cursor-pointer hover:bg-slate-100'>Text Template</li>
+                            <li className='list-none border-b border-gray-500 text-center px-3 py-2 whitespace-nowrap select-none cursor-pointer hover:bg-slate-100'>Image Template</li>
+                        </div>}
+                    </div>
                 </div>
                 <div>
                     <table class="table-auto w-full mt-6 border border-gray-600">
@@ -53,11 +65,12 @@ function Template() {
                     </table>
                 </div>
             </div>
-            {create_template &&
+            {/* {create_template &&
                 <div className='absolute w-full h-full bg-black/30 top-0 left-0 flex justify-center' onClick={() => { setCreateTemplate(false) }} >
                     <CreateTemplate handleClick={handleClick} setCreateTemplate={setCreateTemplate} />
+                    <div>jhhj</div>
                 </div>
-            }
+            } */}
         </>
     )
 }
