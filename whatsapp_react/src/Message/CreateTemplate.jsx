@@ -33,7 +33,7 @@ function CreateTemplate(props) {
     const CreateTemplateApi = () => {
         const apiUrl = getApiUrl(selectedOption)
         // axios.post
-        console.log(apiUrl)
+        // console.log(apiUrl)
         axios.post(apiUrl, data)
             .then((response) => {
                 console.log(response.data)
@@ -53,7 +53,6 @@ function CreateTemplate(props) {
             <div>
                 <div className=' flex justify-between'>
                     <div className=' flex-1 flex flex-col px-5 mt-2 gap-2'>
-
                         <label className=' flex flex-col' htmlFor='header'>Template Name
                             <input type="text" placeholder='' id="header" className='lowercase border border-gray-400 rounded-md h-9 px-3'
                                 onChange={(e) => {
@@ -83,7 +82,6 @@ function CreateTemplate(props) {
                             <div className='text-center text-xs font-semibold text-blue-300 py-1'>{buttontext}</div>
                         </div>
                     </div>
-
                 </div>
                 <div className='flex flex-col gap-2'>
                     <div className=' text-[#0d291a] text-lg font-bold select-none mt-4'>Button Action</div>

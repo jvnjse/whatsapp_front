@@ -15,6 +15,7 @@ function Message() {
     const [selectedName, setSelectedName] = useState('');
     const [selectedBodyText, setSelectedBodyText] = useState('')
     const [selectedFooterText, setSelectedFooterText] = useState('')
+    const [headerHandle, setHeaderHandle] = useState('');
     const [select, setSelect] = useState()
 
 
@@ -56,7 +57,7 @@ function Message() {
                 console.log(error.data)
             })
     }
-
+    // console.log(templateData)
     const handleSelectChange = (event) => {
         const name = event.target.value;
         setSelect(name)
@@ -69,11 +70,15 @@ function Message() {
             setSelectedBodyText(body.text);
             const footer = selectedComponent.find((component) => component.type === 'FOOTER');
             setSelectedFooterText(footer ? footer.text : '');
+            const headerHandle = header && header.example && header.example.header_handle[0];
+            setHeaderHandle(headerHandle || '');
+            console.log(headerHandle)
         } else {
             setSelectedHeaderText('');
+            setHeaderHandle('');
         }
     };
-
+    // console.log("image", SelectedImage)
 
 
 
@@ -89,7 +94,7 @@ function Message() {
 
         axios.get('http://127.0.0.1:8000/get_templates/')
             .then((response) => {
-                // console.log(response.data.data)
+                console.log(response.data.data)
                 setTemplateData(response.data.data)
             })
             .catch((error) => {
@@ -137,6 +142,7 @@ function Message() {
                             </select>
                             <div class="bg-[#262d31] text-gray-300 rounded-tr-lg  rounded-bl-lg rounded-br-lg mb-4 px-4 py-2 mt-4 w-[300px]">
                                 <div className='font-bold'>{selectedHeaderText && selectedHeaderText}</div>
+                                <img src={headerHandle && headerHandle} alt="" />
                                 <div>
                                     {selectedBodyText && selectedBodyText}
                                 </div>
