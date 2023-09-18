@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import CreateTemplate from './CreateTemplate';
 import ImageTemplate from './ImageTemplate';
+import { AiOutlineDelete } from 'react-icons/ai';
 
 function Template() {
     const [templates, setTemplates] = useState([]);
@@ -9,6 +10,7 @@ function Template() {
     const [textTemplate, settextTemplate] = useState(false)
     const [imageTemplate, setimageTemplate] = useState(false)
     const [selectedTemplateName, setSelectedTemplateName] = useState('');
+    const [loading, setloading] = useState(false)
 
 
     const handleClick = (event) => {
@@ -28,17 +30,19 @@ function Template() {
 
 
     const DeleteApiCall = () => {
+        setloading(true)
         axios.post(`http://127.0.0.1:8000/delete/template?template_name="${selectedTemplateName}"`)
             .then((response) => {
                 console.log(response.data)
+                setloading(false)
+                GetTemplates()
             })
             .catch((error) => {
                 console.log(error)
             })
     }
 
-
-    useEffect(() => {
+    const GetTemplates = () => {
         axios.get('http://127.0.0.1:8000/get_templates/lists')
             .then((response) => {
                 const extractedData = response.data.data.map((template) => ({
@@ -53,7 +57,13 @@ function Template() {
             .catch((error) => {
                 console.error('Error fetching data:', error);
             });
-    }, [selectedTemplateName]);
+    }
+
+    useEffect(() => {
+        GetTemplates()
+    }, []);
+
+
 
 
 
@@ -92,7 +102,7 @@ function Template() {
                                     <td className='py-2 border-b border-gray-600'>{template.text}</td>
                                     <td className='py-2 border-b border-gray-600'>{template.status}</td>
                                     <td className='py-2 border-b border-gray-600'>
-                                        <button onClick={() => handleDeleteClick(template.name)}>Delete</button>
+                                        <div className='select-none cursor-pointer hover:bg-black hover:text-white w-min p-1 rounded-lg' onClick={() => handleDeleteClick(template.name)}><AiOutlineDelete /></div>
                                     </td>
                                 </tr>
                             ))}
@@ -102,15 +112,23 @@ function Template() {
             </div>
             {textTemplate &&
                 <div className='absolute w-full h-full bg-black/30 top-0 left-0 flex justify-center' onClick={() => { settextTemplate(false) }} >
-                    <CreateTemplate handleClick={handleClick} />
+                    <CreateTemplate handleClick={handleClick} settextTemplate={settextTemplate} />
                 </div>
             }
             {imageTemplate &&
                 <div className='absolute w-full h-full bg-black/30 top-0 left-0 flex justify-center items-center' onClick={() => { setimageTemplate(false) }} >
                     {/* <CreateTemplate handleClick={handleClick} /> */}
-                    <ImageTemplate handleClick={handleClick} />
+                    <ImageTemplate handleClick={handleClick} setimageTemplate={setimageTemplate} />
                 </div>
             }
+            {loading && <div className=' absolute w-full h-full top-0 left-0 flex justify-center items-center bg-black/40'>
+                <svg className='animate-spin' width="100px" height="100px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <g>
+                        <path fill="none" d="M0 0h24v24H0z" />
+                        <path d="M12 3a9 9 0 0 1 9 9h-2a7 7 0 0 0-7-7V3z" fill='#ffffff' />
+                    </g>
+                </svg>
+            </div>}
         </>
     )
 }

@@ -17,6 +17,8 @@ function Upload() {
     const [select, setSelect] = useState('')
     const [successMessage, setSuccessMessage] = useState(false);
     const [successMessageupload, setSuccessMessageUpload] = useState(false);
+    const [headerHandle, setHeaderHandle] = useState('');
+    const [apiurl1, setApiurl1] = useState();
 
     const handleFileChange = (event) => {
         const selectedFile = event.target.files[0];
@@ -84,9 +86,10 @@ function Upload() {
         const formData = new FormData();
         formData.append('excel_file', excelfile);
         formData.append('template_name', select)
+        formData.append('image_link', headerHandle)
 
         try {
-            const response = await axios.post('http://127.0.0.1:8000/upload/sent', formData, {
+            const response = await axios.post(apiurl1, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -114,6 +117,15 @@ function Upload() {
             setSelectedBodyText(body.text);
             const footer = selectedComponent.find((component) => component.type === 'FOOTER');
             setSelectedFooterText(footer ? footer.text : '');
+            const headerHandle = header && header.example && header.example.header_handle[0];
+            setHeaderHandle(headerHandle || '');
+            setApiurl1((prevApiurl1) => {
+                if (headerHandle != null) {
+                    return `http://127.0.0.1:8000/upload/sent/images`;
+                } else {
+                    return `http://127.0.0.1:8000/upload/sent`;
+                }
+            });
         } else {
             setSelectedHeaderText('');
         }
@@ -157,6 +169,7 @@ function Upload() {
                     </select>
                     <div class="bg-[#262d31] text-gray-300 rounded-tr-lg  rounded-bl-lg rounded-br-lg mb-4 px-4 py-2 mt-4 w-[300px]">
                         <div className='font-bold'>{selectedHeaderText && selectedHeaderText}</div>
+                        <img src={headerHandle && headerHandle} alt="" />
                         <div>
                             {selectedBodyText && selectedBodyText}
                         </div>

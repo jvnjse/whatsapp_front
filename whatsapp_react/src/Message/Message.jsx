@@ -17,6 +17,9 @@ function Message() {
     const [selectedFooterText, setSelectedFooterText] = useState('')
     const [headerHandle, setHeaderHandle] = useState('');
     const [select, setSelect] = useState()
+    const [apiurl1, setApiurl1] = useState();
+    const [apiurl2, setApiurl2] = useState();
+
 
 
     // console.log("check", select)
@@ -25,11 +28,11 @@ function Message() {
         const numbers = phoneNumberInput.split(',').map((number) => number.trim());
         const postData = {
             "numbers": numbers,
-            "template_name": select
-
+            "template_name": select,
+            "image_link": headerHandle
         }
         try {
-            const response = await axios.post('http://127.0.0.1:8000/sent-messages/', postData);
+            const response = await axios.post(apiurl1, postData);
             console.log(response.data)
             setPhoneNumberInput('')
             setSuccessMessage(true)
@@ -42,9 +45,8 @@ function Message() {
         }
     };
 
-
     const handleSubmit2 = () => {
-        axios.post(`http://127.0.0.1:8000/sent-messages/data/?template_name=${select}`)
+        axios.post(apiurl2)
             .then((response) => {
                 console.log(response.data)
                 setSuccessMessage(true)
@@ -72,15 +74,30 @@ function Message() {
             setSelectedFooterText(footer ? footer.text : '');
             const headerHandle = header && header.example && header.example.header_handle[0];
             setHeaderHandle(headerHandle || '');
-            console.log(headerHandle)
+            console.log("Before setApiurl1", headerHandle);
+            setApiurl1((prevApiurl1) => {
+                if (headerHandle != null) {
+                    return `http://127.0.0.1:8000/sent-messages/images`;
+                } else {
+                    return `http://127.0.0.1:8000/sent-messages/`;
+                }
+            });
+            console.log("After setApiurl1");
+            setApiurl2((prevApiurl2) => {
+                if (headerHandle != null) {
+                    return `http://127.0.0.1:8000/sent-messages/data/images?template_name=${name}&image_url=${headerHandle}`;
+                } else {
+                    return `http://127.0.0.1:8000/sent-messages/data/?template_name=${name}`;
+                }
+            });
         } else {
             setSelectedHeaderText('');
             setHeaderHandle('');
         }
     };
-    // console.log("image", SelectedImage)
 
-
+    console.log("url", apiurl1)
+    console.log("url2", apiurl2)
 
     useEffect(() => {
         axios.get('http://127.0.0.1:8000/phone-numbers/')
@@ -133,7 +150,6 @@ function Message() {
                             <div>Select Templates</div>
                             <select value={selectedName} onChange={handleSelectChange}>
                                 <option value="">Select a name</option>
-
                                 {templateData && templateData.names.map((item, index) => (
                                     <option key={index} value={item}>
                                         {item}
@@ -179,6 +195,7 @@ function Message() {
                             </select>
                             <div class="bg-[#262d31] text-gray-300 rounded-tr-lg  rounded-bl-lg rounded-br-lg mb-4 px-4 py-2 mt-4 w-[300px]">
                                 <div className='font-bold'>{selectedHeaderText && selectedHeaderText}</div>
+                                <img src={headerHandle && headerHandle} alt="" />
                                 <div className='text-sm'>
                                     {selectedBodyText && selectedBodyText}
                                 </div>

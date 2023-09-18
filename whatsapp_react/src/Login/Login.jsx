@@ -9,6 +9,9 @@ function Login() {
     const [lpassword, setlpassword] = useState('')
     const [semail, setsemail] = useState('')
     const [spassword, setspassword] = useState('')
+    const [signupmessage, setsignupmessage] = useState(false)
+    const [errormesssage, seterrormesssage] = useState(false)
+    const [errormesssagel, seterrormesssagel] = useState(false)
 
 
     const ldata = {
@@ -23,6 +26,9 @@ function Login() {
                 window.location.reload()
             }).catch((error) => {
                 console.log(error)
+                if (error.response.data.non_field_errors) {
+                    seterrormesssagel(true)
+                }
             })
     }
 
@@ -35,8 +41,12 @@ function Login() {
         axios.post("http://127.0.0.1:8000/register/", sdata)
             .then((response) => {
                 console.log(response.data)
+                setsignupmessage(true)
             }).catch((error) => {
-                console.log(error)
+                console.log(error.response.data.email)
+                if (error.response.data.email) {
+                    seterrormesssage(true)
+                }
             })
     }
 
@@ -57,6 +67,9 @@ function Login() {
                     <label htmlFor='email' className=' flex flex-col gap-2 text-sm'>Password
                         <input type="password" name="" id="" className='border border-gray-500 pl-3 h-7' value={lpassword} onChange={(e) => { setlpassword(e.target.value) }} />
                     </label>
+                    {errormesssagel
+                        && <div className='text-xs text-center whitespace-nowrap font-semibold text-red-500'>Invalid Credentials</div>
+                    }
                     <div className=' bg-[#064A42] text-center select-none cursor-pointer text-white rounded-md' onClick={HandleLogin}>
                         Login
                     </div>
@@ -68,9 +81,15 @@ function Login() {
                         <label htmlFor='email' className=' flex flex-col gap-2 text-sm'>Email
                             <input type="email" name="" id="email" className='border border-gray-500 pl-3 h-7' value={semail} onChange={(e) => { setsemail(e.target.value) }} />
                         </label>
-                        <label htmlFor='email' className=' flex flex-col gap-2 text-sm'>Password
+                        {signupmessage
+                            && <div className='text-xs text-center whitespace-nowrap'>A Generated password will be received <br></br>in your <a className='text-blue-700 underline' href='https://mail.google.com/mail/' target='_blank'>email inbox</a> </div>
+                        }
+                        {errormesssage
+                            && <div className='text-xs text-center whitespace-nowrap font-semibold text-red-500'>Email already Exists</div>
+                        }
+                        {/* <label htmlFor='email' className=' flex flex-col gap-2 text-sm'>Password
                             <input type="password" name="" id="" className='border border-gray-500 pl-3 h-7' value={spassword} onChange={(e) => { setspassword(e.target.value) }} />
-                        </label>
+                        </label> */}
                         {/* <label htmlFor='email' className=' flex flex-col gap-2 text-sm'>Confirm Password
                             <input type="password" name="" id="" className='border border-gray-500 pl-3 h-7' />
                         </label> */}

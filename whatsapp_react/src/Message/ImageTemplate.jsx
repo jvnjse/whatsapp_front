@@ -10,6 +10,8 @@ function ImageTemplate(props) {
     const [footertext, setfootertext] = useState(' ')
     const [buttontext, setbuttontext] = useState(' ')
     const [imageupload, setimageupload] = useState('')
+    const [uploadbtn, setuploadbtn] = useState(true)
+    const [loading, setloading] = useState(false)
 
 
     const handleImageChange = (event) => {
@@ -38,7 +40,8 @@ function ImageTemplate(props) {
             })
             .then((response) => {
                 setimageupload(response.data.h)
-                console.log(imageupload)
+                setuploadbtn(false)
+                // console.log(imageupload)
             })
             .catch((error) => {
                 console.error(error);
@@ -55,8 +58,11 @@ function ImageTemplate(props) {
         // 'button_text': buttontext,
     }
     const HandleTemplateUpload = () => {
+        setloading(true)
         axios.post("http://127.0.0.1:8000/post_template/image", data).then((response) => {
             console.log(response.data)
+            setloading(false)
+            props.setimageTemplate(false)
         }).catch((error) => {
             console.log(error)
         })
@@ -65,20 +71,26 @@ function ImageTemplate(props) {
 
 
 
-    return (
+    return (<>
         <div className='w-10/12 bg-white mt-10 p-10 rounded-xl h-[80%]' onClick={props.handleClick}>
             <div className=' text-[#0d291a] text-2xl font-bold select-none'>Create Image Template</div>
             <div className=' flex justify-between'>
                 <div className='flex-1'>
                     <div className=' flex-1 flex flex-col px-5 mt-2 gap-2'>
                         <label className='flex flex-col'>Template Name
-                            <input className='lowercase border border-gray-400 rounded-md h-9 px-3' onChange={(e) => { settemplatename(e.target.value) }} />
+                            <input className='lowercase border border-gray-400 rounded-md h-9 px-3' onChange={(e) => {
+                                const inputValue = e.target.value;
+                                const textWithUnderscores = inputValue.replace(/ /g, '_');
+                                settemplatename(textWithUnderscores);
+                            }} />
                         </label>
                         <div className='flex items-end gap-3'>
                             <label className=' flex flex-col'>Select an Image
                                 <input type="file" placeholder='' id="" className='border border-gray-400 rounded-md h-9 px-3' onChange={handleImageChange} />
                             </label>
-                            <div className='py-1 px-2 rounded-lg select-none cursor-pointer text-white bg-[#133624] whitespace-nowrap h-fit' onClick={handleUpload}>Upload Image</div>
+                            {uploadbtn &&
+                                <div className='py-1 px-2 rounded-lg select-none cursor-pointer text-white bg-[#133624] whitespace-nowrap h-fit' onClick={handleUpload}>Upload Image</div>
+                            }
                         </div>
 
                         <label className=' flex flex-col' htmlFor='text-body'>Text Body
@@ -105,6 +117,15 @@ function ImageTemplate(props) {
                 </div>
             </div>
         </div>
+        {loading && <div className=' absolute w-full h-full top-0 left-0 flex justify-center items-center bg-black/40'>
+            <svg className='animate-spin' width="100px" height="100px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <g>
+                    <path fill="none" d="M0 0h24v24H0z" />
+                    <path d="M12 3a9 9 0 0 1 9 9h-2a7 7 0 0 0-7-7V3z" fill='#ffffff' />
+                </g>
+            </svg>
+        </div>}
+    </>
     )
 }
 
