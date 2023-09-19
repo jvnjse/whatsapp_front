@@ -115,7 +115,7 @@ function CreateTemplate(props) {
                                     <input type="text" placeholder='' id="header" className='border border-gray-400 rounded-md h-9 px-3' onChange={(e) => { setheadertext(e.target.value) }} />
                                 </label>
                                 <label className=' flex flex-col' htmlFor='text-body'>Text Body
-                                    <input type="text" placeholder='' id="text-body" className='border border-gray-400 rounded-md h-9 px-3' onChange={(e) => { setbodytext(e.target.value) }} />
+                                    <textarea type="text" placeholder='' id="text-body" className='border border-gray-400 rounded-md h-9 px-3' onChange={(e) => { setbodytext(e.target.value) }} />
                                 </label>
                                 <label className=' flex flex-col' htmlFor='footer-body'>Footer
                                     <input type="text" placeholder='' id="footer-body" className='border border-gray-400 rounded-md h-9 px-3' onChange={(e) => { setfootertext(e.target.value) }} />
