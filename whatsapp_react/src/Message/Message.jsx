@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import whatsapplogo from "../Icons/whatsapp.png"
 import whatsappgif from "../Icons/whatsappgif.gif"
+import Cookies from "js-cookie";
 
 function Message() {
     const [phoneNumberInput, setPhoneNumberInput] = useState('');
@@ -19,6 +20,7 @@ function Message() {
     const [select, setSelect] = useState()
     const [apiurl1, setApiurl1] = useState();
     const [apiurl2, setApiurl2] = useState();
+    const userid = Cookies.get('user_id');
 
 
 
@@ -85,9 +87,9 @@ function Message() {
             console.log("After setApiurl1");
             setApiurl2((prevApiurl2) => {
                 if (headerHandle != null) {
-                    return `http://127.0.0.1:8000/sent-messages/data/images?template_name=${name}&image_url=${headerHandle}`;
+                    return `http://127.0.0.1:8000/sent-messages/data/images?template_name=${name}&image_url=${headerHandle}&user_id=${userid}`;
                 } else {
-                    return `http://127.0.0.1:8000/sent-messages/data/?template_name=${name}`;
+                    return `http://127.0.0.1:8000/sent-messages/data/?template_name=${name}&user_id=${userid}`;
                 }
             });
         } else {
@@ -100,7 +102,7 @@ function Message() {
     console.log("url2", apiurl2)
 
     useEffect(() => {
-        axios.get('http://127.0.0.1:8000/phone-numbers/')
+        axios.get(`http://127.0.0.1:8000/phone-numbers/?user_id=${userid}`)
             .then((response) => {
                 // console.log(response.data)
                 setNumberdata(response.data)

@@ -3,6 +3,8 @@ import axios from 'axios';
 import CreateTemplate from './CreateTemplate';
 import ImageTemplate from './ImageTemplate';
 import { AiOutlineDelete } from 'react-icons/ai';
+import Cookies from "js-cookie";
+
 
 function Template() {
     const [templates, setTemplates] = useState([]);
@@ -11,6 +13,7 @@ function Template() {
     const [imageTemplate, setimageTemplate] = useState(false)
     const [selectedTemplateName, setSelectedTemplateName] = useState('');
     const [loading, setloading] = useState(false)
+    const userid = Cookies.get('user_id');
 
 
     const handleClick = (event) => {
@@ -31,7 +34,7 @@ function Template() {
 
     const DeleteApiCall = () => {
         setloading(true)
-        axios.post(`http://127.0.0.1:8000/delete/template?template_name="${selectedTemplateName}"`)
+        axios.post(`http://127.0.0.1:8000/delete/template?template_name="${selectedTemplateName}&user_id=${userid}"`)
             .then((response) => {
                 console.log(response.data)
                 setloading(false)
@@ -43,7 +46,7 @@ function Template() {
     }
 
     const GetTemplates = () => {
-        axios.get('http://127.0.0.1:8000/get_templates/lists')
+        axios.get(`http://127.0.0.1:8000/get_templates/lists?user_id=${userid}`)
             .then((response) => {
                 const extractedData = response.data.data.map((template) => ({
                     id: template.id,

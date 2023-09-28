@@ -22,7 +22,12 @@ function Login() {
         axios.post("http://127.0.0.1:8000/login/", ldata)
             .then((response) => {
                 const accessToken = response.data.token.access
-                Cookies.set("accessToken", accessToken, { expires: 24 / 24 });
+                const IsManager = response.data.is_manager
+                const user_id = response.data.user_id
+                Cookies.set("accessToken", accessToken, { expires: 5 });
+                Cookies.set("isManager", IsManager, { expires: 5 });
+                Cookies.set("user_id", user_id, { expires: 5 });
+                console.log(response.data)
                 window.location.reload()
             }).catch((error) => {
                 console.log(error)

@@ -8,6 +8,7 @@ import {
 } from "react-router-dom";
 import Login from "./Login/Login";
 import Cookies from "js-cookie";
+import Input from "./Input/Input";
 
 function App() {
   const accessToken = Cookies.get("accessToken");
@@ -17,7 +18,10 @@ function App() {
       <Router>
         <Routes>
           {accessToken ? (
-            <Route path="/" element={<ContainerBox />} />
+            <>
+              <Route path="/" element={<ContainerBox />} />
+              <Route path="/input" element={<Input />} />
+            </>
           ) : (
             <Route path="/" element={<Login />} />
           )}

@@ -3,6 +3,7 @@ import "../App.css"
 import axios from 'axios';
 import whatsapplogo from "../Icons/whatsapp.png"
 import whatsappgif from "../Icons/whatsappgif.gif"
+import Cookies from "js-cookie";
 
 
 function Upload() {
@@ -19,11 +20,15 @@ function Upload() {
     const [successMessageupload, setSuccessMessageUpload] = useState(false);
     const [headerHandle, setHeaderHandle] = useState('');
     const [apiurl1, setApiurl1] = useState();
+    const userid = Cookies.get('user_id');
 
+
+    console.log(userid)
     const handleFileChange = (event) => {
         const selectedFile = event.target.files[0];
         setexcelfile(selectedFile);
     };
+
 
     useEffect(() => {
         if (excelfile) {
@@ -44,6 +49,7 @@ function Upload() {
 
         const formData = new FormData();
         formData.append('excel_file', excelfile);
+        formData.append('user_id', userid);
 
         try {
             const response = await axios.post('http://127.0.0.1:8000/upload/data', formData, {
@@ -86,6 +92,7 @@ function Upload() {
         const formData = new FormData();
         formData.append('excel_file', excelfile);
         formData.append('template_name', select)
+        formData.append('user_id', userid)
         formData.append('image_link', headerHandle)
 
         try {
