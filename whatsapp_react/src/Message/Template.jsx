@@ -4,6 +4,9 @@ import CreateTemplate from './CreateTemplate';
 import ImageTemplate from './ImageTemplate';
 import { AiOutlineDelete } from 'react-icons/ai';
 import Cookies from "js-cookie";
+import config from '../config';
+import WhatsappModule from '../WhatsappModule';
+import { jwtDecode } from 'jwt-decode';
 
 
 function Template() {
@@ -13,7 +16,9 @@ function Template() {
     const [imageTemplate, setimageTemplate] = useState(false)
     const [selectedTemplateName, setSelectedTemplateName] = useState('');
     const [loading, setloading] = useState(false)
-    const userid = Cookies.get('user_id');
+    const userid = jwtDecode(accessToken).user_id;
+    const accessToken = Cookies.get("accessToken")
+
 
 
     const handleClick = (event) => {
@@ -29,12 +34,16 @@ function Template() {
 
         }
     };
-
+    const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + accessToken
+    }
 
 
     const DeleteApiCall = () => {
         setloading(true)
-        axios.post(`http://127.0.0.1:8000/delete/template?template_name="${selectedTemplateName}&user_id=${userid}"`)
+        const data = {}
+        axios.post(`${config.baseUrl}delete/template?template_name="${selectedTemplateName}"&user_id=${userid}`, data, { headers: headers })
             .then((response) => {
                 console.log(response.data)
                 setloading(false)
@@ -46,8 +55,9 @@ function Template() {
     }
 
     const GetTemplates = () => {
-        axios.get(`http://127.0.0.1:8000/get_templates/lists?user_id=${userid}`)
+        axios.get(`${config.baseUrl}get_templates/lists?user_id=${userid}`, { headers: headers })
             .then((response) => {
+                console.log('ghujhjhj')
                 const extractedData = response.data.data.map((template) => ({
                     id: template.id,
                     name: template.name,
@@ -71,8 +81,11 @@ function Template() {
 
 
     return (
-        <>
-            <div className='p-5' onClick={() => {
+        <div className=' w-11/12 bg-[#ECE5DD] flex justify-between h-full  rounded-2xl overflow-x-auto'>
+            <div className='h-full'>
+                <WhatsappModule select={"template"} />
+            </div>
+            <div className='p-5 flex-1' onClick={() => {
                 if (create_template == true) {
                     setCreateTemplate(false)
                 }
@@ -132,7 +145,7 @@ function Template() {
                     </g>
                 </svg>
             </div>}
-        </>
+        </div>
     )
 }
 

@@ -2,7 +2,11 @@
 module.exports = {
   content: ["./src/**/*.{html,js,jsx}"],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        Quest: ["Questrial", "sans-serif"],
+      },
+    },
   },
   plugins: [],
 };

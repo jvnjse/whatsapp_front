@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
 import whatsappwallpaper from "../Icons/whatsappwallpaper.jpg"
 import axios from "axios"
+import Cookies from "js-cookie";
+import config from '../config';
+import { jwtDecode } from 'jwt-decode';
 
 function CreateTemplate(props) {
     const [selectedOption, setSelectedOption] = useState('');
@@ -11,21 +14,24 @@ function CreateTemplate(props) {
     const [buttontext, setbuttontext] = useState(' ')
     const [buttoncontent, setbuttoncontent] = useState(' ')
     const [loading, setloading] = useState(false)
+    const userid = jwtDecode(accessToken).user_id;
+    const accessToken = Cookies.get("accessToken")
+
 
 
 
     const getApiUrl = (option) => {
         switch (option) {
             case 'URL':
-                return 'http://127.0.0.1:8000/post_template/site';
+                return `${config.baseUrl}post_template/site?user_id=${userid}`;
             case 'PHONE_NUMBER':
-                return 'http://127.0.0.1:8000/post_template/call';
+                return `${config.baseUrl}post_template/call?user_id=${userid}`;
             default:
-                return 'http://127.0.0.1:8000/post_template/text';
+                return `${config.baseUrl}post_template/text?user_id=${userid}`;
         }
     };
 
-    console.log(getApiUrl)
+
 
 
 
@@ -74,12 +80,14 @@ function CreateTemplate(props) {
     const ModalClose = () => {
         props.settextTemplate(false)
     }
+    const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + accessToken
+    }
     const CreateTemplateApi = () => {
         const apiUrl = getApiUrl(selectedOption)
-        // axios.post
-        // console.log(apiUrl)
         setloading(true)
-        axios.post(apiUrl, data(selectedOption))
+        axios.post(apiUrl, data(selectedOption), { headers: headers })
             .then((response) => {
                 console.log(response.data)
                 ModalClose()
@@ -97,7 +105,7 @@ function CreateTemplate(props) {
     };
     return (
         <>
-            <div className='w-10/12 bg-white mt-10 p-10 rounded-xl min-h-fit' onClick={props.handleClick}>
+            <div className='w-10/12 bg-white mt-10 p-10 rounded-xl min-h-fit overflow-x-auto' onClick={props.handleClick}>
                 <div className=' text-[#0d291a] text-2xl font-bold select-none'>Create Template</div>
                 <div>
                     <div className=' flex justify-between'>

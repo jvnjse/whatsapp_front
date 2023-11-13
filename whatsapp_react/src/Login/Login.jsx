@@ -2,16 +2,18 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import Cookies from "js-cookie";
+import config from '../config';
 
 function Login() {
     const [login, setLogin] = useState(true)
     const [lemail, setlemail] = useState('')
     const [lpassword, setlpassword] = useState('')
     const [semail, setsemail] = useState('')
-    const [spassword, setspassword] = useState('')
+    const [referralstring, setReferralstring] = useState('')
     const [signupmessage, setsignupmessage] = useState(false)
     const [errormesssage, seterrormesssage] = useState(false)
     const [errormesssagel, seterrormesssagel] = useState(false)
+    const [loading, setloading] = useState(false)
 
 
     const ldata = {
@@ -19,16 +21,12 @@ function Login() {
         "password": lpassword
     }
     const HandleLogin = () => {
-        axios.post("http://127.0.0.1:8000/login/", ldata)
+        axios.post(`${config.baseUrl}login/`, ldata)
             .then((response) => {
                 const accessToken = response.data.token.access
-                const IsManager = response.data.is_manager
-                const user_id = response.data.user_id
                 Cookies.set("accessToken", accessToken, { expires: 5 });
-                Cookies.set("isManager", IsManager, { expires: 5 });
-                Cookies.set("user_id", user_id, { expires: 5 });
                 console.log(response.data)
-                window.location.reload()
+                window.location.href = "/messages"
             }).catch((error) => {
                 console.log(error)
                 if (error.response.data.non_field_errors) {
@@ -40,17 +38,21 @@ function Login() {
 
     const sdata = {
         "email": semail,
-        "password": spassword
+        "referral_string": referralstring ? referralstring : "ALTOS12"
     }
+    console.log(sdata)
     const HandleSignUp = () => {
-        axios.post("http://127.0.0.1:8000/register/", sdata)
+        setloading(true)
+        axios.post(`${config.baseUrl}register/`, sdata)
             .then((response) => {
                 console.log(response.data)
                 setsignupmessage(true)
+                setloading(false)
             }).catch((error) => {
                 console.log(error.response.data.email)
                 if (error.response.data.email) {
                     seterrormesssage(true)
+                    setloading(false)
                 }
             })
     }
@@ -86,6 +88,9 @@ function Login() {
                         <label htmlFor='email' className=' flex flex-col gap-2 text-sm'>Email
                             <input type="email" name="" id="email" className='border border-gray-500 pl-3 h-7' value={semail} onChange={(e) => { setsemail(e.target.value) }} />
                         </label>
+                        <label htmlFor='refer' className=' flex flex-col gap-2 text-xs'>Referral code
+                            <input type="text" placeholder='referral code' name="refer" id="refer" autoComplete="off" className='border border-gray-500 pl-3 h-7 uppercase' value={referralstring} onChange={(e) => { setReferralstring(e.target.value) }} />
+                        </label>
                         {signupmessage
                             && <div className='text-xs text-center whitespace-nowrap'>A Generated password will be received <br></br>in your <a className='text-blue-700 underline' href='https://mail.google.com/mail/' target='_blank'>email inbox</a> </div>
                         }
@@ -103,7 +108,14 @@ function Login() {
                         </div>
                     </div>
                 </div>}
-
+            {loading && <div className=' absolute w-full h-full top-0 left-0 flex justify-center items-center bg-black/40'>
+                <svg className='animate-spin' width="100px" height="100px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <g>
+                        <path fill="none" d="M0 0h24v24H0z" />
+                        <path d="M12 3a9 9 0 0 1 9 9h-2a7 7 0 0 0-7-7V3z" fill='#ffffff' />
+                    </g>
+                </svg>
+            </div>}
         </div>
     )
 }

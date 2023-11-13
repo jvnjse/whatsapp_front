@@ -4,11 +4,14 @@
 
 
 @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Questrial&display=swap');
+
 *{
   font-family: 'Montserrat', sans-serif;
 }
 body{
   background-color: #363636;
+  margin: 0;
 }
 .excel-bg,.excel-bg-1{
   background-image: url("./Icons/excellogo.png");
@@ -30,4 +33,10 @@ body{
 .background-doodle{
   background-image: url("./Icons/whatsappwallpaper.jpg");
   background-size: contain;
+}
+.backdrop-image{
+  /* background-image: url("./Icons/backdrop.png"); */
+  /* background-blend-mode: difference; */
+  /* filter: invert(100%); */
+  /* backdrop-filter: invert(100%); */
 }

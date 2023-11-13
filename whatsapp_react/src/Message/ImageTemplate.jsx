@@ -1,5 +1,9 @@
 import axios from 'axios'
 import React, { useState } from 'react'
+import Cookies from "js-cookie";
+import config from '../config';
+import { jwtDecode } from 'jwt-decode';
+
 
 
 function ImageTemplate(props) {
@@ -12,6 +16,10 @@ function ImageTemplate(props) {
     const [imageupload, setimageupload] = useState('')
     const [uploadbtn, setuploadbtn] = useState(true)
     const [loading, setloading] = useState(false)
+    const userid = jwtDecode(accessToken).user_id;
+    const accessToken = Cookies.get("accessToken")
+
+
 
 
     const handleImageChange = (event) => {
@@ -32,23 +40,30 @@ function ImageTemplate(props) {
         const formData = new FormData();
         formData.append('image_file', headerimage);
 
+        console.log('Uploading image...');
+
         axios
-            .post('http://127.0.0.1:8000/upload/image', formData, {
+            .post(`${config.baseUrl}upload/image?user_id=${userid}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
+                    'Authorization': 'Bearer ' + accessToken
                 },
             })
             .then((response) => {
-                setimageupload(response.data.h)
-                setuploadbtn(false)
-                // console.log(imageupload)
+                console.log('Image upload successful:', response.data);
+                setimageupload(response.data.h);
+                setuploadbtn(false);
             })
             .catch((error) => {
-                console.error(error);
+                console.error('Error uploading image:', error);
             });
     };
 
 
+    const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + accessToken
+    }
 
     const data = {
         'template_name': templatename,
@@ -59,7 +74,7 @@ function ImageTemplate(props) {
     }
     const HandleTemplateUpload = () => {
         setloading(true)
-        axios.post("http://127.0.0.1:8000/post_template/image", data).then((response) => {
+        axios.post(`${config.baseUrl}post_template/image?user_id=${userid}`, data, { headers: headers }).then((response) => {
             console.log(response.data)
             setloading(false)
             props.setimageTemplate(false)
