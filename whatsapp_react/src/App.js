@@ -33,7 +33,7 @@ function App() {
       // console.log(error);
     });
   return (
-    <div className="bg-[#363636] h-screen flex justify-center">
+    <div className=" flex justify-center">
       <Router>
         <Routes>
           {accessToken && isvalid ? (

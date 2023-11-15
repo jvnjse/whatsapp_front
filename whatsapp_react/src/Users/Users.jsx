@@ -53,7 +53,7 @@ function Users() {
     }
 
     return (
-        <div className=' w-11/12 bg-[#ECE5DD] flex justify-between h-full  rounded-2xl overflow-x-auto'>
+        <div className=' w-11/12 bg-[#ECE5DD] flex justify-between h-screen  rounded-2xl overflow-x-auto'>
             <div className='h-full'>
                 <WhatsappModule select={"users"} />
             </div>

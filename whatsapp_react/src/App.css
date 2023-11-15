@@ -2,41 +2,63 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Questrial&display=swap");
 
-@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Questrial&display=swap');
-
-*{
-  font-family: 'Montserrat', sans-serif;
+* {
+  font-family: "Montserrat", sans-serif;
 }
-body{
+body {
   background-color: #363636;
   margin: 0;
 }
-.excel-bg,.excel-bg-1{
+.excel-bg,
+.excel-bg-1 {
   background-image: url("./Icons/excellogo.png");
   background-size: cover;
-  background-position:  center center;
+  background-position: center center;
   background-repeat: no-repeat;
 }
-.excel-bg::after{
+.excel-bg::after {
   content: "Choose Excel File";
   margin-top: -20px;
   color: rgb(2, 61, 2);
   font-weight: 500;
 }
-.wallpaper-bg{
+.wallpaper-bg {
   background-image: url("./Icons/whatsappwallpaper.jpg");
   background-size: cover;
-
 }
-.background-doodle{
+.background-doodle {
   background-image: url("./Icons/whatsappwallpaper.jpg");
   background-size: contain;
 }
-.backdrop-image{
-  /* background-image: url("./Icons/backdrop.png"); */
-  /* background-blend-mode: difference; */
-  /* filter: invert(100%); */
-  /* backdrop-filter: invert(100%); */
+.input-border {
+  border: none;
+  outline: none;
+  border-bottom: #363636 solid 1px;
+  color: #363636;
+  transition: ;
 }
+.input-border:focus {
+  border: none;
+  outline: none;
+  border-bottom: #363636 solid 1px;
+}
+/* .animate-section1 {
+  animation: fade1;
+  animation-timeline: view();
+  animation-range: exit 0% cover 100%;
+}
+
+@keyframes fade1 {
+  0% {
+    /* zoom: 0; */
+/* scale: 1; */
+/* } */
+/* 100% { */
+/* zoom: 1; */
+/* scale: 1.6; */
+/* display: none; */
+/* } */
+/* } */
