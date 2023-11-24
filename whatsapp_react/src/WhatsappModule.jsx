@@ -1,21 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import Cookies from "js-cookie";
 import logo from "./Icons/altoslogo.png"
+import { jwtDecode } from 'jwt-decode';
 
 function WhatsappModule(props) {
-    const manager = Cookies.get("isManager")
+    const accessToken = Cookies.get("accessToken")
     const [activeComponent, setActiveComponent] = useState(props.select);
-    const [adminuser, setadminuser] = useState(false)
+    const user_role = jwtDecode(accessToken).user_is_distributor;
     const handleLinkClick = (componentName) => {
         setActiveComponent(componentName);
     };
-    useEffect(() => {
-        if (manager == 'true') {
-            setadminuser(true)
-        } else {
-            setadminuser(false)
-        }
-    }, [])
+
 
     const Logout = () => {
         Cookies.remove("accessToken")
@@ -45,7 +40,7 @@ function WhatsappModule(props) {
                         <span className='px-10'>Templates</span>
                     </a>
                 </li>
-                {adminuser &&
+                {user_role == true &&
                     <li onClick={() => handleLinkClick('users')}>
                         <a href="/users" className={activeComponent === 'users' ? "text-[#064A42] bg-[#ECE5DD] flex items-center space-x-3 p-2 whitespace-nowrap" : " whitespace-nowrap flex items-center space-x-3 p-2 text-white  rounded-md font-thin hover:bg-[#ECE5DD] hover:text-[#064A42]"}>
                             <span className='px-10'>Users</span>

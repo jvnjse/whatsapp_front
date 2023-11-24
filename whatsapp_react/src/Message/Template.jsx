@@ -16,8 +16,8 @@ function Template() {
     const [imageTemplate, setimageTemplate] = useState(false)
     const [selectedTemplateName, setSelectedTemplateName] = useState('');
     const [loading, setloading] = useState(false)
-    const userid = jwtDecode(accessToken).user_id;
     const accessToken = Cookies.get("accessToken")
+    const userid = jwtDecode(accessToken).user_id;
 
 
 

@@ -23,8 +23,8 @@ function Upload() {
     const [successMessageupload, setSuccessMessageUpload] = useState(false);
     const [headerHandle, setHeaderHandle] = useState('');
     const [apiurl1, setApiurl1] = useState();
-    const userid = jwtDecode(accessToken).user_id;
     const accessToken = Cookies.get("accessToken")
+    const userid = jwtDecode(accessToken).user_id;
 
 
 
@@ -87,6 +87,7 @@ function Upload() {
             .catch((error) => {
                 console.log(error)
             })
+
     }, [])
 
     const handleSubmitExcelSent = async (event) => {

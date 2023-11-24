@@ -74,8 +74,8 @@ function Landing() {
             </section>
 
             <section className='flex flex-col justify-center items-center gap-7 w-full text-center bg-[#afd5be] text-[#f0f0f0] py-10'>
-                <div className='flex gap-8'>
-                    <div className='px-3 py-1 bg-[#282626] cursor-pointer hover:bg-[#f0f0f0] hover:text-[#282626] '>MARKETING</div>
+                <div className='flex gap-8 '>
+                    <div className='px-3 py-1  bg-[#282626] cursor-pointer hover:bg-[#f0f0f0] hover:text-[#282626] '>MARKETING</div>
                     <div className='px-3 py-1 bg-[#282626] cursor-pointer hover:bg-[#f0f0f0] hover:text-[#282626] '>MARKETING</div>
                     <div className='px-3 py-1 bg-[#282626] cursor-pointer hover:bg-[#f0f0f0] hover:text-[#282626] '>MARKETING</div>
                     <div className='px-3 py-1 bg-[#282626] cursor-pointer hover:bg-[#f0f0f0] hover:text-[#282626] '>MARKETING</div>
@@ -95,7 +95,6 @@ function Landing() {
                             <select type="text" className='input-border ' >
                                 {/* <option>shbhj</option> */}
                                 {options && options.map((i) => (
-
                                     <option className='h-8' value={i.code}>
                                         {i.code}
                                         &nbsp;&nbsp;{i.dial_code}
@@ -111,6 +110,37 @@ function Landing() {
                     </div>
 
                 </div>
+
+            </section>
+            <section className='flex flex-col items-center gap-3 w-full text-center bg-[#f0f0f0]  text-[#000] '>
+                <h2 className=' font-bold text-5xl p-14 px-20 leading-snug'>anything like market +<br /> audience+ whatsapp + <br /> engagemnt content</h2>
+                <div className='max-w-xl'>This is a paragraph area where you can add your own text. Just click “Edit Text” or double click here to add your own content and make changes to the font. It's a great place to tell a story about your business and let users know more about you.
+                </div>
+            </section>
+            <section className='flex flex-col justify-center items-center gap-7 w-full text-center bg-[#afd5be] py-10 px-28'>
+                <h2 className=' font-bold text-5xl p-14 px-20 leading-snug  text-[#221231]'>Plan and Pricing</h2>
+                <div className='flex gap-4 '>
+                    <div>
+                        <p>
+                            Plan 1
+                        </p>
+                        <p>Describe your service here. What makes it great? Use short catchy text to tell people what you offer, and the benefits they will receive. A great description gets readers in the mood, and makes them more likely to go ahead and book.</p>
+                    </div>
+                    <div>
+                        <p>
+                            Plan 1
+                        </p>
+                        <p>Describe your service here. What makes it great? Use short catchy text to tell people what you offer, and the benefits they will receive. A great description gets readers in the mood, and makes them more likely to go ahead and book.</p>
+                    </div>
+                    <div>
+                        <p>
+                            Plan 1
+                        </p>
+                        <p>Describe your service here. What makes it great? Use short catchy text to tell people what you offer, and the benefits they will receive. A great description gets readers in the mood, and makes them more likely to go ahead and book.</p>
+                    </div>
+                </div>
+            </section>
+            <section>
 
             </section>
         </div >

@@ -59,7 +59,7 @@ function Login() {
 
 
     return (
-        <div className='flex flex-col items-center justify-center w-full h-full gap-3 background-doodle'>
+        <div className='flex flex-col items-center justify-center w-full gap-3 background-doodle h-screen'>
             <div className='flex justify-around w-2/6 bg-[#ffffff] rounded-lg relative max-md:w-2/4 max-sm:w-10/12'>
                 <div onClick={() => { setLogin(true) }} className='cursor-pointer w-full text-center  select-none'>Login</div>
                 <div onClick={() => { setLogin(false) }} className='cursor-pointer w-full text-center select-none'>Signup</div>

@@ -11,8 +11,8 @@ function Mange() {
     const [whid, setWhid] = useState()
     const [accesstoken, setAccesstoken] = useState()
     const [activeButton, setActiveButton] = useState(null);
-    const userid = jwtDecode(accessToken).user_id;
     const accessToken = Cookies.get("accessToken")
+    const userid = jwtDecode(accessToken).user_id;
 
 
     const data = {
