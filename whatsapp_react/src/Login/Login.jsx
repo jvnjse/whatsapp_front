@@ -25,10 +25,10 @@ function Login() {
             .then((response) => {
                 const accessToken = response.data.token.access
                 Cookies.set("accessToken", accessToken, { expires: 5 });
-                console.log(response.data)
+                // console.log(response.data)
                 window.location.href = "/messages"
             }).catch((error) => {
-                console.log(error)
+                // console.log(error)
                 if (error.response.data.non_field_errors) {
                     seterrormesssagel(true)
                 }
@@ -45,11 +45,11 @@ function Login() {
         setloading(true)
         axios.post(`${config.baseUrl}register/`, sdata)
             .then((response) => {
-                console.log(response.data)
+                // console.log(response.data)
                 setsignupmessage(true)
                 setloading(false)
             }).catch((error) => {
-                console.log(error.response.data.email)
+                // console.log(error.response.data.email)
                 if (error.response.data.email) {
                     seterrormesssage(true)
                     setloading(false)

@@ -31,7 +31,13 @@ function Message() {
         const name = event.target.value;
         setSelect(name)
         setSelectedName(name);
-        // console.log("ssss", templateData.components[indexOf[name]])
+        // //console.log("ssss", templateData.components[indexOf[name]])
+        const imageName = templateData.images.find((image) => image[name]);
+        if (imageName) {
+            setHeaderHandle(imageName[name]);
+        } else {
+            setHeaderHandle("")
+        }
         const selectedComponent = templateData.components[templateData.names.indexOf(name)];
         setcomponentData(selectedComponent)
         if (selectedComponent) {
@@ -41,9 +47,9 @@ function Message() {
             setSelectedBodyText(body.text);
             const footer = selectedComponent.find((component) => component.type === 'FOOTER');
             setSelectedFooterText(footer ? footer.text : '');
-            const headerHandle = header && header.example && header.example.header_handle[0];
-            setHeaderHandle(headerHandle || '');
-            console.log("Before setApiurl1", headerHandle);
+            // const headerHandle = header && header.example && header.example.header_handle[0];
+            // setHeaderHandle(headerHandle || '');
+            //console.log("Before setApiurl1", headerHandle);
             setApiurl1((prevApiurl1) => {
                 if (headerHandle != null) {
                     return `${config.baseUrl}sent-messages/images`;
@@ -63,8 +69,8 @@ function Message() {
             setHeaderHandle('');
         }
     };
-    // console.log(componentData, "sgusgjgsj")
-
+    const imageurl = config.imagebaseurl + headerHandle
+    // console.log(imageurl, "sss")
 
     const headers = {
         'Content-Type': 'application/json',
@@ -79,7 +85,7 @@ function Message() {
         const postData = {
             "numbers": numbers,
             "template_name": select,
-            "image_link": headerHandle,
+            "image_link": imageurl,
             "user_id": userid
         }
         try {
@@ -92,7 +98,7 @@ function Message() {
             }, 3000);
 
         } catch (error) {
-            console.log(error)
+            //console.log(error)
         }
     };
 
@@ -108,7 +114,7 @@ function Message() {
 
             })
             .catch((error) => {
-                console.log(error.data)
+                //console.log(error.data)
             })
     }
 
@@ -119,7 +125,7 @@ function Message() {
                 setNumberdata(response.data)
             })
             .catch((error) => {
-                console.log(error.data)
+                //console.log(error.data)
             })
 
         axios.get(`${config.baseUrl}get_templates/?user_id=${userid}`, { headers: headers })
@@ -128,7 +134,7 @@ function Message() {
                 setTemplateData(response.data.data)
             })
             .catch((error) => {
-                console.log(error)
+                //console.log(error)
             })
     }, [])
 
@@ -173,9 +179,9 @@ function Message() {
                                         </option>
                                     ))}
                                 </select>
-                                <div class="bg-[#262d31] text-gray-300 rounded-tr-lg  rounded-bl-lg rounded-br-lg mb-4 px-4 py-2 mt-4 w-[300px]">
+                                <div className="bg-[#262d31] text-gray-300 rounded-tr-lg  rounded-bl-lg rounded-br-lg mb-4 px-4 py-2 mt-4 w-[300px]">
                                     <div className='font-bold'>{selectedHeaderText && selectedHeaderText}</div>
-                                    <img src={headerHandle && headerHandle} alt="" />
+                                    <img src={imageurl} alt="" />
                                     <div className='text-[10px]'>
                                         {selectedBodyText && selectedBodyText}
                                     </div>
@@ -210,10 +216,14 @@ function Message() {
                                         </option>
                                     ))}
                                 </select>
-                                <div class="bg-[#262d31] text-gray-300 rounded-tr-lg  rounded-bl-lg rounded-br-lg mb-4 px-4 py-2 mt-4 w-[300px]">
+                                <div className="bg-[#262d31] text-gray-300 rounded-tr-lg  rounded-bl-lg rounded-br-lg mb-4 px-4 py-2 mt-4 w-[300px]">
                                     <div className='font-bold'>{selectedHeaderText && selectedHeaderText}</div>
-                                    <img src={headerHandle && headerHandle} alt="" />
-                                    <div className='text-[10px]'>
+                                    {/* <img src={headerHandle && config.baseUrl + headerHandle} alt="" /> */}
+                                    {headerHandle && (
+                                        <img src={imageurl} alt="" />
+                                    )}
+
+                                    <div className='text-[10px]'>sss
                                         {selectedBodyText && selectedBodyText}
                                     </div>
                                     <div className='font-thin text-[10px]'>{selectedFooterText && selectedFooterText}</div>

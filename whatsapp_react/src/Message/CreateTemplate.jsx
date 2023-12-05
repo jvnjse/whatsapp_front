@@ -4,6 +4,9 @@ import axios from "axios"
 import Cookies from "js-cookie";
 import config from '../config';
 import { jwtDecode } from 'jwt-decode';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 function CreateTemplate(props) {
     const [selectedOption, setSelectedOption] = useState('');
@@ -14,6 +17,7 @@ function CreateTemplate(props) {
     const [buttontext, setbuttontext] = useState(' ')
     const [buttoncontent, setbuttoncontent] = useState(' ')
     const [loading, setloading] = useState(false)
+    const [errormessage, seterrormessage] = useState()
     const accessToken = Cookies.get("accessToken")
     const userid = jwtDecode(accessToken).user_id;
 
@@ -89,22 +93,36 @@ function CreateTemplate(props) {
         setloading(true)
         axios.post(apiUrl, data(selectedOption), { headers: headers })
             .then((response) => {
-                console.log(response.data)
+                // console.log(response.data)
                 ModalClose()
                 setloading(false)
             })
             .catch((error) => {
-                console.log(error)
+                // console.log(error)
             })
     }
 
 
-    console.log("data", data(selectedOption))
+    // console.log("data", data(selectedOption))
     const handleOptionChange = (event) => {
         setSelectedOption(event.target.value);
     };
     return (
         <>
+            <div className='text-xs'>
+                <ToastContainer
+                    position="top-left"
+                    autoClose={2000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                    theme="light"
+                />
+            </div>
             <div className='w-10/12 bg-white mt-10 p-10 rounded-xl min-h-fit overflow-x-auto' onClick={props.handleClick}>
                 <div className=' text-[#0d291a] text-2xl font-bold select-none'>Create Template</div>
                 <div>
@@ -114,19 +132,58 @@ function CreateTemplate(props) {
                                 <input type="text" placeholder='' id="header" className='lowercase border border-gray-400 rounded-md h-9 px-3'
                                     onChange={(e) => {
                                         const inputValue = e.target.value;
-                                        const textWithUnderscores = inputValue.replace(/ /g, '_');
-                                        settemplatename(textWithUnderscores);
+                                        const isValidInput = /^[a-z]*$/.test(inputValue);
+                                        if (isValidInput) {
+                                            const textWithUnderscores = inputValue.replace(/ /g, '_');
+                                            settemplatename(textWithUnderscores);
+                                            seterrormessage('');
+                                        } else {
+                                            toast.error("Invalid Input, lowercase letter only allowed")
+                                            // seterrormessage('Invalid input. Only letters are allowed.');
+                                        }
                                     }} />
                             </label>
                             <div>
                                 <label className=' flex flex-col' htmlFor='header'>Header
-                                    <input type="text" placeholder='' id="header" className='border border-gray-400 rounded-md h-9 px-3' onChange={(e) => { setheadertext(e.target.value) }} />
+                                    <input type="text" placeholder='' id="header" className='border border-gray-400 rounded-md h-9 px-3'
+                                        maxLength={60} onChange={(e) => {
+                                            const inputValue = e.target.value;
+
+                                            if (inputValue.length <= 59) {
+                                                setheadertext(inputValue);
+                                                seterrormessage('');
+                                            } else {
+                                                toast.error("Header should not exceed 60 characters.")
+                                                // seterrormessage();
+                                            }
+                                        }} />
                                 </label>
                                 <label className=' flex flex-col' htmlFor='text-body'>Text Body
-                                    <textarea type="text" placeholder='' id="text-body" className='border border-gray-400 rounded-md h-9 px-3' onChange={(e) => { setbodytext(e.target.value) }} />
+                                    <textarea type="text" placeholder='' id="text-body" className='border border-gray-400 rounded-md h-9 px-3' value={bodytext} onChange={(e) => {
+                                        const inputValue = e.target.value;
+                                        const sanitizedValue = inputValue.replace(/(\r\n|\n|\r){2,}/g, '\n');
+
+                                        if (sanitizedValue.length <= 1023) {
+                                            setbodytext(sanitizedValue);
+                                        } else {
+                                            toast.error('Body should not exceed 1024 characters.');
+                                        }
+                                    }} />
                                 </label>
                                 <label className=' flex flex-col' htmlFor='footer-body'>Footer
-                                    <input type="text" placeholder='' id="footer-body" className='border border-gray-400 rounded-md h-9 px-3' onChange={(e) => { setfootertext(e.target.value) }} />
+                                    <input type="text" placeholder='' id="footer-body" className='border border-gray-400 rounded-md h-9 px-3'
+                                        maxLength={60}
+                                        onChange={(e) => {
+                                            const inputValue = e.target.value;
+
+                                            if (inputValue.length <= 59) {
+                                                setfootertext(e.target.value)
+                                                seterrormessage('');
+                                            } else {
+                                                toast.error("Footer should not exceed 60 characters.")
+                                                // seterrormessage();
+                                            }
+                                        }} />
                                 </label>
                             </div>
                         </div>

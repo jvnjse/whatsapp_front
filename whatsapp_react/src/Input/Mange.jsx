@@ -29,13 +29,13 @@ function Mange() {
     const UploadCredentials = () => {
         axios.post(`${config.baseUrl}upload/credentials`, data, { headers: headers })
             .then((response) => {
-                console.log(response.data)
+                // console.log(response.data)
                 setPhid('')
                 setWhid('')
                 setAccesstoken('')
             })
             .catch((error) => {
-                console.log(error)
+                // console.log(error)
             })
     }
 

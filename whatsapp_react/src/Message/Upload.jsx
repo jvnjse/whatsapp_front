@@ -28,7 +28,7 @@ function Upload() {
 
 
 
-    console.log(userid)
+    //console.log(userid)
     const handleFileChange = (event) => {
         const selectedFile = event.target.files[0];
         setexcelfile(selectedFile);
@@ -53,7 +53,7 @@ function Upload() {
         }
     }, [excelfile]);
 
-    console.log(fileName)
+    //console.log(fileName)
     const handleSubmitExcelUpload = async (event) => {
         event.preventDefault();
 
@@ -68,7 +68,7 @@ function Upload() {
 
         try {
             const response = await axios.post(`${config.baseUrl}upload/data`, formData, { headers: headers1 });
-            console.log(response.data);
+            //console.log(response.data);
             setSuccessMessageUpload(true)
             setTimeout(() => {
                 setSuccessMessageUpload(false);
@@ -81,11 +81,11 @@ function Upload() {
     useEffect(() => {
         axios.get(`${config.baseUrl}get_templates/?user_id=${userid}`, { headers: headers })
             .then((response) => {
-                // console.log(response.data.data)
+                // //console.log(response.data.data)
                 setTemplateData(response.data.data)
             })
             .catch((error) => {
-                console.log(error)
+                //console.log(error)
             })
 
     }, [])
@@ -105,7 +105,7 @@ function Upload() {
         formData.append('excel_file', excelfile);
         formData.append('template_name', select)
         formData.append('user_id', userid)
-        formData.append('image_link', headerHandle)
+        formData.append('image_link', imageurl)
 
         try {
             const response = await axios.post(apiurl1, formData, { headers: headers1 });
@@ -114,7 +114,7 @@ function Upload() {
             setTimeout(() => {
                 setSuccessMessage(false);
             }, 3000);
-            console.log(response.data)
+            //console.log(response.data)
         } catch (error) {
             console.error('Error uploading file: ', error);
         }
@@ -125,6 +125,12 @@ function Upload() {
         setSelect(name)
         setSelectedName(name);
         const selectedComponent = templateData.components[templateData.names.indexOf(name)];
+        const imageName = templateData.images.find((image) => image[name]);
+        if (imageName) {
+            setHeaderHandle(imageName[name]);
+        } else {
+            setHeaderHandle("")
+        }
         if (selectedComponent) {
             const header = selectedComponent.find((component) => component.type === 'HEADER');
             setSelectedHeaderText(header ? header.text : '');
@@ -132,8 +138,8 @@ function Upload() {
             setSelectedBodyText(body.text);
             const footer = selectedComponent.find((component) => component.type === 'FOOTER');
             setSelectedFooterText(footer ? footer.text : '');
-            const headerHandle = header && header.example && header.example.header_handle[0];
-            setHeaderHandle(headerHandle || '');
+            // const headerHandle = header && header.example && header.example.header_handle[0];
+            // setHeaderHandle(headerHandle || '');
             setApiurl1((prevApiurl1) => {
                 if (headerHandle != null) {
                     return `${config.baseUrl}upload/sent/images`;
@@ -145,6 +151,9 @@ function Upload() {
             setSelectedHeaderText('');
         }
     };
+
+    const imageurl = config.imagebaseurl + headerHandle
+
     return (
         <div className=' w-11/12 bg-[#ECE5DD] flex justify-between h-screen  rounded-2xl overflow-x-auto'>
             <div className='h-full'>
@@ -186,9 +195,11 @@ function Upload() {
                                 </option>
                             ))}
                         </select>
-                        <div class="bg-[#262d31] text-gray-300 rounded-tr-lg  rounded-bl-lg rounded-br-lg mb-4 px-4 py-2 mt-4 w-[300px]">
+                        <div className="bg-[#262d31] text-gray-300 rounded-tr-lg  rounded-bl-lg rounded-br-lg mb-4 px-4 py-2 mt-4 w-[300px]">
                             <div className='font-bold'>{selectedHeaderText && selectedHeaderText}</div>
-                            <img src={headerHandle && headerHandle} alt="" />
+                            {headerHandle && (
+                                <img src={imageurl} alt="" />
+                            )}
                             <div>
                                 {selectedBodyText && selectedBodyText}
                             </div>

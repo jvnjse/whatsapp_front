@@ -45,19 +45,19 @@ function Template() {
         const data = {}
         axios.post(`${config.baseUrl}delete/template?template_name="${selectedTemplateName}"&user_id=${userid}`, data, { headers: headers })
             .then((response) => {
-                console.log(response.data)
+                //console.log(response.data)
                 setloading(false)
                 GetTemplates()
             })
             .catch((error) => {
-                console.log(error)
+                //console.log(error)
             })
     }
 
     const GetTemplates = () => {
         axios.get(`${config.baseUrl}get_templates/lists?user_id=${userid}`, { headers: headers })
             .then((response) => {
-                console.log('ghujhjhj')
+                //console.log('ghujhjhj')
                 const extractedData = response.data.data.map((template) => ({
                     id: template.id,
                     name: template.name,
@@ -65,7 +65,7 @@ function Template() {
                     text: template.components.find((component) => component.type === 'HEADER')?.text || '',
                 }));
                 setTemplates(extractedData);
-                console.log("template", extractedData)
+                //console.log("template", extractedData)
             })
             .catch((error) => {
                 console.error('Error fetching data:', error);
@@ -102,7 +102,7 @@ function Template() {
                     </div>
                 </div>
                 <div>
-                    <table class="table-auto w-full mt-6 border border-gray-600">
+                    <table className="table-auto w-full mt-6 border border-gray-600">
                         <thead className='text-left bg-slate-500'>
                             <tr>
                                 <th>Template Name</th>

@@ -3,7 +3,8 @@ import React, { useState } from 'react'
 import Cookies from "js-cookie";
 import config from '../config';
 import { jwtDecode } from 'jwt-decode';
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 function ImageTemplate(props) {
@@ -16,6 +17,7 @@ function ImageTemplate(props) {
     const [imageupload, setimageupload] = useState('')
     const [uploadbtn, setuploadbtn] = useState(true)
     const [loading, setloading] = useState(false)
+    const [errormessage, seterrormessage] = useState()
     const accessToken = Cookies.get("accessToken")
     const userid = jwtDecode(accessToken).user_id;
 
@@ -37,26 +39,30 @@ function ImageTemplate(props) {
 
 
     const handleUpload = () => {
-        const formData = new FormData();
-        formData.append('image_file', headerimage);
+        if (templatename !== ' ') {
+            const formData = new FormData();
+            formData.append('template_image', headerimage);
+            formData.append('template_name', templatename);
 
-        console.log('Uploading image...');
 
-        axios
-            .post(`${config.baseUrl}upload/image?user_id=${userid}`, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                    'Authorization': 'Bearer ' + accessToken
-                },
-            })
-            .then((response) => {
-                console.log('Image upload successful:', response.data);
-                setimageupload(response.data.h);
-                setuploadbtn(false);
-            })
-            .catch((error) => {
-                console.error('Error uploading image:', error);
-            });
+            axios
+                .post(`${config.baseUrl}upload/image?user_id=${userid}`, formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        'Authorization': 'Bearer ' + accessToken
+                    },
+                })
+                .then((response) => {
+                    console.log('Image upload successful:', response.data);
+                    setimageupload(response.data.h);
+                    setuploadbtn(false);
+                })
+                .catch((error) => {
+                    console.error('Error uploading image:', error);
+                });
+        } else {
+            alert("add template name")
+        }
     };
 
 
@@ -79,7 +85,7 @@ function ImageTemplate(props) {
             setloading(false)
             props.setimageTemplate(false)
         }).catch((error) => {
-            console.log(error)
+            // console.log(error)
         })
     }
 
@@ -87,16 +93,37 @@ function ImageTemplate(props) {
 
 
     return (<>
+        <div className='text-xs'>
+            <ToastContainer
+                position="top-left"
+                autoClose={2000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+            />
+        </div>
         <div className='w-10/12 bg-white mt-10 p-10 rounded-xl h-[80%]' onClick={props.handleClick}>
             <div className=' text-[#0d291a] text-2xl font-bold select-none'>Create Image Template</div>
-            <div className=' flex justify-between'>
+            <div className=' flex justify-between flex-wrap-reverse'>
                 <div className='flex-1'>
                     <div className=' flex-1 flex flex-col px-5 mt-2 gap-2'>
                         <label className='flex flex-col'>Template Name
                             <input className='lowercase border border-gray-400 rounded-md h-9 px-3' onChange={(e) => {
                                 const inputValue = e.target.value;
-                                const textWithUnderscores = inputValue.replace(/ /g, '_');
-                                settemplatename(textWithUnderscores);
+                                const isValidInput = /^[a-z]*$/.test(inputValue);
+                                if (isValidInput) {
+                                    const textWithUnderscores = inputValue.replace(/ /g, '_');
+                                    settemplatename(textWithUnderscores);
+                                    seterrormessage('');
+                                } else {
+                                    toast.error("Invalid Input, lowercase letter only allowed")
+                                    // seterrormessage('Invalid input. Only letters are allowed.');
+                                }
                             }} />
                         </label>
                         <div className='flex items-end gap-3'>
@@ -109,17 +136,25 @@ function ImageTemplate(props) {
                         </div>
 
                         <label className=' flex flex-col' htmlFor='text-body'>Text Body
-                            <input type="text" placeholder='' id="text-body" className='border border-gray-400 rounded-md h-9 px-3' onChange={(e) => { setbodytext(e.target.value) }} />
+                            <textarea type="text" placeholder='' id="text-body" className='border border-gray-400 rounded-md h-9 px-3' value={bodytext} onChange={(e) => {
+                                const inputValue = e.target.value;
+                                const sanitizedValue = inputValue.replace(/(\r\n|\n|\r){2,}/g, '\n');
+
+                                if (sanitizedValue.length <= 1023) {
+                                    setbodytext(sanitizedValue);
+                                } else {
+                                    toast.error('Body should not exceed 1024 characters.');
+                                }
+                            }} />
                         </label>
                         <label className=' flex flex-col' htmlFor='footer-body'>Footer
                             <input type="text" placeholder='' id="footer-body" className='border border-gray-400 rounded-md h-9 px-3' onChange={(e) => { setfootertext(e.target.value) }} />
                         </label>
-                        <button onClick={HandleTemplateUpload} className='bg-[#064A42] text-white rounded-md'>submit</button>
-
+                        <button onClick={HandleTemplateUpload} disabled={uploadbtn} className='bg-[#064A42] text-white rounded-md ' >submit</button>
                     </div>
                 </div>
                 <div className='flex-1 flex justify-center'>
-                    <div className=' wallpaper-bg w-3/5 p-3'>
+                    <div className=' wallpaper-bg w-[300px] p-3'>
                         <div className=' font-semibold'>{templatename}</div>
                         <div className=' bg-[#262d31] text-white px-2 py-1 rounded-r-md rounded-bl-md'>
                             {/* <div className=' font-semibold'>{headertext}</div> */}
