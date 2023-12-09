@@ -28,7 +28,7 @@ function Upload() {
 
 
 
-    //console.log(userid)
+    console.log(userid)
     const handleFileChange = (event) => {
         const selectedFile = event.target.files[0];
         setexcelfile(selectedFile);
@@ -68,7 +68,7 @@ function Upload() {
 
         try {
             const response = await axios.post(`${config.baseUrl}upload/data`, formData, { headers: headers1 });
-            //console.log(response.data);
+            console.log(response.data);
             setSuccessMessageUpload(true)
             setTimeout(() => {
                 setSuccessMessageUpload(false);
@@ -81,7 +81,7 @@ function Upload() {
     useEffect(() => {
         axios.get(`${config.baseUrl}get_templates/?user_id=${userid}`, { headers: headers })
             .then((response) => {
-                // //console.log(response.data.data)
+                // console.log(response.data.data)
                 setTemplateData(response.data.data)
             })
             .catch((error) => {
@@ -114,7 +114,7 @@ function Upload() {
             setTimeout(() => {
                 setSuccessMessage(false);
             }, 3000);
-            //console.log(response.data)
+            console.log(response.data)
         } catch (error) {
             console.error('Error uploading file: ', error);
         }
@@ -162,23 +162,17 @@ function Upload() {
             <div className='p-5 flex-1'>
                 <div className=' text-[#0d291a] text-4xl font-bold'>Upload Numbers using Excel</div>
                 <div className=' flex gap-10 mt-4'>
-                    <div className={uploadbox ? 'cursor-pointer select-none py-1 px-2 text-lg bg-[#064A42] text-white rounded-md hover:shadow-xl shadow-2xl' : 'py-1 px-2 text-lg bg-[white] rounded-md hover:shadow-xl cursor-pointer select-none '} onClick={() => { setUploadbox(true) }}>Excel Messaging</div>
-                    <div className={uploadbox ? 'cursor-pointer select-none py-1 px-2 text-lg bg-white rounded-md hover:shadow-xl' : 'py-1 px-2 text-lg bg-[#064A42] text-white rounded-md hover:shadow-xl cursor-pointer select-none '} onClick={() => { setUploadbox(false) }}>Excel Data Upload</div>
+                    <div className={uploadbox === "excelm" ? 'btn-active' : 'btn-nonactive'} onClick={() => { setUploadbox("excelm") }}>Excel Messaging</div>
+                    <div className={uploadbox === "excelu" ? 'btn-active' : 'btn-nonactive'} onClick={() => { setUploadbox("excelu") }}>Excel Data Upload</div>
+                    <div className={uploadbox === "excelp" ? 'btn-active' : 'btn-nonactive'} onClick={() => { setUploadbox("excelp") }}>Excel Data Upload</div>
                 </div>
-                {uploadbox ? <div className='flex '>
+                {uploadbox === "excelm" && <div className='flex '>
                     <div className=' flex flex-col px-14 mt-7 max-w-max'>
                         <div>Upload and Sent Messages to the Numbers in Excel Document </div>
-                        {excelfile ?
-                            <label htmlFor="excel-file" className='mt-3 excel-bg-1 bg-white h-36 text-center rounded-xl flex flex-col'>{fileName}
-                                <input type="file" id="excel-file" accept='xlsx' className=' invisible' onChange={handleFileChange} />
-                            </label>
-                            :
-                            <label htmlFor="excel-file" className='mt-3 excel-bg bg-white h-36 text-center rounded-xl flex flex-col'>
-                                <input type="file" id="excel-file" accept='xlsx' className=' invisible' onChange={handleFileChange} />
-                            </label>
 
-                        }
-
+                        <label htmlFor="excel-file" className='mt-3 excel-bg-1 bg-white h-36 text-center rounded-xl flex flex-col'> {excelfile ? fileName : ""}
+                            <input type="file" id="excel-file" accept='.xlsx' className=' invisible' onChange={handleFileChange} />
+                        </label>
                         <div onClick={handleSubmitExcelSent} className='select-none cursor-pointer flex justify-center items-center mt-4 bg-[#064A42] max-w-max text-white py-1 px-2 rounded-lg uppercase font-bold text-xs tracking-widest	'>
                             <img className='h-6 object-contain' src={whatsapplogo} alt="" />
                             &nbsp;Send Message
@@ -206,21 +200,15 @@ function Upload() {
                             <div className='font-thin text-xs'>{selectedFooterText && selectedFooterText}</div>
                         </div>
                     </div>
-                </div>
-                    :
+                </div>}
+                {uploadbox === "excelu" &&
                     <div>
                         <div className=' flex flex-col px-14 mt-7 max-w-max'>
                             <div>Upload Numbers to List</div>
-                            {excelfile ?
-                                <label htmlFor="excel-file" className='mt-3 excel-bg-1 bg-white h-36 text-center rounded-xl flex flex-col'>{fileName}
-                                    <input type="file" id="excel-file" accept='xlsx' className=' invisible' onChange={handleFileChange} />
-                                </label>
-                                :
-                                <label htmlFor="excel-file" className='mt-3 excel-bg bg-white h-36 text-center rounded-xl flex flex-col'>
-                                    <input type="file" id="excel-file" accept='xlsx' className=' invisible' onChange={handleFileChange} />
-                                </label>
 
-                            }
+                            <label htmlFor="excel-file" className='mt-3 excel-bg-1 bg-white h-36 text-center rounded-xl flex flex-col'>{excelfile ? fileName : ""}
+                                <input type="file" id="excel-file" accept='.xlsx' className=' invisible' onChange={handleFileChange} />
+                            </label>
 
                             <div onClick={handleSubmitExcelUpload} className='select-none cursor-pointer flex justify-center items-center mt-4 bg-[#064A42] max-w-max text-white py-2 px-2 rounded-lg uppercase font-bold text-xs tracking-widest '>
                                 {/* <img className='h-6 object-contain' src={whatsapplogo} alt="" /> */}

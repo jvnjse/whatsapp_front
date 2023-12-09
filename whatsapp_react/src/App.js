@@ -4,7 +4,8 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Cookies from "js-cookie";
 import config from "./config";
 import axios from "axios";
-import Loading from "./Loading/Loading";
+import loading from "./Icons/loading.png";
+// import Loading from "./Loading/Loading";
 const Login = lazy(() => import("./Login/Login"));
 const Message = lazy(() => import("./Message/Message"));
 const Upload = lazy(() => import("./Message/Upload"));
@@ -37,7 +38,13 @@ function App() {
   return (
     <div className=" flex justify-center">
       <Router>
-        <Suspense fallback={<Loading />}>
+        <Suspense
+          fallback={
+            <div className=" w-11/12 bg-[#ECE5DD] flex justify-center items-center h-screen  rounded-2xl overflow-x-auto">
+              <img className="animate-spin" src={loading}></img>
+            </div>
+          }
+        >
           <Routes>
             {accessToken && isvalid ? (
               <>

@@ -25,11 +25,11 @@ function Login() {
             .then((response) => {
                 const accessToken = response.data.token.access
                 Cookies.set("accessToken", accessToken, { expires: 5 });
-                // console.log(response.data)
+                console.log(response.data)
                 window.location.href = "/messages"
             }).catch((error) => {
-                // console.log(error)
-                if (error.response.data.non_field_errors) {
+                console.log(error)
+                if (error.response.data.non_field_errors || error.response.data.message) {
                     seterrormesssagel(true)
                 }
             })
@@ -75,7 +75,7 @@ function Login() {
                         <input type="password" name="" id="" className='border border-gray-500 pl-3 h-7' value={lpassword} onChange={(e) => { setlpassword(e.target.value) }} />
                     </label>
                     {errormesssagel
-                        && <div className='text-xs text-center whitespace-nowrap font-semibold text-red-500'>Invalid Credentials</div>
+                        && <div className='text-xs text-center whitespace-nowrap font-semibold text-red-500'>Invalid Credentials or Inactive Account</div>
                     }
                     <div className=' bg-[#064A42] text-center select-none cursor-pointer text-white rounded-md' onClick={HandleLogin}>
                         Login

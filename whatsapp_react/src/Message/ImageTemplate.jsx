@@ -115,7 +115,7 @@ function ImageTemplate(props) {
                         <label className='flex flex-col'>Template Name
                             <input className='lowercase border border-gray-400 rounded-md h-9 px-3' onChange={(e) => {
                                 const inputValue = e.target.value;
-                                const isValidInput = /^[a-z]*$/.test(inputValue);
+                                const isValidInput = /^[a-z\s]*$/.test(inputValue);
                                 if (isValidInput) {
                                     const textWithUnderscores = inputValue.replace(/ /g, '_');
                                     settemplatename(textWithUnderscores);

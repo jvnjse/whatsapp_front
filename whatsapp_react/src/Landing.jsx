@@ -24,7 +24,7 @@ function Landing({ accessToken, isvalid }) {
             <div className='bg-[#083929] text-[#f0f0f0] flex justify-between px-16 py-4'>
                 <div className=''>logo</div>
                 <div className='flex gap-6 text-sm font-medium'>
-                    <button className='p-2 hover:text-[#1a4735] hover:bg-[#eaeeec] rounded-lg'>Contact Us</button>
+                    <button className='p-2 hover:text-[#1a4735] hover:bg-[#eaeeec] rounded-lg'><a href='#contact'>Contact Us</a></button>
                     <button className='p-2 hover:text-[#1a4735] hover:bg-[#eaeeec] rounded-lg'>{accessToken && isvalid ? <a href='/messages'>Go to Module</a> : <a href='/login'>Login  |  SignUp</a>}</button>
                 </div>
             </div>
@@ -70,7 +70,7 @@ function Landing({ accessToken, isvalid }) {
                 </div>
             </section>
 
-            <section className='flex flex-col justify-center items-center gap-7 w-full text-center bg-[#afd5be] text-[#f0f0f0] py-10'>
+            <section id='contact' className='flex flex-col justify-center items-center gap-7 w-full text-center bg-[#afd5be] text-[#f0f0f0] py-10'>
                 <div className='flex gap-8 '>
                     <div className='px-3 py-1  bg-[#282626] cursor-pointer hover:bg-[#f0f0f0] hover:text-[#282626] '>MARKETING</div>
                     <div className='px-3 py-1 bg-[#282626] cursor-pointer hover:bg-[#f0f0f0] hover:text-[#282626] '>MARKETING</div>

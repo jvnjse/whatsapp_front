@@ -108,7 +108,7 @@ function Template() {
                                 <th>Template Name</th>
                                 <th>Title</th>
                                 <th>Status</th>
-                                <th> </th>
+                                <th>Delete Template</th>
                             </tr>
                         </thead>
                         <tbody >

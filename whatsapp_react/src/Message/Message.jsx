@@ -34,7 +34,7 @@ function Message() {
         // //console.log("ssss", templateData.components[indexOf[name]])
         const imageName = templateData.images.find((image) => image[name]);
         if (imageName) {
-            setHeaderHandle(imageName[name]);
+            setHeaderHandle(imageName[name] || '');
         } else {
             setHeaderHandle("")
         }
@@ -47,7 +47,8 @@ function Message() {
             setSelectedBodyText(body.text);
             const footer = selectedComponent.find((component) => component.type === 'FOOTER');
             setSelectedFooterText(footer ? footer.text : '');
-            // const headerHandle = header && header.example && header.example.header_handle[0];
+            const headerHandle = header.example.header_handle ? header.example.header_handle[0] : '';
+            const headerText = header.example.header_text ? header.example.header_text[0] : '';
             // setHeaderHandle(headerHandle || '');
             //console.log("Before setApiurl1", headerHandle);
             setApiurl1((prevApiurl1) => {
@@ -70,7 +71,7 @@ function Message() {
         }
     };
     const imageurl = config.imagebaseurl + headerHandle
-    // console.log(imageurl, "sss")
+    console.log(componentData, "sss")
 
     const headers = {
         'Content-Type': 'application/json',

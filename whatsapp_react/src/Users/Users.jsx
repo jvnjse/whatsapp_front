@@ -5,6 +5,7 @@ import config from '../config';
 import WhatsappModule from '../WhatsappModule';
 import { jwtDecode } from 'jwt-decode';
 import { TfiReload } from "react-icons/tfi";
+import { FaCopy } from "react-icons/fa";
 
 
 
@@ -14,6 +15,7 @@ function Users() {
     const [referal_string, setReferal_string] = useState()
     const userid = jwtDecode(accessToken).user_id;
     const is_admin = jwtDecode(accessToken).user_is_staff;
+    const [isCopied, setIsCopied] = useState(false);
 
     const headers = {
         'Content-Type': 'application/json',
@@ -34,10 +36,11 @@ function Users() {
                     })
                     .catch((error) => {
                         //console.log(error.response.data)
-                    }) :
+                    })
+                :
                 axios.get(`${config.baseUrl}user-children/${userid}/`, { headers: headers })
                     .then((response) => {
-                        //console.log(response.data)
+                        console.log(response.data)
                         setuserdata(response.data)
                     })
                     .catch((error) => {
@@ -65,7 +68,6 @@ function Users() {
             .catch((error) => {
                 //console.log(error.response.data)
             })
-
     }
 
 
@@ -89,6 +91,40 @@ function Users() {
                 //console.log(error)
             })
     }
+    const MakeDistributor = (key, is_distributor) => {
+        const data = {
+            "is_distributor": !is_distributor
+        }
+        axios.patch(`${config.baseUrl}users/${key}/`, data, { headers: headers })
+            .then((response) => {
+                console.log(response.data)
+                axios.get(`${config.baseUrl}user-hierarchy/${userid}/`, { headers: headers })
+                    .then((response) => {
+                        //console.log(response.data)
+                        setuserdata(response.data)
+                    })
+                    .catch((error) => {
+                        //console.log(error.response.data)
+                    })
+            })
+            .catch((error) => {
+                //console.log(error)
+            })
+    }
+
+    const handleCopyClick = () => {
+        navigator.clipboard.writeText(referal_string)
+            .then(() => {
+                setIsCopied(true);
+                setTimeout(() => {
+                    setIsCopied(false);
+                }, 1200); // Hide the tooltip after 2 seconds
+            })
+            .catch((err) => {
+                console.error('Unable to copy text to clipboard', err);
+            });
+    };
+
 
     const TreeNode = ({ user }) => {
         return (
@@ -103,8 +139,13 @@ function Users() {
                     </td>
                     <td>{user.is_active ? "Active" : "Not-Active"}</td>
                     <td >
-                        <button className='hover:bg-black/90 hover:text-white p-2 rounded-lg' onClick={() => DisableUser(user.id, user.is_active)}>
+                        <button className='hover:bg-black/90 hover:text-white p-1 rounded-lg border border-black' onClick={() => DisableUser(user.id, user.is_active)}>
                             {user.is_active ? "Disable" : "Enable"}
+                        </button>
+                    </td>
+                    <td >
+                        <button className='hover:bg-black/90 hover:text-white p-1 rounded-lg border border-black' onClick={() => MakeDistributor(user.id, user.is_distributor)}>
+                            {user.is_distributor ? "Change to User" : "Change to Distributor"}
                         </button>
                     </td>
                 </tr>
@@ -124,47 +165,58 @@ function Users() {
             <div className='p-5 flex-1'>
                 <div className=' flex flex-col items-end'>
                     <div>Referal Id</div>
-                    <div className='px-2 bg-[#064A42] text-white rounded-lg flex items-center gap-5'><div>{referal_string}</div><div onClick={RevokeReferal} className='bg-[#064A42] text-white text-xl hover:bg-white hover:text-[#064A42] p-1 rounded-lg' ><TfiReload /></div></div>
+                    <div className='px-2 bg-[#064A42] text-white rounded-lg flex items-center gap-5 relative'>
+                        {isCopied && (
+                            <div className="absolute text-xs bg-gray-800 text-white px-2 py-1 rounded mt-2">
+                                Copied!
+                            </div>
+                        )}
+                        <FaCopy onClick={handleCopyClick} className='cursor-pointer' />
+                        <div>{referal_string}</div>
+                        <div onClick={RevokeReferal} className='bg-[#064A42] text-white text-xl hover:bg-white hover:text-[#064A42] p-1 rounded-lg' >
+                            <TfiReload className='cursor-pointer' />
+                        </div>
+                    </div>
                 </div>
 
                 <div>
                     {/* <TreeNode node={userdata} /> */}
 
                 </div>
-                <table className='table-auto w-full mt-6'>
-                    <thead className='text-left bg-slate-500'>
+                <table className='table-auto w-full mt-6 text-center'>
+                    <thead className=' bg-slate-500'>
                         <tr>
                             <th>User Emails </th>
                             {is_admin ? <th>User Role </th> : ""}
                             <th>Active/In-Active</th>
                             <th>Disable User</th>
+                            {is_admin ? <th>Make Distributor </th> : ""}
+                            {/* <th>Make Distributor</th> */}
                         </tr>
                     </thead>
                     <tbody>
                         {is_admin ?
-
                             <TreeNode user={userdata} /> : <>
-                                {userdata && userdata.map((user) => (
-                                    <>
+                                {userdata && userdata.length > 0 ? (
+                                    userdata.map((user) => (
                                         <tr key={user.id}>
-                                            <td>
-                                                {user.email}
-                                            </td>
+                                            <td>{user.email}</td>
                                             <td>{user.is_active ? "Active" : "Not-Active"}</td>
-                                            <td >
+                                            <td>
                                                 <button className='hover:bg-black/90 hover:text-white p-2 rounded-lg' onClick={() => DisableUser(user.id, user.is_active)}>
                                                     {user.is_active ? "Disable" : "Enable"}
                                                 </button>
                                             </td>
-                                        </tr >
-                                    </>
-                                ))}
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td className='col-span-3'>No user data available.</td>
+                                    </tr>
+                                )}
                             </>
                         }
                     </tbody>
-
-
-
                 </table>
             </div >
         </div >
