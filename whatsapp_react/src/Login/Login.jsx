@@ -49,7 +49,7 @@ function Login() {
                 setsignupmessage(true)
                 setloading(false)
             }).catch((error) => {
-                // console.log(error.response.data.email)
+                console.log(error)
                 if (error.response.data.email) {
                     seterrormesssage(true)
                     setloading(false)

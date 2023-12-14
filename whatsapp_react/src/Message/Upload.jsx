@@ -7,12 +7,13 @@ import Cookies from "js-cookie";
 import config from '../config';
 import WhatsappModule from '../WhatsappModule';
 import { jwtDecode } from 'jwt-decode';
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Upload() {
     const [excelfile, setexcelfile] = useState(null);
     const [fileName, setFileName] = useState('');
-    const [uploadbox, setUploadbox] = useState(true)
+    const [uploadbox, setUploadbox] = useState("excelm")
     const [templateData, setTemplateData] = useState();
     const [selectedHeaderText, setSelectedHeaderText] = useState('');
     const [selectedName, setSelectedName] = useState('');
@@ -138,13 +139,61 @@ function Upload() {
             setSelectedBodyText(body.text);
             const footer = selectedComponent.find((component) => component.type === 'FOOTER');
             setSelectedFooterText(footer ? footer.text : '');
-            // const headerHandle = header && header.example && header.example.header_handle[0];
-            // setHeaderHandle(headerHandle || '');
+            const headerHandle = header.example && header.example.header_handle ? header.example.header_handle[0] : '';
+            const headerText = header.example && header.example.header_text ? header.example.header_text[0] : '';
+
+
             setApiurl1((prevApiurl1) => {
-                if (headerHandle != null) {
-                    return `${config.baseUrl}upload/sent/images`;
+                if (headerHandle !== "") {
+                    return `${config.baseUrl}sent-messages/images`;
+                } else if (headerText !== "") {
+                    // return `${config.baseUrl}upload/sent/personalised`;
+                    toast.error("This is a personalised message template")
+                    // alert("this is a personalised template message")
                 } else {
-                    return `${config.baseUrl}upload/sent`;
+                    return `${config.baseUrl}sent-messages`;
+                }
+            });
+        } else {
+            setSelectedHeaderText('');
+        }
+    };
+
+
+    const handleSelectChangePersonalised = (event) => {
+        const name = event.target.value;
+        setSelect(name)
+        setSelectedName(name);
+        const selectedComponent = templateData.components[templateData.names.indexOf(name)];
+        const imageName = templateData.images.find((image) => image[name]);
+        if (imageName) {
+            setHeaderHandle(imageName[name]);
+        } else {
+            setHeaderHandle("")
+        }
+        if (selectedComponent) {
+            const header = selectedComponent.find((component) => component.type === 'HEADER');
+            setSelectedHeaderText(header ? header.text : '');
+            const body = selectedComponent.find((component) => component.type === 'BODY');
+            setSelectedBodyText(body.text);
+            const footer = selectedComponent.find((component) => component.type === 'FOOTER');
+            setSelectedFooterText(footer ? footer.text : '');
+            const headerHandle = header.example && header.example.header_handle ? header.example.header_handle[0] : '';
+            const headerText = header.example && header.example.header_text ? header.example.header_text[0] : '';
+
+
+            setApiurl1((prevApiurl1) => {
+                if (headerHandle !== "") {
+                    // return `${config.baseUrl}sent-messages/images`;
+                    toast.error("This is not a personalised message template")
+
+                } else if (headerText !== "") {
+                    return `${config.baseUrl}upload/sent/personalised`;
+                    // toast.error("This is a personalised message template")
+                    // alert("this is a personalised template message")
+                } else {
+                    toast.error("This is not a personalised message template")
+                    // return `${config.baseUrl}sent-messages`;
                 }
             });
         } else {
@@ -156,6 +205,18 @@ function Upload() {
 
     return (
         <div className=' w-11/12 bg-[#ECE5DD] flex justify-between h-screen  rounded-2xl overflow-x-auto'>
+            <ToastContainer
+                position="top-left"
+                autoClose={2000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+            />
             <div className='h-full'>
                 <WhatsappModule select={"upload"} />
             </div>
@@ -166,41 +227,42 @@ function Upload() {
                     <div className={uploadbox === "excelu" ? 'btn-active' : 'btn-nonactive'} onClick={() => { setUploadbox("excelu") }}>Excel Data Upload</div>
                     <div className={uploadbox === "excelp" ? 'btn-active' : 'btn-nonactive'} onClick={() => { setUploadbox("excelp") }}>Excel Data Upload</div>
                 </div>
-                {uploadbox === "excelm" && <div className='flex '>
-                    <div className=' flex flex-col px-14 mt-7 max-w-max'>
-                        <div>Upload and Sent Messages to the Numbers in Excel Document </div>
+                {uploadbox === "excelm" &&
+                    <div className='flex '>
+                        <div className=' flex flex-col px-14 mt-7 max-w-max'>
+                            <div>Upload and Sent Messages to the Numbers in Excel Document </div>
 
-                        <label htmlFor="excel-file" className='mt-3 excel-bg-1 bg-white h-36 text-center rounded-xl flex flex-col'> {excelfile ? fileName : ""}
-                            <input type="file" id="excel-file" accept='.xlsx' className=' invisible' onChange={handleFileChange} />
-                        </label>
-                        <div onClick={handleSubmitExcelSent} className='select-none cursor-pointer flex justify-center items-center mt-4 bg-[#064A42] max-w-max text-white py-1 px-2 rounded-lg uppercase font-bold text-xs tracking-widest	'>
-                            <img className='h-6 object-contain' src={whatsapplogo} alt="" />
-                            &nbsp;Send Message
-                        </div>
-                    </div>
-                    <div>
-                        <div>Select Templates</div>
-                        <select value={selectedName} onChange={handleSelectChange}>
-                            <option value="">Select a name</option>
-
-                            {templateData && templateData.names.map((item, index) => (
-                                <option key={index} value={item}>
-                                    {item}
-                                </option>
-                            ))}
-                        </select>
-                        <div className="bg-[#262d31] text-gray-300 rounded-tr-lg  rounded-bl-lg rounded-br-lg mb-4 px-4 py-2 mt-4 w-[300px]">
-                            <div className='font-bold'>{selectedHeaderText && selectedHeaderText}</div>
-                            {headerHandle && (
-                                <img src={imageurl} alt="" />
-                            )}
-                            <div>
-                                {selectedBodyText && selectedBodyText}
+                            <label htmlFor="excel-file" className='mt-3 excel-bg-1 bg-white h-36 text-center rounded-xl flex flex-col'> {excelfile ? fileName : ""}
+                                <input type="file" id="excel-file" accept='.xlsx' className=' invisible' onChange={handleFileChange} />
+                            </label>
+                            <div onClick={handleSubmitExcelSent} className='select-none cursor-pointer flex justify-center items-center mt-4 bg-[#064A42] max-w-max text-white py-1 px-2 rounded-lg uppercase font-bold text-xs tracking-widest	'>
+                                <img className='h-6 object-contain' src={whatsapplogo} alt="" />
+                                &nbsp;Send Message
                             </div>
-                            <div className='font-thin text-xs'>{selectedFooterText && selectedFooterText}</div>
                         </div>
-                    </div>
-                </div>}
+                        <div>
+                            <div>Select Templates</div>
+                            <select value={selectedName} onChange={handleSelectChange}>
+                                <option value="">Select a name</option>
+
+                                {templateData && templateData.names.map((item, index) => (
+                                    <option key={index} value={item}>
+                                        {item}
+                                    </option>
+                                ))}
+                            </select>
+                            <div className="bg-[#262d31] text-gray-300 rounded-tr-lg  rounded-bl-lg rounded-br-lg mb-4 px-4 py-2 mt-4 w-[300px]">
+                                <div className='font-bold'>{selectedHeaderText && selectedHeaderText}</div>
+                                {headerHandle && (
+                                    <img src={imageurl} alt="" />
+                                )}
+                                <div>
+                                    {selectedBodyText && selectedBodyText}
+                                </div>
+                                <div className='font-thin text-xs'>{selectedFooterText && selectedFooterText}</div>
+                            </div>
+                        </div>
+                    </div>}
                 {uploadbox === "excelu" &&
                     <div>
                         <div className=' flex flex-col px-14 mt-7 max-w-max'>
@@ -213,6 +275,41 @@ function Upload() {
                             <div onClick={handleSubmitExcelUpload} className='select-none cursor-pointer flex justify-center items-center mt-4 bg-[#064A42] max-w-max text-white py-2 px-2 rounded-lg uppercase font-bold text-xs tracking-widest '>
                                 {/* <img className='h-6 object-contain' src={whatsapplogo} alt="" /> */}
                                 &nbsp;Upload Numbers
+                            </div>
+                        </div>
+                    </div>}
+                {uploadbox === "excelp" &&
+                    <div className='flex '>
+                        <div className=' flex flex-col px-14 mt-7 max-w-max'>
+                            <div>Upload and Sent Personalised Messages to the Numbers in Excel Document </div>
+                            <label htmlFor="excel-file" className='mt-3 excel-bg-1 bg-white h-36 text-center rounded-xl flex flex-col'> {excelfile ? fileName : ""}
+                                <input type="file" id="excel-file" accept='.xlsx' className=' invisible' onChange={handleFileChange} />
+                            </label>
+                            <div onClick={handleSubmitExcelSent} className='select-none cursor-pointer flex justify-center items-center mt-4 bg-[#064A42] max-w-max text-white py-1 px-2 rounded-lg uppercase font-bold text-xs tracking-widest	'>
+                                <img className='h-6 object-contain' src={whatsapplogo} alt="" />
+                                &nbsp;Send Message
+                            </div>
+                        </div>
+                        <div>
+                            <div>Select Templates</div>
+                            <select value={selectedName} onChange={handleSelectChangePersonalised}>
+                                <option value="">Select a name</option>
+
+                                {templateData && templateData.names.map((item, index) => (
+                                    <option key={index} value={item}>
+                                        {item}
+                                    </option>
+                                ))}
+                            </select>
+                            <div className="bg-[#262d31] text-gray-300 rounded-tr-lg  rounded-bl-lg rounded-br-lg mb-4 px-4 py-2 mt-4 w-[300px]">
+                                <div className='font-bold'>{selectedHeaderText && selectedHeaderText}</div>
+                                {headerHandle && (
+                                    <img src={imageurl} alt="" />
+                                )}
+                                <div>
+                                    {selectedBodyText && selectedBodyText}
+                                </div>
+                                <div className='font-thin text-xs'>{selectedFooterText && selectedFooterText}</div>
                             </div>
                         </div>
                     </div>}

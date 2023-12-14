@@ -6,6 +6,8 @@ import Cookies from "js-cookie";
 import config from '../config';
 import WhatsappModule from '../WhatsappModule';
 import { jwtDecode } from 'jwt-decode';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Message() {
     const [phoneNumberInput, setPhoneNumberInput] = useState('');
@@ -47,15 +49,18 @@ function Message() {
             setSelectedBodyText(body.text);
             const footer = selectedComponent.find((component) => component.type === 'FOOTER');
             setSelectedFooterText(footer ? footer.text : '');
-            const headerHandle = header.example.header_handle ? header.example.header_handle[0] : '';
-            const headerText = header.example.header_text ? header.example.header_text[0] : '';
-            // setHeaderHandle(headerHandle || '');
-            //console.log("Before setApiurl1", headerHandle);
+            const headerHandle = header.example && header.example.header_handle ? header.example.header_handle[0] : '';
+            const headerText = header.example && header.example.header_text ? header.example.header_text[0] : '';
+
+
             setApiurl1((prevApiurl1) => {
-                if (headerHandle != null) {
+                if (headerHandle !== "") {
                     return `${config.baseUrl}sent-messages/images`;
+                } else if (headerText !== "") {
+                    toast.error("This is a personalised message template")
+                    // alert("this is a personalised template message")
                 } else {
-                    return `${config.baseUrl}sent-messages/`;
+                    return `${config.baseUrl}sent-messages`;
                 }
             });
             setApiurl2((prevApiurl2) => {
@@ -71,7 +76,7 @@ function Message() {
         }
     };
     const imageurl = config.imagebaseurl + headerHandle
-    console.log(componentData, "sss")
+    console.log(apiurl1, "sss")
 
     const headers = {
         'Content-Type': 'application/json',
@@ -141,6 +146,18 @@ function Message() {
 
     return (
         <div className=' w-11/12 bg-[#ECE5DD] flex justify-between h-screen  rounded-2xl overflow-x-auto'>
+            <ToastContainer
+                position="top-left"
+                autoClose={2000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+            />
             <div className='h-full'>
                 <WhatsappModule select={"sent-message"} />
             </div>
