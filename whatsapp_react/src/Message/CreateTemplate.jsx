@@ -159,16 +159,18 @@ function CreateTemplate(props) {
                                         }} />
                                 </label>
                                 <label className=' flex flex-col' htmlFor='text-body'>Text Body
-                                    <textarea type="text" placeholder='' id="text-body" className='border border-gray-400 rounded-md h-9 px-3' value={bodytext} onChange={(e) => {
-                                        const inputValue = e.target.value;
-                                        const sanitizedValue = inputValue.replace(/(\r\n|\n|\r){2,}/g, '\n');
+                                    <textarea type="text" placeholder='' id="text-body" className='border border-gray-400 rounded-md h-9 px-3'
+                                        value={bodytext}
+                                        onChange={(e) => {
+                                            const inputValue = e.target.value;
+                                            const sanitizedValue = inputValue.replace(/(\r\n|\n|\r){3,}/g, '\n\n');
 
-                                        if (sanitizedValue.length <= 1023) {
-                                            setbodytext(sanitizedValue);
-                                        } else {
-                                            toast.error('Body should not exceed 1024 characters.');
-                                        }
-                                    }} />
+                                            if (sanitizedValue.length <= 1023) {
+                                                setbodytext(sanitizedValue);
+                                            } else {
+                                                toast.error('Body should not exceed 1024 characters.');
+                                            }
+                                        }} />
                                 </label>
                                 <label className=' flex flex-col' htmlFor='footer-body'>Footer
                                     <input type="text" placeholder='' id="footer-body" className='border border-gray-400 rounded-md h-9 px-3'

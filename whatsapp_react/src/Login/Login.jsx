@@ -3,6 +3,7 @@ import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import Cookies from "js-cookie";
 import config from '../config';
+import { jwtDecode } from 'jwt-decode';
 
 function Login() {
     const [login, setLogin] = useState(true)
@@ -15,7 +16,7 @@ function Login() {
     const [errormesssagel, seterrormesssagel] = useState(false)
     const [loading, setloading] = useState(false)
 
-
+    const navigate = useNavigate()
     const ldata = {
         "email": lemail,
         "password": lpassword
@@ -25,8 +26,16 @@ function Login() {
             .then((response) => {
                 const accessToken = response.data.token.access
                 Cookies.set("accessToken", accessToken, { expires: 5 });
+
+                const is_staff = jwtDecode(accessToken).user_is_staff
+                if (is_staff == true) {
+                    navigate('/admin/messages')
+                }
+                else {
+                    navigate('/messages')
+
+                }
                 console.log(response.data)
-                window.location.href = "/messages"
             }).catch((error) => {
                 console.log(error)
                 if (error.response.data.non_field_errors || error.response.data.message) {

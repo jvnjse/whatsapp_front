@@ -7,7 +7,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 
-function ImageTemplate(props) {
+function PersonalisedImageTemplate(props) {
     const [templatename, settemplatename] = useState(' ')
     const [headerimage, setheaderimage] = useState(' ')
     const [headerimageview, setheaderimageview] = useState(' ')
@@ -66,6 +66,7 @@ function ImageTemplate(props) {
     };
 
 
+
     const headers = {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + accessToken
@@ -80,7 +81,7 @@ function ImageTemplate(props) {
     }
     const HandleTemplateUpload = () => {
         setloading(true)
-        axios.post(`${config.baseUrl}post_template/image?user_id=${userid}`, data, { headers: headers }).then((response) => {
+        axios.post(`${config.baseUrl}post_template/image/personalised?user_id=${userid}`, data, { headers: headers }).then((response) => {
             console.log(response.data)
             setloading(false)
             props.setimageTemplate(false)
@@ -89,6 +90,10 @@ function ImageTemplate(props) {
         })
     }
 
+    const handleAddVariable = () => {
+        setbodytext((prevHeaderText) => `${prevHeaderText}{{1}}`);
+        // setVariableAdded(true)
+    };
 
 
 
@@ -136,7 +141,7 @@ function ImageTemplate(props) {
                         </div>
 
                         <label className=' flex flex-col' htmlFor='text-body'>Text Body
-                            <textarea type="text" placeholder='' id="text-body" className='border border-gray-400 rounded-md h-9 px-3' value={bodytext} onChange={(e) => {
+                            <textarea type="text" placeholder='' id="text-body" className='border border-gray-400 rounded-md h-9 px-3 [field-sizing:content]' value={bodytext} onChange={(e) => {
                                 const inputValue = e.target.value;
                                 const sanitizedValue = inputValue.replace(/(\r\n|\n|\r){3,}/g, '\n\n');
 
@@ -146,6 +151,12 @@ function ImageTemplate(props) {
                                     toast.error('Body should not exceed 1024 characters.');
                                 }
                             }} />
+                            <button
+                                className='bg-[#0d291a] text-white max-w-min whitespace-nowrap p-1 rounded-lg self-end'
+                                onClick={handleAddVariable}
+                            >
+                                Add Variable
+                            </button>
                         </label>
                         <label className=' flex flex-col' htmlFor='footer-body'>Footer
                             <input type="text" placeholder='' id="footer-body" className='border border-gray-400 rounded-md h-9 px-3' onChange={(e) => { setfootertext(e.target.value) }} />
@@ -179,4 +190,4 @@ function ImageTemplate(props) {
     )
 }
 
-export default ImageTemplate
+export default PersonalisedImageTemplate

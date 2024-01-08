@@ -56,11 +56,13 @@ function Message() {
             setApiurl1((prevApiurl1) => {
                 if (headerHandle !== "") {
                     return `${config.baseUrl}sent-messages/images`;
-                } else if (headerText !== "") {
-                    toast.error("This is a personalised message template")
-                    // alert("this is a personalised template message")
+                    // } else if (headerText !== "") {
+                    //     // toast.error("This is a personalised message template")
+                    //     // alert("this is a personalised template message")
+                    //     return `${config.baseUrl}sent-messages`;
+
                 } else {
-                    return `${config.baseUrl}sent-messages`;
+                    return `${config.baseUrl}sent-messages/`;
                 }
             });
             setApiurl2((prevApiurl2) => {
@@ -241,7 +243,7 @@ function Message() {
                                         <img src={imageurl} alt="" />
                                     )}
 
-                                    <div className='text-[10px]'>sss
+                                    <div className='text-[10px]'>
                                         {selectedBodyText && selectedBodyText}
                                     </div>
                                     <div className='font-thin text-[10px]'>{selectedFooterText && selectedFooterText}</div>

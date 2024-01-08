@@ -107,14 +107,17 @@ function Upload() {
         formData.append('template_name', select)
         formData.append('user_id', userid)
         formData.append('image_link', imageurl)
-
+        setSuccessMessage(true)
         try {
-            const response = await axios.post(apiurl1, formData, { headers: headers1 });
-            setSuccessMessage(true)
-            setexcelfile('')
             setTimeout(() => {
                 setSuccessMessage(false);
             }, 3000);
+            const response = await axios.post(apiurl1, formData, { headers: headers1 });
+            setSuccessMessage(true)
+            setexcelfile('')
+            // setTimeout(() => {
+            //     setSuccessMessage(false);
+            // }, 3000);
             console.log(response.data)
         } catch (error) {
             console.error('Error uploading file: ', error);
@@ -145,13 +148,13 @@ function Upload() {
 
             setApiurl1((prevApiurl1) => {
                 if (headerHandle !== "") {
-                    return `${config.baseUrl}sent-messages/images`;
+                    return `${config.baseUrl}upload/sent/images`;
                 } else if (headerText !== "") {
                     // return `${config.baseUrl}upload/sent/personalised`;
                     toast.error("This is a personalised message template")
                     // alert("this is a personalised template message")
                 } else {
-                    return `${config.baseUrl}sent-messages`;
+                    return `${config.baseUrl}upload/sent`;
                 }
             });
         } else {
@@ -184,8 +187,8 @@ function Upload() {
 
             setApiurl1((prevApiurl1) => {
                 if (headerHandle !== "") {
-                    // return `${config.baseUrl}sent-messages/images`;
-                    toast.error("This is not a personalised message template")
+                    return `${config.baseUrl}upload/sent/images/personalised`;
+                    // toast.error("This is not a personalised message template")
 
                 } else if (headerText !== "") {
                     return `${config.baseUrl}upload/sent/personalised`;

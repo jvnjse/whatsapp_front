@@ -1,5 +1,6 @@
 import React from 'react'
 import image from '../Icons/bgnotfound.png'
+import { Link } from 'react-router-dom'
 
 function NotFound() {
     return (
@@ -8,7 +9,7 @@ function NotFound() {
             <div className='text-white flex-1 flex items-center flex-col gap-3' >
                 <h1 className='text-9xl animate-pulse'>404</h1>
                 <div>Sorry, This Page is not Available</div>
-                <a href='/' className='p-2 bg-white text-[#064A42] hover:text-white hover:bg-[#064A42] border border-white rounded-lg text-[12px]'>Go to Home</a>
+                <Link to='/' className='p-2 bg-white text-[#064A42] hover:text-white hover:bg-[#064A42] border border-white rounded-lg text-[12px]'>Go to Home</Link>
             </div>
         </div>
     )

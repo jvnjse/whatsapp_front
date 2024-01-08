@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react'
 import uimock from "./Icons/65968.png"
 import backdrop from "./Icons/backdrop.png"
 import json from "./Icons/CountryCodes.json"
+import { jwtDecode } from 'jwt-decode';
+import { Link } from 'react-router-dom';
+import Cookies from "js-cookie";
 
 function Landing({ accessToken, isvalid }) {
 
@@ -11,6 +14,8 @@ function Landing({ accessToken, isvalid }) {
     useEffect(() => {
         setOptions(json)
     }, [])
+
+    const is_staff = accessToken && isvalid ? true : false
 
     // console.log(props.accessToken, props.isvalid)
     // console.log(accessToken, isvalid)
@@ -24,8 +29,8 @@ function Landing({ accessToken, isvalid }) {
             <div className='bg-[#083929] text-[#f0f0f0] flex justify-between px-16 py-4'>
                 <div className=''>logo</div>
                 <div className='flex gap-6 text-sm font-medium'>
-                    <button className='p-2 hover:text-[#1a4735] hover:bg-[#eaeeec] rounded-lg'><a href='#contact'>Contact Us</a></button>
-                    <button className='p-2 hover:text-[#1a4735] hover:bg-[#eaeeec] rounded-lg'>{accessToken && isvalid ? <a href='/messages'>Go to Module</a> : <a href='/login'>Login  |  SignUp</a>}</button>
+                    <button className='p-2 hover:text-[#1a4735] hover:bg-[#eaeeec] rounded-lg'><Link to='#contact'>Contact Us</Link></button>
+                    <button className='p-2 hover:text-[#1a4735] hover:bg-[#eaeeec] rounded-lg'>{accessToken && isvalid ? <Link to={is_staff ? '/admin/messages' : '/messages'}>Go to Module</Link> : <Link to='/login'>Login  |  SignUp</Link>}</button>
                 </div>
             </div>
             {/* nav */}
@@ -41,7 +46,7 @@ function Landing({ accessToken, isvalid }) {
                 <div>Get started now for enhanced outreach and engagement.</div>
                 <div className='flex gap-16 justify-center text-[#f0f0f0] py-10'>
                     <button className='bg-[#2f2e2e] px-5 py-2 rounded-full hover:bg-[#f0f0f0] hover:text-[#2f2e2e] hover:border border border-[#2f2e2e]'>Try Demo</button>
-                    <button className='bg-[#2f2e2e] px-5 py-2 rounded-full hover:bg-[#f0f0f0] hover:text-[#2f2e2e] hover:border border border-[#2f2e2e]' ><a href='/login'>Get Started</a></button>
+                    <button className='bg-[#2f2e2e] px-5 py-2 rounded-full hover:bg-[#f0f0f0] hover:text-[#2f2e2e] hover:border border border-[#2f2e2e]' ><Link to='/login'>Get Started</Link></button>
                 </div>
             </section>
             <section className='flex justify-center items-center gap-7 w-full text-center bg-[#f0f0f0] py-10'>

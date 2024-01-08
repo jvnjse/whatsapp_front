@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import Cookies from "js-cookie";
-import logo from "./Icons/altoslogo.png"
+import logo from "../Icons/altoslogo.png"
 import { jwtDecode } from 'jwt-decode';
 import { Link, useNavigate } from 'react-router-dom';
 
-function WhatsappModule(props) {
+function AdminWhatsappModule(props) {
     const accessToken = Cookies.get("accessToken")
     const [activeComponent, setActiveComponent] = useState(props.select);
     const navigate = useNavigate()
     const user_role = jwtDecode(accessToken).user_is_distributor;
+
+
     const handleLinkClick = (componentName) => {
         setActiveComponent(componentName);
     };
@@ -16,8 +18,8 @@ function WhatsappModule(props) {
 
     const Logout = () => {
         Cookies.remove("accessToken")
-        Cookies.remove("isManager")
-        navigate("/")
+        navigate('/')
+        // window.location.href = "/"
 
     }
 
@@ -27,12 +29,17 @@ function WhatsappModule(props) {
                 <img src={logo} alt="" className='h-10 object-contain' />
             </div>
             <ul className="space-y-2 text-base font-thin pt-8 select-none">
-                <li onClick={() => handleLinkClick('sent-message')} >
-                    <Link to="/messages" className={activeComponent === 'sent-message' ? "text-[#064A42] bg-[#ECE5DD] flex items-center space-x-3 p-2 whitespace-nowrap" : "whitespace-nowrap flex items-center space-x-3 p-2 text-white  rounded-md font-thin hover:bg-[#ECE5DD] hover:text-[#064A42]"}>
-                        <span className='px-10'>Send Messages</span>
+                <li onClick={() => handleLinkClick('admin_message')} >
+                    <Link to="/admin/messages" className={activeComponent === 'admin_message' ? "text-[#064A42] bg-[#ECE5DD] flex items-center space-x-3 p-2 whitespace-nowrap" : "whitespace-nowrap flex items-center space-x-3 p-2 text-white  rounded-md font-thin hover:bg-[#ECE5DD] hover:text-[#064A42]"}>
+                        <span className='px-10'>Dashboard</span>
                     </Link>
                 </li>
-                <li onClick={() => handleLinkClick('upload')}>
+                <li onClick={() => handleLinkClick('admin_users')} >
+                    <Link to="/admin/users" className={activeComponent === 'admin_users' ? "text-[#064A42] bg-[#ECE5DD] flex items-center space-x-3 p-2 whitespace-nowrap" : "whitespace-nowrap flex items-center space-x-3 p-2 text-white  rounded-md font-thin hover:bg-[#ECE5DD] hover:text-[#064A42]"}>
+                        <span className='px-10'>Users</span>
+                    </Link>
+                </li>
+                {/* <li onClick={() => handleLinkClick('upload')}>
                     <Link to="/upload" className={activeComponent === 'upload' ? "text-[#064A42] bg-[#ECE5DD] flex items-center space-x-3 p-2 whitespace-nowrap" : " whitespace-nowrap flex items-center space-x-3 p-2 text-white  rounded-md font-thin hover:bg-[#ECE5DD] hover:text-[#064A42]"}>
                         <span className='px-10'>Upload</span>
                     </Link>
@@ -54,7 +61,7 @@ function WhatsappModule(props) {
                     <Link to="/manage" className={activeComponent === 'manage' ? "text-[#064A42] bg-[#ECE5DD] flex items-center space-x-3 p-2 whitespace-nowrap" : " whitespace-nowrap flex items-center space-x-3 p-2 text-white  rounded-md font-thin hover:bg-[#ECE5DD] hover:text-[#064A42]"}>
                         <span className='px-10'>Manage</span>
                     </Link>
-                </li>
+                </li> */}
                 <li onClick={Logout}>
                     <Link to="#" className={activeComponent === 'logout' ? "text-[#064A42] bg-[#ECE5DD] flex items-center space-x-3 p-2 whitespace-nowrap" : " whitespace-nowrap flex items-center space-x-3 p-2 text-white  rounded-md font-thin hover:bg-[#ECE5DD] hover:text-[#064A42]"}>
                         <span className='px-10'>Logout</span>
@@ -66,4 +73,4 @@ function WhatsappModule(props) {
     )
 }
 
-export default WhatsappModule
+export default AdminWhatsappModule

@@ -80,3 +80,14 @@ td {
     @apply py-1 px-2 text-lg bg-[white] rounded-md hover:shadow-xl cursor-pointer select-none;
   }
 }
+
+input:checked ~ .dot {
+  transform: translateX(100%);
+  background-color: #48bb78;
+}
+
+/* Toggle B */
+input:checked ~ .dot {
+  transform: translateX(100%);
+  background-color: #48bb78;
+}

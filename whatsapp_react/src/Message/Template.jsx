@@ -8,6 +8,7 @@ import config from '../config';
 import WhatsappModule from '../WhatsappModule';
 import { jwtDecode } from 'jwt-decode';
 import Personalised from './Personalised';
+import PersonalisedImageTemplate from './PersonalisedImageTemplate';
 
 
 function Template() {
@@ -16,6 +17,7 @@ function Template() {
     const [textTemplate, settextTemplate] = useState(false)
     const [imageTemplate, setimageTemplate] = useState(false)
     const [personalisedTemplate, setPersonalisedTemplate] = useState(false)
+    const [personalisedImageTemplate, setPersonalisedImageTemplate] = useState(false)
     const [selectedTemplateName, setSelectedTemplateName] = useState('');
     const [loading, setloading] = useState(false)
     const accessToken = Cookies.get("accessToken")
@@ -97,11 +99,13 @@ function Template() {
                     <div className='relative'>
                         <div className=' bg-[#0d291a] text-white px-2 py-1 rounded-lg cursor-pointer select-none ' onClick={() => { setCreateTemplate(!create_template) }}>Create Template
                         </div>
-                        {create_template && <div className=' bg-white absolute top-2 right-2 rounded-lg' onClick={handleClick}>
-                            <li className='list-none border-b border-gray-500 text-center px-3 py-2 whitespace-nowrap select-none cursor-pointer hover:bg-slate-100' onClick={() => { settextTemplate(true) }}>Text Template</li>
-                            <li className='list-none border-b border-gray-500 text-center px-3 py-2 whitespace-nowrap select-none cursor-pointer hover:bg-slate-100' onClick={() => { setimageTemplate(true) }}>Image Template</li>
-                            <li className='list-none border-b border-gray-500 text-center px-3 py-2 whitespace-nowrap select-none cursor-pointer hover:bg-slate-100' onClick={() => { setPersonalisedTemplate(true) }}>Personalised Template</li>
-                        </div>}
+                        {create_template &&
+                            <div className=' bg-white absolute top-2 right-2 rounded-lg' onClick={handleClick}>
+                                <li className='list-none border-b border-gray-500 text-center px-3 py-2 whitespace-nowrap select-none cursor-pointer hover:bg-slate-100' onClick={() => { settextTemplate(true) }}>Text Template</li>
+                                <li className='list-none border-b border-gray-500 text-center px-3 py-2 whitespace-nowrap select-none cursor-pointer hover:bg-slate-100' onClick={() => { setimageTemplate(true) }}>Image Template</li>
+                                <li className='list-none border-b border-gray-500 text-center px-3 py-2 whitespace-nowrap select-none cursor-pointer hover:bg-slate-100' onClick={() => { setPersonalisedTemplate(true) }}>Personalised Template</li>
+                                <li className='list-none border-b border-gray-500 text-center px-3 py-2 whitespace-nowrap select-none cursor-pointer hover:bg-slate-100' onClick={() => { setPersonalisedImageTemplate(true) }}>Personalised Image Template</li>
+                            </div>}
                     </div>
                 </div>
                 <div>
@@ -136,7 +140,12 @@ function Template() {
             }
             {personalisedTemplate &&
                 <div className='absolute w-full h-full bg-black/30 top-0 left-0 flex justify-center' onClick={() => { setPersonalisedTemplate(false) }} >
-                    <Personalised handleClick={handleClick} setPersonalisedTemplate={setPersonalisedTemplate} />
+                    <Personalised handleClick={handleClick} setPersonalisedImageTemplate={setPersonalisedImageTemplate} />
+                </div>
+            }
+            {personalisedImageTemplate &&
+                <div className='absolute w-full h-full bg-black/30 top-0 left-0 flex justify-center' onClick={() => { setPersonalisedImageTemplate(false) }} >
+                    <PersonalisedImageTemplate handleClick={handleClick} setPersonalisedTemplate={setPersonalisedTemplate} />
                 </div>
             }
             {imageTemplate &&

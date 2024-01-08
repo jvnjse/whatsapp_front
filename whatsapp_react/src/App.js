@@ -5,6 +5,9 @@ import Cookies from "js-cookie";
 import config from "./config";
 import axios from "axios";
 import loading from "./Icons/loading.png";
+import { jwtDecode } from "jwt-decode";
+import AdminPage from "./Admin/AdminPage";
+import AdminUser from "./Admin/User/Users";
 // import Loading from "./Loading/Loading";
 const Login = lazy(() => import("./Login/Login"));
 const Message = lazy(() => import("./Message/Message"));
@@ -23,6 +26,7 @@ function App() {
     "Content-Type": "application/json",
     Authorization: "Bearer " + accessToken,
   };
+
   const data = {};
   axios
     .post(`${config.baseUrl}validate-access-token/`, data, { headers: headers })
@@ -34,7 +38,7 @@ function App() {
       setIsValid(false);
       // console.log(error);
     });
-  // console.log(accessToken);
+
   return (
     <div className=" flex justify-center">
       <Router>
@@ -46,7 +50,7 @@ function App() {
           }
         >
           <Routes>
-            {accessToken && isvalid ? (
+            {accessToken || isvalid ? (
               <>
                 <Route
                   path="/"
@@ -54,25 +58,31 @@ function App() {
                     <Landing accessToken={accessToken} isvalid={isvalid} />
                   }
                 />
+
+                <Route path="/admin/messages" element={<AdminPage />} />
+                <Route path="/admin/users" element={<AdminUser />} />
+                <Route path="/messages" element={<Message />} />
                 <Route path="/messages" element={<Message />} />
                 <Route path="/upload" element={<Upload />} />
                 <Route path="/template" element={<Template />} />
                 <Route path="/manage" element={<Manage />} />
                 <Route path="/users" element={<Users />} />
                 <Route path="/login" element={<Login />} />
+                <Route
+                  path="/"
+                  element={<Landing accessToken={true} isvalid={true} />}
+                />
+                <Route path="*" element={<NotFound />} />
               </>
             ) : (
               <>
                 <Route path="/login" element={<Login />} />
                 <Route
                   path="/"
-                  element={
-                    <Landing accessToken={accessToken} isvalid={isvalid} />
-                  }
+                  element={<Landing accessToken={false} isvalid={false} />}
                 />
               </>
             )}
-            <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
       </Router>
