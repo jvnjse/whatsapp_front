@@ -83,11 +83,14 @@ td {
 
 input:checked ~ .dot {
   transform: translateX(100%);
-  background-color: #48bb78;
+  background-color: #ffffff;
 }
 
 /* Toggle B */
 input:checked ~ .dot {
   transform: translateX(100%);
-  background-color: #48bb78;
+  background-color: #ffffff;
+}
+input:checked ~ .back-check {
+  background-color: #064a42;
 }
