@@ -15,7 +15,6 @@ function Login() {
     const [errormesssage, seterrormesssage] = useState(false)
     const [errormesssagel, seterrormesssagel] = useState(false)
     const [loading, setloading] = useState(false)
-
     const navigate = useNavigate()
     const ldata = {
         "email": lemail,
@@ -25,17 +24,21 @@ function Login() {
         axios.post(`${config.baseUrl}login/`, ldata)
             .then((response) => {
                 const accessToken = response.data.token.access
+                const featuretoken = response.data.feature_token
                 Cookies.set("accessToken", accessToken, { expires: 5 });
+                Cookies.set("ft", featuretoken, { expires: 5 });
 
                 const is_staff = jwtDecode(accessToken).user_is_staff
+                const is_distributor = jwtDecode(accessToken).user_is_distributor
+
                 if (is_staff == true) {
                     navigate('/admin/messages')
+                } else if (is_distributor == true) {
+                    navigate('/distributor')
                 }
                 else {
                     navigate('/messages')
-
                 }
-                console.log(response.data)
             }).catch((error) => {
                 console.log(error)
                 if (error.response.data.non_field_errors || error.response.data.message) {

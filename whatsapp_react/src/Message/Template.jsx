@@ -22,6 +22,9 @@ function Template() {
     const [loading, setloading] = useState(false)
     const accessToken = Cookies.get("accessToken")
     const userid = jwtDecode(accessToken).user_id;
+    const ft = Cookies.get("ft")
+    const image_ft = jwtDecode(ft).image_feature;
+    const personal_ft = jwtDecode(ft).personalised_feature;
 
 
 
@@ -102,9 +105,11 @@ function Template() {
                         {create_template &&
                             <div className=' bg-white absolute top-2 right-2 rounded-lg' onClick={handleClick}>
                                 <li className='list-none border-b border-gray-500 text-center px-3 py-2 whitespace-nowrap select-none cursor-pointer hover:bg-slate-100' onClick={() => { settextTemplate(true) }}>Text Template</li>
-                                <li className='list-none border-b border-gray-500 text-center px-3 py-2 whitespace-nowrap select-none cursor-pointer hover:bg-slate-100' onClick={() => { setimageTemplate(true) }}>Image Template</li>
-                                <li className='list-none border-b border-gray-500 text-center px-3 py-2 whitespace-nowrap select-none cursor-pointer hover:bg-slate-100' onClick={() => { setPersonalisedTemplate(true) }}>Personalised Template</li>
-                                <li className='list-none border-b border-gray-500 text-center px-3 py-2 whitespace-nowrap select-none cursor-pointer hover:bg-slate-100' onClick={() => { setPersonalisedImageTemplate(true) }}>Personalised Image Template</li>
+                                {image_ft && <li className='list-none border-b border-gray-500 text-center px-3 py-2 whitespace-nowrap select-none cursor-pointer hover:bg-slate-100' onClick={() => { setimageTemplate(true) }}>Image Template</li>}
+                                {personal_ft && <>
+                                    <li className='list-none border-b border-gray-500 text-center px-3 py-2 whitespace-nowrap select-none cursor-pointer hover:bg-slate-100' onClick={() => { setPersonalisedTemplate(true) }}>Personalised Template</li>
+                                    <li className='list-none border-b border-gray-500 text-center px-3 py-2 whitespace-nowrap select-none cursor-pointer hover:bg-slate-100' onClick={() => { setPersonalisedImageTemplate(true) }}>Personalised Image Template</li>
+                                </>}
                             </div>}
                     </div>
                 </div>

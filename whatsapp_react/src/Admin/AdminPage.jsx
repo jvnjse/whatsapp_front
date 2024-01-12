@@ -43,21 +43,27 @@ function AdminPage() {
     const HandleUserDetails = (userid) => {
         setUserpopup(true)
         GetChildrenUsers(userid)
-        return userid
     }
 
 
     const UserDetails = () => {
+        // const [active, setactive] = useState()
         const DisableUser = (key, is_active) => {
+            console.log("first")
             const data = {
                 "is_active": !is_active
             }
+            console.log("first", data)
             axios.put(`${config.baseUrl}users/${key}/`, data, { headers: headers })
                 .then((response) => {
+                    console.log(response.data)
+                    // GetChildrenUsers()
+                    // setactive(!is_active)
+                    setUserpopup(false);
 
                 })
                 .catch((error) => {
-                    //console.log(error)
+                    console.log(error)
                 })
         }
 
@@ -86,7 +92,7 @@ function AdminPage() {
                                                 checked={user.is_active}
                                                 onChange={() => DisableUser(user.id, user.is_active)}
                                             />
-                                            <div className="block w-14 h-8 rounded-full back-check"></div>
+                                            <div className="block bg-gray-500 w-14 h-8 rounded-full back-check"></div>
                                             <div className="dot absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition"></div>
                                         </div>
                                     </label>
