@@ -10,6 +10,8 @@ import AdminUser from "./Admin/User/Users";
 import PrivateRoutes from "./Routes/PrivateRoutes";
 import AdminRoutes from "./Routes/AdminRoutes";
 import DistributorRoutes from "./Routes/DistributorRoutes";
+import DistributorPage from "./Distributor/DistributorPage";
+import UsersDistributor from "./Distributor/UserDistributor/UsersDistributor";
 // import Loading from "./Loading/Loading";
 const Login = lazy(() => import("./Login/Login"));
 const Message = lazy(() => import("./Message/Message"));
@@ -22,7 +24,7 @@ const NotFound = lazy(() => import("./NotFound/NotFound"));
 
 function App() {
   const accessToken = Cookies.get("accessToken");
-  const [isvalid, setIsValid] = useState();
+  // const [isvalid, setIsValid] = useState();
 
   // function Validate() {
   //   console.log("first");
@@ -71,7 +73,11 @@ function App() {
               </Route>
 
               <Route element={<DistributorRoutes />}>
-                <Route path="/distributor" element={<AdminPage />} />
+                {/* <Route path="/distributor" element={<DistributorPage />} /> */}
+                <Route
+                  path="/distributor/users"
+                  element={<UsersDistributor />}
+                />
                 {/* <Route path="/admin/users" element={<AdminUser />} /> */}
               </Route>
               <Route path="/messages" element={<Message />} />
@@ -94,7 +100,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route
               path="/"
-              element={<Landing accessToken={false} isvalid={false} />}
+              element={<Landing accessToken={accessToken} isvalid={false} />}
             />
             <Route path="*" element={<NotFound />} />
           </Routes>

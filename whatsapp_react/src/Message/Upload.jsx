@@ -115,14 +115,15 @@ function Upload() {
                 setSuccessMessage(false);
             }, 3000);
             const response = await axios.post(apiurl1, formData, { headers: headers1 });
-            setSuccessMessage(true)
             setexcelfile('')
             // setTimeout(() => {
             //     setSuccessMessage(false);
             // }, 3000);
             console.log(response.data)
+            setSuccessMessage(false)
         } catch (error) {
             console.error('Error uploading file: ', error);
+            setSuccessMessage(false)
         }
     };
 

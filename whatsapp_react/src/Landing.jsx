@@ -6,16 +6,19 @@ import { jwtDecode } from 'jwt-decode';
 import { Link } from 'react-router-dom';
 import Cookies from "js-cookie";
 
-function Landing({ accessToken, isvalid }) {
-
+function Landing() {
+    const accessToken = Cookies.get("accessToken") || "";
     const [options, setOptions] = useState();
+
+    const is_distributor = accessToken && jwtDecode(accessToken).user_is_distributor;
+    const is_staff = accessToken && jwtDecode(accessToken).user_is_staff;
 
 
     useEffect(() => {
         setOptions(json)
     }, [])
 
-    const is_staff = accessToken && isvalid ? true : false
+
 
     // console.log(props.accessToken, props.isvalid)
     // console.log(accessToken, isvalid)
@@ -29,7 +32,7 @@ function Landing({ accessToken, isvalid }) {
                 <div className=''>logo</div>
                 <div className='flex gap-6 text-sm font-medium max-sm:text-xs max-sm:gap-0' >
                     <button className='p-2 hover:text-[#1a4735] hover:bg-[#eaeeec] rounded-lg'><Link to='#contact'>Contact Us</Link></button>
-                    <button className='p-2 hover:text-[#1a4735] hover:bg-[#eaeeec] rounded-lg'>{accessToken && isvalid ? <Link to={is_staff ? '/admin/messages' : '/messages'}>Go to Module</Link> : <Link to='/login'>Login  |  SignUp</Link>}</button>
+                    <button className='p-2 hover:text-[#1a4735] hover:bg-[#eaeeec] rounded-lg'>{accessToken ? <Link to={is_staff ? '/admin/messages' : (is_distributor ? '/distributor/users' : '/messages')}>Go to Module</Link> : <Link to='/login'>Login  |  SignUp</Link>}</button>
                 </div>
             </div>
 

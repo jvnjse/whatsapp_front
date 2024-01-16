@@ -34,7 +34,7 @@ function Login() {
                 if (is_staff == true) {
                     navigate('/admin/messages')
                 } else if (is_distributor == true) {
-                    navigate('/distributor')
+                    navigate('/distributor/users')
                 }
                 else {
                     navigate('/messages')
