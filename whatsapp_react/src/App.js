@@ -12,6 +12,7 @@ import AdminRoutes from "./Routes/AdminRoutes";
 import DistributorRoutes from "./Routes/DistributorRoutes";
 import DistributorPage from "./Distributor/DistributorPage";
 import UsersDistributor from "./Distributor/UserDistributor/UsersDistributor";
+import AdminMessages from "./Admin/AdminMessages";
 // import Loading from "./Loading/Loading";
 const Login = lazy(() => import("./Login/Login"));
 const Message = lazy(() => import("./Message/Message"));
@@ -70,6 +71,7 @@ function App() {
               <Route element={<AdminRoutes />}>
                 <Route path="/admin/messages" element={<AdminPage />} />
                 <Route path="/admin/users" element={<AdminUser />} />
+                <Route path="/admin/contact" element={<AdminMessages />} />
               </Route>
 
               <Route element={<DistributorRoutes />}>

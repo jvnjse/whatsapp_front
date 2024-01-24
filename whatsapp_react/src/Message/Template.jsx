@@ -57,6 +57,7 @@ function Template() {
                 GetTemplates()
             })
             .catch((error) => {
+                setloading(false)
                 //console.log(error)
             })
     }

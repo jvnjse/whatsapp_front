@@ -99,6 +99,7 @@ function Personalised(props) {
             })
             .catch((error) => {
                 // console.log(error)
+                setloading(false)
             })
     }
 
@@ -135,11 +136,11 @@ function Personalised(props) {
             </div>
             <div className='w-10/12 bg-white mt-10 p-10 rounded-xl min-h-fit overflow-x-auto' onClick={props.handleClick}>
                 <div className=' text-[#0d291a] text-2xl font-bold select-none'>Create Template</div>
-                <div>
+                <form onSubmit={CreateTemplateApi}>
                     <div className=' flex justify-between'>
                         <div className=' flex-1 flex flex-col px-5 mt-2 gap-2'>
                             <label className=' flex flex-col' htmlFor='header'>Template Name
-                                <input type="text" placeholder='' id="header" className='lowercase border border-gray-400 rounded-md h-9 px-3'
+                                <input type="text" placeholder='' id="header" required className='lowercase border border-gray-400 rounded-md h-9 px-3'
                                     onChange={(e) => {
                                         const inputValue = e.target.value;
                                         const isValidInput = /^[a-z\s]*$/.test(inputValue);
@@ -155,7 +156,7 @@ function Personalised(props) {
                             </label>
                             <div>
                                 <label className=' flex flex-col' htmlFor='header'>Header
-                                    <input type="text" placeholder='' id="header" className='border border-gray-400 rounded-md h-9 px-3'
+                                    <input type="text" placeholder='' required id="header" className='border border-gray-400 rounded-md h-9 px-3'
                                         maxLength={60} value={headertext}
                                         onChange={(e) => {
                                             const inputValue = e.target.value;
@@ -176,7 +177,7 @@ function Personalised(props) {
                                     </button>
                                 </label>
                                 <label className=' flex flex-col' htmlFor='text-body'>Text Body
-                                    <textarea type="text" placeholder='' id="text-body" className='border border-gray-400 rounded-md h-9 px-3' value={bodytext} onChange={(e) => {
+                                    <textarea type="text" placeholder='' required id="text-body" className='border border-gray-400 rounded-md h-9 px-3' value={bodytext} onChange={(e) => {
                                         const inputValue = e.target.value;
                                         const sanitizedValue = inputValue.replace(/(\r\n|\n|\r){3,}/g, '\n\n');
 
@@ -188,7 +189,7 @@ function Personalised(props) {
                                     }} />
                                 </label>
                                 <label className=' flex flex-col' htmlFor='footer-body'>Footer
-                                    <input type="text" placeholder='' id="footer-body" className='border border-gray-400 rounded-md h-9 px-3'
+                                    <input type="text" placeholder='' required id="footer-body" className='border border-gray-400 rounded-md h-9 px-3'
                                         maxLength={60}
                                         onChange={(e) => {
                                             const inputValue = e.target.value;
@@ -230,9 +231,9 @@ function Personalised(props) {
                         <label className=' flex flex-col' htmlFor='button-text'>Button Url/Number
                             <input type="text" name="" placeholder='add number with country code' id="button-text" className='border border-gray-400 rounded-md h-9 px-3' onChange={(e) => { setbuttoncontent(e.target.value) }} />
                         </label>
-                        <button onClick={CreateTemplateApi} className='bg-[#064A42] text-white rounded-md'>submit</button>
+                        <button type='submit' className='bg-[#064A42] text-white rounded-md'>submit</button>
                     </div>
-                </div>
+                </form>
             </div>
             {loading && <div className=' absolute w-full h-full top-0 flex justify-center items-center bg-black/40'>
                 <svg className='animate-spin' width="100px" height="100px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

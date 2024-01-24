@@ -5,24 +5,52 @@ import json from "./Icons/CountryCodes.json"
 import { jwtDecode } from 'jwt-decode';
 import { Link } from 'react-router-dom';
 import Cookies from "js-cookie";
+import axios from 'axios'
+import config from './config';
 
 function Landing() {
     const accessToken = Cookies.get("accessToken") || "";
     const [options, setOptions] = useState();
-
     const is_distributor = accessToken && jwtDecode(accessToken).user_is_distributor;
     const is_staff = accessToken && jwtDecode(accessToken).user_is_staff;
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [email, setEmail] = useState('');
+    const [selectedCode, setSelectedCode] = useState();
+    const [phone, setPhone] = useState('');
+    const [issueDescription, setIssueDescription] = useState('');
 
 
     useEffect(() => {
         setOptions(json)
     }, [])
 
+    // Handle form submission
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        // Prepare data to be sent in the request
+        const formData = {
+            first_name: firstName,
+            last_name: lastName,
+            email: email,
+            code: selectedCode,
+            phone,
+            issue_description: issueDescription,
+        };
+
+        try {
+
+            const response = await axios.post(`${config.baseUrl}contact-form/`, formData);
 
 
-    // console.log(props.accessToken, props.isvalid)
-    // console.log(accessToken, isvalid)
+            console.log(response.data);
+        } catch (error) {
+            console.error('Error submitting the form:', error);
+        }
 
+
+    }
 
 
 
@@ -79,33 +107,48 @@ function Landing() {
                 </div>
                 <div className='bg-[#fff] text-[#000] p-10 rounded-2xl flex flex-col gap-4 w-7/12 max-sm:w-10/12'>
                     <div>Talk to Us</div>
-                    <div className='flex gap-8 flex-wrap'>
-                        <label className='flex flex-col text-left'>First Name<input type="text" className='input-border' /></label>
-                        <label className='flex flex-col text-left'>Last Name<input type="text" className='input-border' /></label>
-                    </div>
-                    <div className='flex '>
-                        {/* <label className='flex flex-col text-left'>First Name<input type="text" className='input-border' /></label> */}
-                        <label className='flex flex-1 flex-col text-left'>Email<input type="email" className='input-border' /></label>
-                    </div>
-                    <div className='flex gap-8 flex-wrap'>
-                        <label className='flex flex-col text-left w-28'>Code
-                            <select type="text" className='input-border ' >
-                                {/* <option>shbhj</option> */}
-                                {options && options.map((i) => (
-                                    <option className='h-8' value={i.code}>
-                                        {i.code}
-                                        &nbsp;&nbsp;{i.dial_code}
-                                    </option>
-                                ))}
-                            </select>
-                        </label>
-                        <label className='flex flex-col text-left'>Phone<input type="tel" className='input-border' /></label>
-                    </div>
-                    <div className='flex gap-8'>
-                        <label className='flex flex-col text-left flex-1'>Issue Description<textarea type="text" className='input-border' /></label>
-                        {/* <label className='flex flex-col text-left'>Last Name<input type="text" className='input-border' /></label> */}
-                    </div>
-
+                    <form onSubmit={handleSubmit}>
+                        <div className='flex gap-8 flex-wrap'>
+                            <label className='flex flex-col text-left'>
+                                First Name
+                                <input type="text" className='input-border' required value={firstName} onChange={(e) => setFirstName(e.target.value)} />
+                            </label>
+                            <label className='flex flex-col text-left'>
+                                Last Name
+                                <input type="text" className='input-border' required value={lastName} onChange={(e) => setLastName(e.target.value)} />
+                            </label>
+                        </div>
+                        <div className='flex '>
+                            <label className='flex flex-1 flex-col text-left'>
+                                Email
+                                <input type="email" className='input-border' required value={email} onChange={(e) => setEmail(e.target.value)} />
+                            </label>
+                        </div>
+                        <div className='flex gap-8 flex-wrap'>
+                            <label className='flex flex-col text-left w-28'>
+                                Code
+                                <select type="text" className='input-border' required value={selectedCode} onChange={(e) => setSelectedCode(e.target.value)}>
+                                    {options && options.map((i) => (
+                                        <option key={i.code} value={i.code} selected={i.dial_code === '+91'}>
+                                            {i.code}
+                                            &nbsp;&nbsp;{i.dial_code}
+                                        </option>
+                                    ))}
+                                </select>
+                            </label>
+                            <label className='flex flex-col text-left'>
+                                Phone
+                                <input type="number" className='input-border' required value={phone} onChange={(e) => setPhone(e.target.value)} />
+                            </label>
+                        </div>
+                        <div className='flex gap-8'>
+                            <label className='flex flex-col text-left flex-1'>
+                                Issue Description
+                                <textarea type="text" className='input-border' required value={issueDescription} onChange={(e) => setIssueDescription(e.target.value)} />
+                            </label>
+                        </div>
+                        <button type="submit" className='w-full bg-[#1a4735] text-white mt-5 rounded-md'>Submit</button>
+                    </form>
                 </div>
 
             </section>
@@ -138,6 +181,74 @@ function Landing() {
                 </div>
             </section>
             <section>
+                <div class="footer-2 bg-gray-800 pt-6 md:pt-12">
+                    <div class="container px-4 mx-auto">
+
+                        <div class="md:flex md:flex-wrap md:-mx-4 py-6 md:pb-12">
+
+                            <div class="footer-info lg:w-1/3 md:px-4">
+                                <h4 class="text-white text-2xl mb-4">ALTOS CONNECT</h4>
+                                <p class="text-gray-400">Empower your WhatsApp marketing strategy with Alt WhatsApp's cutting-edge automation tools. Streamline messaging, scheduling, and customer interactions effortlessly, saving time and enhancing efficiency.</p>
+                                <div class="mt-4">
+                                    {/* <button class="bg-facebook py-2 px-4 text-white rounded mt-2 transition-colors duration-300">
+                                        <span class="fab fa-facebook-f mr-2"></span> Follow
+                                    </button>
+                                    <button class="bg-twitter py-2 px-4 text-white rounded ml-2 mt-2 transition-colors duration-300">
+                                        <span class="fab fa-twitter mr-2"></span> Follow @freeweb19
+                                    </button> */}
+                                </div>
+                            </div>
+
+                            <div class="md:w-2/3 lg:w-1/3 md:px-4 xl:pl-16 mt-12 lg:mt-0">
+                                <div class="sm:flex">
+                                    <div class="sm:flex-1">
+                                        <h6 class="text-base font-medium text-white uppercase mb-2">About</h6>
+                                        <div>
+                                            <a href="#" class="text-gray-400 py-1 block hover:underline">Company</a>
+                                            <a href="#" class="text-gray-400 py-1 block hover:underline">Culture</a>
+                                            <a href="#" class="text-gray-400 py-1 block hover:underline">Team</a>
+                                            <a href="#" class="text-gray-400 py-1 block hover:underline">Careers</a>
+                                        </div>
+                                    </div>
+                                    <div class="sm:flex-1 mt-4 sm:mt-0">
+                                        <h6 class="text-base font-medium text-white uppercase mb-2">What we offer</h6>
+                                        <div>
+                                            <a href="#" class="text-gray-400 py-1 block hover:underline">Blocks</a>
+                                            <a href="#" class="text-gray-400 py-1 block hover:underline">Resources</a>
+                                            <a href="#" class="text-gray-400 py-1 block hover:underline">Tools</a>
+                                            <a href="#" class="text-gray-400 py-1 block hover:underline">Tutorials</a>
+                                            <a href="#" class="text-gray-400 py-1 block hover:underline">Freebies</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="md:w-1/3 md:px-4 md:text-center mt-12 lg:mt-0">
+                                <h5 class="text-lg text-white font-medium mb-4">Explore our site</h5>
+                                <button class="bg-indigo-600 text-white hover:bg-indigo-700 rounded py-2 px-6 md:px-12 transition-colors duration-300">Explore</button>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="border-t border-solid border-gray-900 mt-4 py-4">
+                        <div class="container px-4 mx-auto">
+
+                            <div class="md:flex md:-mx-4 md:items-center">
+                                <div class="md:flex-1 md:px-4 text-center md:text-left">
+                                    <p class="text-white">&copy; <strong>FWR</strong></p>
+                                </div>
+                                <div class="md:flex-1 md:px-4 text-center md:text-right">
+                                    <a href="#" class="py-2 px-4 text-white inline-block hover:underline">Terms of Service</a>
+                                    <a href="#" class="py-2 px-4 text-white inline-block hover:underline">Privacy Policy</a>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
 
             </section>
         </div >

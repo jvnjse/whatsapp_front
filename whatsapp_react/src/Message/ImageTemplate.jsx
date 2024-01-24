@@ -8,12 +8,14 @@ import 'react-toastify/dist/ReactToastify.css';
 
 
 function ImageTemplate(props) {
+    const [selectedOption, setSelectedOption] = useState('');
     const [templatename, settemplatename] = useState(' ')
     const [headerimage, setheaderimage] = useState(' ')
     const [headerimageview, setheaderimageview] = useState(' ')
     const [bodytext, setbodytext] = useState(' ')
     const [footertext, setfootertext] = useState(' ')
     const [buttontext, setbuttontext] = useState(' ')
+    const [buttoncontent, setbuttoncontent] = useState(' ')
     const [imageupload, setimageupload] = useState('')
     const [uploadbtn, setuploadbtn] = useState(true)
     const [loading, setloading] = useState(false)
@@ -71,26 +73,78 @@ function ImageTemplate(props) {
         'Authorization': 'Bearer ' + accessToken
     }
 
-    const data = {
-        'template_name': templatename,
-        'header_text': imageupload,
-        'body_text': bodytext,
-        'footer_text': footertext,
-        // 'button_text': buttontext,
-    }
+    // const data = {
+    //     'template_name': templatename,
+    //     'header_text': imageupload,
+    //     'body_text': bodytext,
+    //     'footer_text': footertext,
+    //     // 'button_text': buttontext,
+    // }
     const HandleTemplateUpload = () => {
+        const apiUrl = getApiUrl(selectedOption)
+
         setloading(true)
-        axios.post(`${config.baseUrl}post_template/image?user_id=${userid}`, data, { headers: headers }).then((response) => {
+        axios.post(apiUrl, data(selectedOption), { headers: headers }).then((response) => {
             console.log(response.data)
             setloading(false)
             props.setimageTemplate(false)
         }).catch((error) => {
             // console.log(error)
+            setloading(false)
         })
     }
 
 
+    const getApiUrl = (option) => {
+        switch (option) {
+            case 'URL':
+                return `${config.baseUrl}post_template/image/url?user_id=${userid}`;
+            case 'PHONE_NUMBER':
+                return `${config.baseUrl}post_template/image/call?user_id=${userid}`;
+            default:
+                return `${config.baseUrl}post_template/image?user_id=${userid}`;
+        }
+    };
 
+
+
+    console.log(templatename)
+
+    const data = (option) => {
+        switch (option) {
+            case 'URL':
+                return {
+                    'template_name': templatename,
+                    'header_text': imageupload,
+                    'body_text': bodytext,
+                    'footer_text': footertext,
+                    'button_text': buttontext,
+                    'button_url': buttoncontent,
+                };
+            case 'PHONE_NUMBER':
+                return {
+                    'template_name': templatename,
+                    'header_text': imageupload,
+                    'body_text': bodytext,
+                    'footer_text': footertext,
+                    'button_text': buttontext,
+                    'button_url': buttoncontent,
+                };
+            default:
+                return {
+                    'template_name': templatename,
+                    'header_text': imageupload,
+                    'body_text': bodytext,
+                    'footer_text': footertext,
+                    'button_text': "buttontext",
+                    'button_url': "buttoncontent",
+                };
+        }
+    };
+
+    const handleOptionChange = (event) => {
+        setSelectedOption(event.target.value);
+    };
 
     return (<>
         <div className='text-xs'>
@@ -107,13 +161,13 @@ function ImageTemplate(props) {
                 theme="light"
             />
         </div>
-        <div className='w-10/12 bg-white mt-10 p-10 rounded-xl h-[80%]' onClick={props.handleClick}>
+        <form onSubmit={HandleTemplateUpload} className='w-10/12 bg-white mt-10 p-10 rounded-xl ' onClick={props.handleClick}>
             <div className=' text-[#0d291a] text-2xl font-bold select-none'>Create Image Template</div>
             <div className=' flex justify-between flex-wrap-reverse'>
                 <div className='flex-1'>
                     <div className=' flex-1 flex flex-col px-5 mt-2 gap-2'>
                         <label className='flex flex-col'>Template Name
-                            <input className='lowercase border border-gray-400 rounded-md h-9 px-3' onChange={(e) => {
+                            <input className='lowercase border border-gray-400 rounded-md h-9 px-3' required onChange={(e) => {
                                 const inputValue = e.target.value;
                                 const isValidInput = /^[a-z\s]*$/.test(inputValue);
                                 if (isValidInput) {
@@ -128,7 +182,7 @@ function ImageTemplate(props) {
                         </label>
                         <div className='flex items-end gap-3'>
                             <label className=' flex flex-col'>Select an Image
-                                <input type="file" placeholder='' id="" className='border border-gray-400 rounded-md h-9 px-3' onChange={handleImageChange} />
+                                <input type="file" placeholder='' id="" required className='border border-gray-400 rounded-md h-9 px-3' onChange={handleImageChange} />
                             </label>
                             {uploadbtn &&
                                 <div className='py-1 px-2 rounded-lg select-none cursor-pointer text-white bg-[#133624] whitespace-nowrap h-fit' onClick={handleUpload}>Upload Image</div>
@@ -136,7 +190,7 @@ function ImageTemplate(props) {
                         </div>
 
                         <label className=' flex flex-col' htmlFor='text-body'>Text Body
-                            <textarea type="text" placeholder='' id="text-body" className='border border-gray-400 rounded-md h-9 px-3' value={bodytext} onChange={(e) => {
+                            <textarea type="text" placeholder='' required id="text-body" className='border border-gray-400 rounded-md h-9 px-3' value={bodytext} onChange={(e) => {
                                 const inputValue = e.target.value;
                                 const sanitizedValue = inputValue.replace(/(\r\n|\n|\r){3,}/g, '\n\n');
 
@@ -148,9 +202,9 @@ function ImageTemplate(props) {
                             }} />
                         </label>
                         <label className=' flex flex-col' htmlFor='footer-body'>Footer
-                            <input type="text" placeholder='' id="footer-body" className='border border-gray-400 rounded-md h-9 px-3' onChange={(e) => { setfootertext(e.target.value) }} />
+                            <input type="text" placeholder='' id="footer-body" required className='border border-gray-400 rounded-md h-9 px-3' onChange={(e) => { setfootertext(e.target.value) }} />
                         </label>
-                        <button onClick={HandleTemplateUpload} disabled={uploadbtn} className='bg-[#064A42] text-white rounded-md ' >submit</button>
+                        {/* <button onClick={HandleTemplateUpload} disabled={uploadbtn} className='bg-[#064A42] text-white rounded-md ' >submit</button> */}
                     </div>
                 </div>
                 <div className='flex-1 flex justify-center'>
@@ -166,7 +220,25 @@ function ImageTemplate(props) {
                     </div>
                 </div>
             </div>
-        </div>
+            <div className='flex flex-col gap-2'>
+                <div className=' text-[#0d291a] text-lg font-bold select-none mt-4'>Button Action</div>
+                <select
+                    className=' border border-gray-400 text-sm'
+                    value={selectedOption}
+                    onChange={handleOptionChange}>
+                    <option value="">No Button</option>
+                    <option value="URL">URL Button</option>
+                    <option value="PHONE_NUMBER">Call Button</option>
+                </select>
+                <label className=' flex flex-col' htmlFor='button-text'>Button Text
+                    <input type="text" name="" id="button-text" className='border border-gray-400 rounded-md h-9 px-3' onChange={(e) => { setbuttontext(e.target.value) }} />
+                </label>
+                <label className=' flex flex-col' htmlFor='button-text'>Button Url/Number
+                    <input type="text" name="" placeholder='add number with country code' id="button-text" className='border border-gray-400 rounded-md h-9 px-3' onChange={(e) => { setbuttoncontent(e.target.value) }} />
+                </label>
+                <button type="submit" disabled={uploadbtn} className='bg-[#064A42] text-white rounded-md ' >submit</button>
+            </div>
+        </form>
         {loading && <div className=' absolute w-full h-full top-0 left-0 flex justify-center items-center bg-black/40'>
             <svg className='animate-spin' width="100px" height="100px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <g>

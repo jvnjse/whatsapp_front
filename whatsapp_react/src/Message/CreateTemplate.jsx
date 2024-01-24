@@ -10,12 +10,12 @@ import 'react-toastify/dist/ReactToastify.css';
 
 function CreateTemplate(props) {
     const [selectedOption, setSelectedOption] = useState('');
-    const [templatename, settemplatename] = useState(' ')
-    const [headertext, setheadertext] = useState(' ')
-    const [bodytext, setbodytext] = useState(' ')
-    const [footertext, setfootertext] = useState(' ')
-    const [buttontext, setbuttontext] = useState(' ')
-    const [buttoncontent, setbuttoncontent] = useState(' ')
+    const [templatename, settemplatename] = useState('')
+    const [headertext, setheadertext] = useState('')
+    const [bodytext, setbodytext] = useState('')
+    const [footertext, setfootertext] = useState('')
+    const [buttontext, setbuttontext] = useState('')
+    const [buttoncontent, setbuttoncontent] = useState('')
     const [loading, setloading] = useState(false)
     const [errormessage, seterrormessage] = useState()
     const accessToken = Cookies.get("accessToken")
@@ -89,6 +89,13 @@ function CreateTemplate(props) {
         'Authorization': 'Bearer ' + accessToken
     }
     const CreateTemplateApi = () => {
+        // console.log(data(selectedOption).template_name)
+        const inputvalues = data(selectedOption)
+
+        if (inputvalues.templatename || inputvalues.headertext || inputvalues.bodytext || inputvalues.footertext || inputvalues.buttontext || inputvalues.buttoncontent == "") {
+            toast.error('All fields are required.');
+            // return;
+        }
         const apiUrl = getApiUrl(selectedOption)
         setloading(true)
         axios.post(apiUrl, data(selectedOption), { headers: headers })
@@ -99,6 +106,8 @@ function CreateTemplate(props) {
             })
             .catch((error) => {
                 // console.log(error)
+                setloading(false)
+
             })
     }
 
@@ -125,11 +134,11 @@ function CreateTemplate(props) {
             </div>
             <div className='w-10/12 bg-white mt-10 p-10 rounded-xl min-h-fit overflow-x-auto' onClick={props.handleClick}>
                 <div className=' text-[#0d291a] text-2xl font-bold select-none'>Create Template</div>
-                <div>
+                <form onSubmit={CreateTemplateApi}>
                     <div className=' flex justify-between'>
                         <div className=' flex-1 flex flex-col px-5 mt-2 gap-2'>
                             <label className=' flex flex-col' htmlFor='header'>Template Name
-                                <input type="text" placeholder='' id="header" className='lowercase border border-gray-400 rounded-md h-9 px-3'
+                                <input type="text" placeholder='' required id="header" className='lowercase border border-gray-400 rounded-md h-9 px-3'
                                     onChange={(e) => {
                                         const inputValue = e.target.value;
                                         const isValidInput = /^[a-z\s]*$/.test(inputValue);
@@ -145,21 +154,22 @@ function CreateTemplate(props) {
                             </label>
                             <div>
                                 <label className=' flex flex-col' htmlFor='header'>Header
-                                    <input type="text" placeholder='' id="header" className='border border-gray-400 rounded-md h-9 px-3'
+                                    <input type="text" placeholder='' required id="header" className='border border-gray-400 rounded-md h-9 px-3'
                                         maxLength={60} onChange={(e) => {
                                             const inputValue = e.target.value;
 
-                                            if (inputValue.length <= 59) {
+                                            const emojiRegex = /[\uD800-\uDBFF][\uDC00-\uDFFF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F\uDE80-\uDEFF]/;
+                                            if (inputValue.length <= 59 && !emojiRegex.test(inputValue)) {
                                                 setheadertext(inputValue);
                                                 seterrormessage('');
                                             } else {
-                                                toast.error("Header should not exceed 60 characters.")
+                                                toast.error("Header should not exceed 60 characters and should not contain emojis.")
                                                 // seterrormessage();
                                             }
                                         }} />
                                 </label>
                                 <label className=' flex flex-col' htmlFor='text-body'>Text Body
-                                    <textarea type="text" placeholder='' id="text-body" className='border border-gray-400 rounded-md h-9 px-3'
+                                    <textarea type="text" placeholder='' required id="text-body" className='border border-gray-400 rounded-md h-9 px-3'
                                         value={bodytext}
                                         onChange={(e) => {
                                             const inputValue = e.target.value;
@@ -173,19 +183,21 @@ function CreateTemplate(props) {
                                         }} />
                                 </label>
                                 <label className=' flex flex-col' htmlFor='footer-body'>Footer
-                                    <input type="text" placeholder='' id="footer-body" className='border border-gray-400 rounded-md h-9 px-3'
+                                    <input type="text" placeholder='' required id="footer-body" className='border border-gray-400 rounded-md h-9 px-3'
                                         maxLength={60}
                                         onChange={(e) => {
                                             const inputValue = e.target.value;
 
-                                            if (inputValue.length <= 59) {
-                                                setfootertext(e.target.value)
+                                            const emojiRegex = /[\uD800-\uDBFF][\uDC00-\uDFFF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F\uDE80-\uDEFF]/;
+                                            if (inputValue.length <= 59 && !emojiRegex.test(inputValue)) {
+                                                setfootertext(inputValue);
                                                 seterrormessage('');
                                             } else {
-                                                toast.error("Footer should not exceed 60 characters.")
+                                                toast.error("Footer should not exceed 60 characters and should not contain emojis.");
                                                 // seterrormessage();
                                             }
-                                        }} />
+                                        }}
+                                    />
                                 </label>
                             </div>
                         </div>
@@ -215,9 +227,9 @@ function CreateTemplate(props) {
                         <label className=' flex flex-col' htmlFor='button-text'>Button Url/Number
                             <input type="text" name="" placeholder='add number with country code' id="button-text" className='border border-gray-400 rounded-md h-9 px-3' onChange={(e) => { setbuttoncontent(e.target.value) }} />
                         </label>
-                        <button onClick={CreateTemplateApi} className='bg-[#064A42] text-white rounded-md'>submit</button>
+                        <button type='submit' className='bg-[#064A42] text-white rounded-md'>submit</button>
                     </div>
-                </div>
+                </form>
             </div>
             {loading && <div className=' absolute w-full h-full top-0 flex justify-center items-center bg-black/40'>
                 <svg className='animate-spin' width="100px" height="100px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

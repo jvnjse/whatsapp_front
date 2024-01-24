@@ -8,6 +8,7 @@ function Users() {
     const [userdata, setuserdata] = useState()
     const [userpopup, setUserpopup] = useState()
     const [userdetail, setUserdetail] = useState()
+    const [selectedUserId, setSelectedUserId] = useState(null);
     const [userfeatures, setUserfeatures] = useState({
         excel_feature: "",
         image_feature: "",
@@ -22,11 +23,12 @@ function Users() {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + accessToken
     }
+
     const Getusers = () => {
         axios.get(`${config.baseUrl}users/`, { headers: headers })
             .then((response) => {
                 setuserdata(response.data.staff_users)
-                // console.log(response.data)
+                console.log(response.data)
             })
             .catch((error) => {
                 console.log(error)
@@ -37,6 +39,7 @@ function Users() {
             .then((response) => {
                 setUserdetail(response.data)
                 setUserfeatures(response.data)
+                console.log(response.data, "gdgjgjhg")
             })
             .catch((error) => {
                 console.log(error)
@@ -48,6 +51,7 @@ function Users() {
     }, [])
 
     const HandleUserDetails = (userid) => {
+        setSelectedUserId(userid);
         setUserpopup(true)
         GetuserDetails(userid)
     }
@@ -58,7 +62,7 @@ function Users() {
 
 
 
-    const UserDetails = ({ userid, useremail }) => {
+    const UserDetails = () => {
 
         const headers = {
             'Content-Type': 'application/json',
@@ -71,7 +75,7 @@ function Users() {
             }))
         };
         const updateUserFeatures = () => {
-            axios.put(`${config.baseUrl}users/${userid}/`, userfeatures, { headers: headers })
+            axios.put(`${config.baseUrl}users/${selectedUserId}/`, userfeatures, { headers: headers })
                 .then((response) => {
                     // setUserfeatures(response.data);
                     console.log(response.data, "ddd");
@@ -94,12 +98,12 @@ function Users() {
                     <div className='text-xl font-bold'>User Details</div>
                     {userdetail && <div className='bg-white p-2 rounded-sm flex flex-col'>
                         {/* <div className='font-semibold text-3xl py-4'>{useremail}</div> */}
-                        <label htmlFor="toggleExcel" className="flex justify-between items-center cursor-pointer  p-3 rounded-xl">
-                            <div className='font-semibold text-3xl py-4'>{useremail}</div>
+                        <label htmlFor="toggleActive" className="flex justify-between items-center cursor-pointer  p-3 rounded-xl">
+                            {/* <div className='font-semibold text-3xl py-4'>{useremail}</div> */}
                             <div className="relative">
                                 <input
                                     type="checkbox"
-                                    id="toggleExcel"
+                                    id="toggleActive"
                                     className="sr-only"
                                     checked={userfeatures.is_active}
                                     onChange={() => handleFeatureToggle('is_active')}
@@ -195,13 +199,13 @@ function Users() {
                                         onClick={() => { HandleUserDetails(user.id) }}
                                     >more details</div>
                                 </div>
-                                {userpopup && <div>
-                                    <UserDetails userid={user.id} useremail={user.email} />
-
-                                </div>
-                                }
                             </>
                         ))}
+                        {userpopup && <div>
+                            <UserDetails />
+
+                        </div>
+                        }
                     </div>
 
                 </div>

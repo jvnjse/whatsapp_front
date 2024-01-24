@@ -94,3 +94,7 @@ input:checked ~ .dot {
 input:checked ~ .back-check {
   background-color: #064a42;
 }
+
+textarea {
+  field-sizing: content;
+}

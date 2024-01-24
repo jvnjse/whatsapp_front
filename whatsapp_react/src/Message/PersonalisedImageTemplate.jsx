@@ -80,6 +80,7 @@ function PersonalisedImageTemplate(props) {
         // 'button_text': buttontext,
     }
     const HandleTemplateUpload = () => {
+        handleUpload()
         setloading(true)
         axios.post(`${config.baseUrl}post_template/image/personalised?user_id=${userid}`, data, { headers: headers }).then((response) => {
             console.log(response.data)
@@ -87,6 +88,8 @@ function PersonalisedImageTemplate(props) {
             props.setimageTemplate(false)
         }).catch((error) => {
             // console.log(error)
+            setloading(false)
+
         })
     }
 
@@ -115,10 +118,10 @@ function PersonalisedImageTemplate(props) {
         <div className='w-10/12 bg-white mt-10 p-10 rounded-xl h-[80%]' onClick={props.handleClick}>
             <div className=' text-[#0d291a] text-2xl font-bold select-none'>Create Image Template</div>
             <div className=' flex justify-between flex-wrap-reverse'>
-                <div className='flex-1'>
+                <form onSubmit={HandleTemplateUpload} className='flex-1'>
                     <div className=' flex-1 flex flex-col px-5 mt-2 gap-2'>
                         <label className='flex flex-col'>Template Name
-                            <input className='lowercase border border-gray-400 rounded-md h-9 px-3' onChange={(e) => {
+                            <input required className='lowercase border border-gray-400 rounded-md h-9 px-3' onChange={(e) => {
                                 const inputValue = e.target.value;
                                 const isValidInput = /^[a-z\s]*$/.test(inputValue);
                                 if (isValidInput) {
@@ -133,15 +136,15 @@ function PersonalisedImageTemplate(props) {
                         </label>
                         <div className='flex items-end gap-3'>
                             <label className=' flex flex-col'>Select an Image
-                                <input type="file" placeholder='' id="" className='border border-gray-400 rounded-md h-9 px-3' onChange={handleImageChange} />
+                                <input type="file" placeholder='' id="" required className='border border-gray-400 rounded-md h-9 px-3' onChange={handleImageChange} />
                             </label>
                             {uploadbtn &&
-                                <div className='py-1 px-2 rounded-lg select-none cursor-pointer text-white bg-[#133624] whitespace-nowrap h-fit' onClick={handleUpload}>Upload Image</div>
+                                <div className='py-1 px-2 rounded-lg select-none cursor-pointer text-white bg-[#133624] whitespace-nowrap h-fit'>Upload Image</div>
                             }
                         </div>
 
                         <label className=' flex flex-col' htmlFor='text-body'>Text Body
-                            <textarea type="text" placeholder='' id="text-body" className='border border-gray-400 rounded-md h-9 px-3 [field-sizing:content]' value={bodytext} onChange={(e) => {
+                            <textarea type="text" required placeholder='' id="text-body" className='border border-gray-400 rounded-md h-9 px-3 [field-sizing:content]' value={bodytext} onChange={(e) => {
                                 const inputValue = e.target.value;
                                 const sanitizedValue = inputValue.replace(/(\r\n|\n|\r){3,}/g, '\n\n');
 
@@ -159,11 +162,11 @@ function PersonalisedImageTemplate(props) {
                             </button>
                         </label>
                         <label className=' flex flex-col' htmlFor='footer-body'>Footer
-                            <input type="text" placeholder='' id="footer-body" className='border border-gray-400 rounded-md h-9 px-3' onChange={(e) => { setfootertext(e.target.value) }} />
+                            <input type="text" placeholder=' ' required id="footer-body" className='border border-gray-400 rounded-md h-9 px-3' onChange={(e) => { setfootertext(e.target.value) }} />
                         </label>
-                        <button onClick={HandleTemplateUpload} disabled={uploadbtn} className='bg-[#064A42] text-white rounded-md ' >submit</button>
+                        <button className='bg-[#064A42] text-white rounded-md ' >submit</button>
                     </div>
-                </div>
+                </form>
                 <div className='flex-1 flex justify-center'>
                     <div className=' wallpaper-bg w-[300px] p-3'>
                         <div className=' font-semibold'>{templatename}</div>
