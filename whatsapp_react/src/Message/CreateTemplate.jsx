@@ -88,7 +88,8 @@ function CreateTemplate(props) {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + accessToken
     }
-    const CreateTemplateApi = () => {
+    const CreateTemplateApi = (e) => {
+        e.preventDefault()
         // console.log(data(selectedOption).template_name)
         const inputvalues = data(selectedOption)
 
@@ -100,7 +101,7 @@ function CreateTemplate(props) {
         setloading(true)
         axios.post(apiUrl, data(selectedOption), { headers: headers })
             .then((response) => {
-                // console.log(response.data)
+                console.log(response.data)
                 ModalClose()
                 setloading(false)
             })

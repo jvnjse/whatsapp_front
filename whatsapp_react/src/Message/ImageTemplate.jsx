@@ -80,7 +80,8 @@ function ImageTemplate(props) {
     //     'footer_text': footertext,
     //     // 'button_text': buttontext,
     // }
-    const HandleTemplateUpload = () => {
+    const HandleTemplateUpload = (e) => {
+        e.preventDefault()
         const apiUrl = getApiUrl(selectedOption)
 
         setloading(true)
@@ -108,7 +109,7 @@ function ImageTemplate(props) {
 
 
 
-    console.log(templatename)
+    // console.log(templatename)
 
     const data = (option) => {
         switch (option) {

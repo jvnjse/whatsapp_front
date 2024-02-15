@@ -21,9 +21,9 @@ function WhatsappModule(props) {
 
     }
     const ft = Cookies.get("ft")
-    const excel_ft = jwtDecode(ft).excel_feature;
-    const image_ft = jwtDecode(ft).image_feature;
-    const personal_ft = jwtDecode(ft).personalised_feature;
+    const basic_feature = jwtDecode(ft).basic_feature;
+    const standard_feature = jwtDecode(ft).standard_feature
+    const advanced_feature = jwtDecode(ft).advanced_feature
 
     return (
         <div className='bg-[#064A42] pt-5  rounded-s-2xl h-full'>
@@ -36,14 +36,13 @@ function WhatsappModule(props) {
                         <span className='px-10'>Send Messages</span>
                     </Link>
                 </li>
-                {
-                    excel_ft &&
-                    <li onClick={() => handleLinkClick('upload')}>
-                        <Link to="/upload" className={activeComponent === 'upload' ? "text-[#064A42] bg-[#ECE5DD] flex items-center space-x-3 p-2 whitespace-nowrap" : " whitespace-nowrap flex items-center space-x-3 p-2 text-white  rounded-md font-thin hover:bg-[#ECE5DD] hover:text-[#064A42]"}>
-                            <span className='px-10'>Upload</span>
-                        </Link>
-                    </li>
-                }
+
+                <li onClick={() => handleLinkClick('upload')}>
+                    <Link to="/upload" className={activeComponent === 'upload' ? "text-[#064A42] bg-[#ECE5DD] flex items-center space-x-3 p-2 whitespace-nowrap" : " whitespace-nowrap flex items-center space-x-3 p-2 text-white  rounded-md font-thin hover:bg-[#ECE5DD] hover:text-[#064A42]"}>
+                        <span className='px-10'>Upload</span>
+                    </Link>
+                </li>
+
                 <li onClick={() => handleLinkClick('template')}>
                     <Link to="/template" className={activeComponent === 'template' ? "text-[#064A42] bg-[#ECE5DD] flex items-center space-x-3 p-2 whitespace-nowrap" : " whitespace-nowrap flex items-center space-x-3 p-2 text-white  rounded-md font-thin hover:bg-[#ECE5DD] hover:text-[#064A42]"}>
                         <span className='px-10'>Templates</span>

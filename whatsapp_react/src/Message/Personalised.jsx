@@ -88,7 +88,8 @@ function Personalised(props) {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + accessToken
     }
-    const CreateTemplateApi = () => {
+    const CreateTemplateApi = (e) => {
+        e.preventDefault()
         const apiUrl = getApiUrl(selectedOption)
         setloading(true)
         axios.post(apiUrl, data(selectedOption), { headers: headers })

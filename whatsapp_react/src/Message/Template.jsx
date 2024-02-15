@@ -23,8 +23,11 @@ function Template() {
     const accessToken = Cookies.get("accessToken")
     const userid = jwtDecode(accessToken).user_id;
     const ft = Cookies.get("ft")
-    const image_ft = jwtDecode(ft).image_feature;
-    const personal_ft = jwtDecode(ft).personalised_feature;
+    const basic_feature = jwtDecode(ft).basic_feature;
+    const standard_feature = jwtDecode(ft).standard_feature
+    const advanced_feature = jwtDecode(ft).advanced_feature
+
+        ;
 
 
 
@@ -82,7 +85,7 @@ function Template() {
 
     useEffect(() => {
         GetTemplates()
-    }, []);
+    }, [personalisedImageTemplate, textTemplate, personalisedTemplate, imageTemplate]);
 
 
 
@@ -106,11 +109,11 @@ function Template() {
                         {create_template &&
                             <div className=' bg-white absolute top-2 right-2 rounded-lg' onClick={handleClick}>
                                 <li className='list-none border-b border-gray-500 text-center px-3 py-2 whitespace-nowrap select-none cursor-pointer hover:bg-slate-100' onClick={() => { settextTemplate(true) }}>Text Template</li>
-                                {image_ft && <li className='list-none border-b border-gray-500 text-center px-3 py-2 whitespace-nowrap select-none cursor-pointer hover:bg-slate-100' onClick={() => { setimageTemplate(true) }}>Image Template</li>}
-                                {personal_ft && <>
-                                    <li className='list-none border-b border-gray-500 text-center px-3 py-2 whitespace-nowrap select-none cursor-pointer hover:bg-slate-100' onClick={() => { setPersonalisedTemplate(true) }}>Personalised Template</li>
-                                    <li className='list-none border-b border-gray-500 text-center px-3 py-2 whitespace-nowrap select-none cursor-pointer hover:bg-slate-100' onClick={() => { setPersonalisedImageTemplate(true) }}>Personalised Image Template</li>
-                                </>}
+                                <li className='list-none border-b border-gray-500 text-center px-3 py-2 whitespace-nowrap select-none cursor-pointer hover:bg-slate-100' onClick={() => { setimageTemplate(true) }}>Image Template</li>
+
+                                <li className='list-none border-b border-gray-500 text-center px-3 py-2 whitespace-nowrap select-none cursor-pointer hover:bg-slate-100' onClick={() => { setPersonalisedTemplate(true) }}>Personalised Template</li>
+                                <li className='list-none border-b border-gray-500 text-center px-3 py-2 whitespace-nowrap select-none cursor-pointer hover:bg-slate-100' onClick={() => { setPersonalisedImageTemplate(true) }}>Personalised Image Template</li>
+
                             </div>}
                     </div>
                 </div>
@@ -146,12 +149,12 @@ function Template() {
             }
             {personalisedTemplate &&
                 <div className='absolute w-full h-full bg-black/30 top-0 left-0 flex justify-center' onClick={() => { setPersonalisedTemplate(false) }} >
-                    <Personalised handleClick={handleClick} setPersonalisedImageTemplate={setPersonalisedImageTemplate} />
+                    <Personalised handleClick={handleClick} setPersonalisedTemplate={setPersonalisedTemplate} />
                 </div>
             }
             {personalisedImageTemplate &&
                 <div className='absolute w-full h-full bg-black/30 top-0 left-0 flex justify-center' onClick={() => { setPersonalisedImageTemplate(false) }} >
-                    <PersonalisedImageTemplate handleClick={handleClick} setPersonalisedTemplate={setPersonalisedTemplate} />
+                    <PersonalisedImageTemplate handleClick={handleClick} setPersonalisedImageTemplate={setPersonalisedImageTemplate} />
                 </div>
             }
             {imageTemplate &&

@@ -9,6 +9,8 @@ import Cookies from "js-cookie";
 function AdminPage() {
     const [userdata, setuserdata] = useState()
     const accessToken = Cookies.get("accessToken")
+    const [lendistributor, setLendistributor] = useState()
+    const [lenusers, setLenusers] = useState()
     const [userpopup, setUserpopup] = useState()
     const [userchildren, setUserchildren] = useState()
 
@@ -21,7 +23,10 @@ function AdminPage() {
         axios.get(`${config.baseUrl}users/`, { headers: headers })
             .then((response) => {
                 setuserdata(response.data.distributor_users)
-                // console.log(response.data)
+                // setuserdata(response.data.staff_users)
+                setLendistributor(response.data.distributor_users.length)
+                setLenusers(response.data.staff_users.length)
+                console.log(response.data)
             })
             .catch((error) => {
                 console.log(error)
@@ -48,18 +53,19 @@ function AdminPage() {
 
     const UserDetails = () => {
         // const [active, setactive] = useState()
-        const DisableUser = (key, is_active) => {
+        const DisableUser = (key, is_active, email) => {
             console.log("first")
             const data = {
-                "is_active": !is_active
+                "is_active": !is_active,
+                "email": email
             }
             console.log("first", data)
             axios.put(`${config.baseUrl}users/${key}/`, data, { headers: headers })
                 .then((response) => {
                     console.log(response.data)
-                    // GetChildrenUsers()
+                    // GetChildrenUsers(key)
                     // setactive(!is_active)
-                    setUserpopup(false);
+                    // setUserpopup(false);
 
                 })
                 .catch((error) => {
@@ -82,15 +88,15 @@ function AdminPage() {
                             <tr>
                                 <td>{user.email}</td>
                                 <td>
-                                    <label htmlFor="togglePersonal" className="flex items-center justify-center cursor-pointer   p-3 rounded-xl">
+                                    <label htmlFor={'togglePersonal' + user.id} className="flex items-center justify-center cursor-pointer   p-3 rounded-xl">
                                         {/* <span>Personalised Messaging Feature</span> */}
                                         <div className="relative">
                                             <input
                                                 type="checkbox"
-                                                id="togglePersonal"
+                                                id={'togglePersonal' + user.id}
                                                 className="sr-only"
                                                 checked={user.is_active}
-                                                onChange={() => DisableUser(user.id, user.is_active)}
+                                                onChange={() => DisableUser(user.id, user.is_active, user.email)}
                                             />
                                             <div className="block bg-gray-500 w-14 h-8 rounded-full back-check"></div>
                                             <div className="dot absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition"></div>
@@ -119,12 +125,12 @@ function AdminPage() {
                 <div className='flex gap-4'>
                     <div className='rounded-lg bg-white shadow-sm max-w-max p-3 mt-4'>
                         <div className='text-xl select-none'>Total No of Distributors</div>
-                        <div className=' text-6xl'>54 <span className='text-lg'>distributors</span></div>
+                        <div className=' text-6xl'>{lendistributor && lendistributor} <span className='text-lg'>distributors</span></div>
 
                     </div>
                     <div className='rounded-lg bg-white shadow-sm max-w-max p-3 mt-4'>
                         <div className='text-xl select-none'>Total No of Users</div>
-                        <div className=' text-6xl'>54 <span className='text-lg'>users</span></div>
+                        <div className=' text-6xl'>{lenusers && lenusers}<span className='text-lg'>users</span></div>
 
                     </div>
                 </div>

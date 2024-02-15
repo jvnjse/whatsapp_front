@@ -38,7 +38,9 @@ function PersonalisedImageTemplate(props) {
 
 
 
-    const handleUpload = () => {
+    const handleUpload = (e) => {
+        e.preventDefault()
+
         if (templatename !== ' ') {
             const formData = new FormData();
             formData.append('template_image', headerimage);
@@ -79,13 +81,16 @@ function PersonalisedImageTemplate(props) {
         'footer_text': footertext,
         // 'button_text': buttontext,
     }
-    const HandleTemplateUpload = () => {
-        handleUpload()
+    const HandleTemplateUpload = (e) => {
+        if (e) {
+            e.preventDefault();
+        }
+        // handleUpload()
         setloading(true)
         axios.post(`${config.baseUrl}post_template/image/personalised?user_id=${userid}`, data, { headers: headers }).then((response) => {
             console.log(response.data)
             setloading(false)
-            props.setimageTemplate(false)
+            props.setPersonalisedImageTemplate(false)
         }).catch((error) => {
             // console.log(error)
             setloading(false)
@@ -115,7 +120,7 @@ function PersonalisedImageTemplate(props) {
                 theme="light"
             />
         </div>
-        <div className='w-10/12 bg-white mt-10 p-10 rounded-xl h-[80%]' onClick={props.handleClick}>
+        <div className='w-10/12 bg-white mt-10 p-10 rounded-xl h-full overflow-y-scroll' onClick={props.handleClick}>
             <div className=' text-[#0d291a] text-2xl font-bold select-none'>Create Image Template</div>
             <div className=' flex justify-between flex-wrap-reverse'>
                 <form onSubmit={HandleTemplateUpload} className='flex-1'>
@@ -139,7 +144,8 @@ function PersonalisedImageTemplate(props) {
                                 <input type="file" placeholder='' id="" required className='border border-gray-400 rounded-md h-9 px-3' onChange={handleImageChange} />
                             </label>
                             {uploadbtn &&
-                                <div className='py-1 px-2 rounded-lg select-none cursor-pointer text-white bg-[#133624] whitespace-nowrap h-fit'>Upload Image</div>
+
+                                <div className='py-1 px-2 rounded-lg select-none cursor-pointer text-white bg-[#133624] whitespace-nowrap h-fit' onClick={handleUpload}>Upload Image</div>
                             }
                         </div>
 
@@ -164,7 +170,7 @@ function PersonalisedImageTemplate(props) {
                         <label className=' flex flex-col' htmlFor='footer-body'>Footer
                             <input type="text" placeholder=' ' required id="footer-body" className='border border-gray-400 rounded-md h-9 px-3' onChange={(e) => { setfootertext(e.target.value) }} />
                         </label>
-                        <button className='bg-[#064A42] text-white rounded-md ' >submit</button>
+                        <button type='submit' className='bg-[#064A42] text-white rounded-md ' >submit</button>
                     </div>
                 </form>
                 <div className='flex-1 flex justify-center'>

@@ -45,6 +45,12 @@ function Landing() {
 
 
             console.log(response.data);
+            setFirstName("")
+            setEmail("")
+            setFirstName("")
+            setLastName("")
+            setIssueDescription("")
+            setPhone("")
         } catch (error) {
             console.error('Error submitting the form:', error);
         }
@@ -128,8 +134,9 @@ function Landing() {
                             <label className='flex flex-col text-left w-28'>
                                 Code
                                 <select type="text" className='input-border' required value={selectedCode} onChange={(e) => setSelectedCode(e.target.value)}>
+                                    <option value="+91" selected>IN&nbsp;&nbsp;+91</option>
                                     {options && options.map((i) => (
-                                        <option key={i.code} value={i.code} selected={i.dial_code === '+91'}>
+                                        <option key={i.code} value={i.code} >
                                             {i.code}
                                             &nbsp;&nbsp;{i.dial_code}
                                         </option>

@@ -28,7 +28,6 @@ function Upload() {
     const userid = jwtDecode(accessToken).user_id;
 
     const ft = Cookies.get("ft")
-    const personal_ft = jwtDecode(ft).personalised_feature;
 
 
     console.log(userid)
@@ -231,7 +230,7 @@ function Upload() {
                 <div className=' flex gap-10 mt-4'>
                     <div className={uploadbox === "excelm" ? 'btn-active' : 'btn-nonactive'} onClick={() => { setUploadbox("excelm") }}>Excel Messaging</div>
                     <div className={uploadbox === "excelu" ? 'btn-active' : 'btn-nonactive'} onClick={() => { setUploadbox("excelu") }}>Excel Data Upload</div>
-                    {personal_ft && <div className={uploadbox === "excelp" ? 'btn-active' : 'btn-nonactive'} onClick={() => { setUploadbox("excelp") }}>Excel Personalised Message Upload</div>}
+                    <div className={uploadbox === "excelp" ? 'btn-active' : 'btn-nonactive'} onClick={() => { setUploadbox("excelp") }}>Excel Personalised Message Upload</div>
                 </div>
                 {uploadbox === "excelm" &&
                     <div className='flex '>

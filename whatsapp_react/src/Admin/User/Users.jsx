@@ -10,12 +10,12 @@ function Users() {
     const [userdetail, setUserdetail] = useState()
     const [selectedUserId, setSelectedUserId] = useState(null);
     const [userfeatures, setUserfeatures] = useState({
-        excel_feature: "",
-        image_feature: "",
+        email: "",
         is_active: '',
         is_distributor: '',
-        messaging_feature: '',
-        personalised_feature: '',
+        basic_feature: "",
+        standard_feature: '',
+        advanced_feature: '',
     });
     const accessToken = Cookies.get("accessToken")
 
@@ -96,10 +96,10 @@ function Users() {
                 onClick={() => { setUserpopup(false); }} >
                 <div className='bg-white w-10/12 h-[80%] rounded-lg p-4' onClick={(event) => { event.stopPropagation(); }}>
                     <div className='text-xl font-bold'>User Details</div>
-                    {userdetail && <div className='bg-white p-2 rounded-sm flex flex-col'>
+                    {userdetail && <div className='bg-white p-2 rounded-sm flex flex-col h-full'>
                         {/* <div className='font-semibold text-3xl py-4'>{useremail}</div> */}
                         <label htmlFor="toggleActive" className="flex justify-between items-center cursor-pointer  p-3 rounded-xl">
-                            {/* <div className='font-semibold text-3xl py-4'>{useremail}</div> */}
+                            <div className='font-semibold text-3xl py-4'>{userfeatures.email}</div>
                             <div className="relative">
                                 <input
                                     type="checkbox"
@@ -114,30 +114,17 @@ function Users() {
                         </label>
                         <div className='flex flex-wrap gap-4'>
 
-                            <label htmlFor="toggleExcel" className="flex items-center cursor-pointer bg-slate-200 max-w-max p-3 rounded-xl">
-                                <span>Excel Feature</span>
-                                <div className="relative">
-                                    <input
-                                        type="checkbox"
-                                        id="toggleExcel"
-                                        className="sr-only"
-                                        checked={userfeatures.excel_feature}
-                                        onChange={() => handleFeatureToggle('excel_feature')}
-                                    />
-                                    <div className="block bg-gray-500 w-14 h-8 rounded-full back-check"></div>
-                                    <div className="dot absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition"></div>
-                                </div>
-                            </label>
+
 
                             <label htmlFor="toggleImage" className="flex items-center cursor-pointer bg-slate-200 max-w-max p-3 rounded-xl">
-                                <span>Image Feature</span>
+                                <span>Basic Plan</span>
                                 <div className="relative">
                                     <input
                                         type="checkbox"
                                         id="toggleImage"
                                         className="sr-only"
-                                        checked={userfeatures.image_feature}
-                                        onChange={() => handleFeatureToggle('image_feature')}
+                                        checked={userfeatures.basic_feature}
+                                        onChange={() => handleFeatureToggle('basic_feature')}
                                     />
                                     <div className="block bg-gray-500 w-14 h-8 rounded-full back-check"></div>
                                     <div className="dot absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition"></div>
@@ -145,34 +132,48 @@ function Users() {
                             </label>
 
                             <label htmlFor="toggleMessaging" className="flex items-center cursor-pointer bg-slate-200 max-w-max p-3 rounded-xl">
-                                <span>Messaging Feature</span>
+                                <span>Standard Plan</span>
                                 <div className="relative">
                                     <input
                                         type="checkbox"
                                         id="toggleMessaging"
                                         className="sr-only"
-                                        checked={userfeatures.messaging_feature}
-                                        onChange={() => handleFeatureToggle('messaging_feature')}
+                                        checked={userfeatures.standard_feature}
+                                        onChange={() => handleFeatureToggle('standard_feature')}
                                     />
                                     <div className="block bg-gray-500 w-14 h-8 rounded-full back-check"></div>
                                     <div className="dot absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition"></div>
                                 </div>
                             </label>
                             <label htmlFor="togglePersonal" className="flex items-center cursor-pointer bg-slate-200 max-w-max p-3 rounded-xl">
-                                <span>Personalised Messaging Feature</span>
+                                <span>Advanced Plan</span>
                                 <div className="relative">
                                     <input
                                         type="checkbox"
                                         id="togglePersonal"
                                         className="sr-only"
-                                        checked={userfeatures.personalised_feature}
-                                        onChange={() => handleFeatureToggle('personalised_feature')}
+                                        checked={userfeatures.advanced_feature}
+                                        onChange={() => handleFeatureToggle('advanced_feature')}
                                     />
                                     <div className="block bg-gray-500 w-14 h-8 rounded-full back-check"></div>
                                     <div className="dot absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition"></div>
                                 </div>
                             </label>
                         </div>
+                        <label htmlFor="toggleDistributor" className="flex justify-between items-center  cursor-pointer  p-3 rounded-xl">
+                            <div className='font-semibold text-3xl py-4'>Make Distributor</div>
+                            <div className="relative">
+                                <input
+                                    type="checkbox"
+                                    id="toggleDistributor"
+                                    className="sr-only"
+                                    checked={userfeatures.is_distributor}
+                                    onChange={() => handleFeatureToggle('is_distributor')}
+                                />
+                                <div className="block bg-gray-500 w-14 h-8 rounded-full back-check"></div>
+                                <div className="dot absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition"></div>
+                            </div>
+                        </label>
 
                     </div>}
                 </div>
