@@ -25,10 +25,10 @@ function DistributorWhatsappModule(props) {
     }
 
     return (
-        <div className='bg-[#064A42] pt-5  rounded-s-2xl h-full'>
-            <div className=' px-5'>
-                <img src={logo} alt="" className='h-10 object-contain' />
-            </div>
+        <div className='bg-[#064A42] pt-5  rounded-s-2xl h-full w-[250px]'>
+            <Link to="/" className=' px-5 w-[50px]'>
+                <img src={logo} alt="" className='w-full' />
+            </Link>
             <ul className="space-y-2 text-base font-thin pt-8 select-none">
                 {/* <li onClick={() => handleLinkClick('admin_message')} >
                     <Link to="/distributor" className={activeComponent === 'distributor_message' ? "text-[#064A42] bg-[#ECE5DD] flex items-center space-x-3 p-2 whitespace-nowrap" : "whitespace-nowrap flex items-center space-x-3 p-2 text-white  rounded-md font-thin hover:bg-[#ECE5DD] hover:text-[#064A42]"}>

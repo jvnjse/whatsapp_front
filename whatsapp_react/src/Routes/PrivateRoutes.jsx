@@ -3,11 +3,10 @@ import { Outlet, Navigate } from 'react-router-dom'
 import Cookies from "js-cookie";
 
 
-const PrivateRoutes = () => {
-    const accessToken = Cookies.get("accessToken");
+const PrivateRoutes = (props) => {
 
     return (
-        accessToken ? <Outlet /> : <Navigate to="/" />
+        props.accessToken ? <Outlet /> : <Navigate to="/" />
     )
 }
 

@@ -123,6 +123,7 @@ function Message() {
             })
             .catch((error) => {
                 //console.log(error.data)
+                setSuccessMessage(false);
             })
     }
 

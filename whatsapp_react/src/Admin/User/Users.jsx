@@ -189,17 +189,28 @@ function Users() {
                 <div className='h-full'>
                     <AdminWhatsappModule select={"admin_users"} />
                 </div>
-                <div className='flex-1 p-5'>
-                    <div className=' text-3xl font-bold'>Users</div>
-                    <div className='flex flex-wrap gap-4'>
+                <div className='flex-1 p-5  h-screen overflow-y-scroll'>
+                    <div className=' text-3xl font-bold'>Clients</div>
+
+                    <div className='flex flex-wrap gap-4 pt-2'>
                         {userdata && userdata.map((user) => (
                             <>
-                                <div key={user.id} className='bg-white p-2 rounded-sm flex flex-col'>
+                                {/* <div key={user.id} className='bg-white p-2 rounded-sm flex flex-col'>
                                     <div className='font-semibold'>{user.email}</div>
                                     <div className='text-sm bg-[#064A42] max-w-max text-white px-2 rounded-md cursor-pointer select-none self-end border border-[#064A42] hover:text-[#064A42] hover:bg-white'
                                         onClick={() => { HandleUserDetails(user.id) }}
                                     >more details</div>
+                                </div> */}
+                                <div key={user.id} className="flex flex-col bg-[#fcfcfc] p-3  whitespace-nowrap rounded-xl w-[400px]">
+                                    <div className=' font-semibold'>Name: {user.first_name} {user.last_name}</div>
+                                    <div className=' font-semibold'>Company: {user.company_name}</div>
+                                    <div className=' font-semibold'>Email: {user.email}</div>
+                                    <div className=' font-semibold'>Phone: {user.phone}</div>
+                                    <div className='text-sm bg-[#064A42] max-w-max text-white px-2 rounded-md cursor-pointer select-none self-end border border-[#064A42] hover:text-[#064A42] hover:bg-white'
+                                        onClick={() => { HandleUserDetails(user.id) }}
+                                    >more details</div>
                                 </div>
+
                             </>
                         ))}
                         {userpopup && <div>

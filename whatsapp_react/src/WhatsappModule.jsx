@@ -1,14 +1,21 @@
 import React, { useEffect, useState } from 'react'
 import Cookies from "js-cookie";
 import logo from "./Icons/altoslogo.png"
+import AddCredentials from "./Error/AddCredentials.jsx"
 import { jwtDecode } from 'jwt-decode';
 import { Link, useNavigate } from 'react-router-dom';
+import config from './config';
+import axios from 'axios';
 
 function WhatsappModule(props) {
     const accessToken = Cookies.get("accessToken")
     const [activeComponent, setActiveComponent] = useState(props.select);
     const navigate = useNavigate()
-    const user_role = jwtDecode(accessToken).user_is_distributor;
+    const userid = jwtDecode(accessToken).user_id;
+    const [errorManage, setErrorManage] = useState()
+    const [phonenumberId, setPhonenumberId] = useState()
+    const [access, setAccess] = useState()
+    const [businessId, setBusinessId] = useState()
     const handleLinkClick = (componentName) => {
         setActiveComponent(componentName);
     };
@@ -24,12 +31,41 @@ function WhatsappModule(props) {
     const basic_feature = jwtDecode(ft).basic_feature;
     const standard_feature = jwtDecode(ft).standard_feature
     const advanced_feature = jwtDecode(ft).advanced_feature
+    const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + accessToken
+    }
+
+    function CredValidate() {
+        axios.get(`${config.baseUrl}validate/credentials?user_id=${userid}`, { headers: headers })
+            .then((response) => {
+                // console.log("gusgsh", response.data.data)
+                // setTemplateData(response.data.data)
+            })
+            .catch((error) => {
+                console.log(error.response.data)
+                setErrorManage(true)
+                if (error.response.data.access === "added-not-valid") {
+                    setBusinessId(error.response.data.message.business_id)
+                    setPhonenumberId(error.response.data.message.phone_number_id)
+                    setAccess(error.response.data.access)
+                } else {
+                    setAccess(error.response.data.access)
+                }
+
+            })
+    }
+    useEffect(() => {
+        CredValidate()
+    }, [])
+
+
 
     return (
-        <div className='bg-[#064A42] pt-5  rounded-s-2xl h-full'>
-            <div className=' px-5'>
-                <img src={logo} alt="" className='h-10 object-contain' />
-            </div>
+        <div className='bg-[#064A42] pt-5  rounded-s-2xl h-full w-[250px]'>
+            <Link to="/" className=' px-5 '>
+                <img src={logo} alt="" className='object-contain w-full' />
+            </Link>
             <ul className="space-y-2 text-base font-thin pt-8 select-none">
                 <li onClick={() => handleLinkClick('sent-message')} >
                     <Link to="/messages" className={activeComponent === 'sent-message' ? "text-[#064A42] bg-[#ECE5DD] flex items-center space-x-3 p-2 whitespace-nowrap" : "whitespace-nowrap flex items-center space-x-3 p-2 text-white  rounded-md font-thin hover:bg-[#ECE5DD] hover:text-[#064A42]"}>
@@ -68,6 +104,9 @@ function WhatsappModule(props) {
                 </li>
 
             </ul>
+            {errorManage && <div className=' absolute z-50 w-full h-full top-0 left-0 flex justify-center items-center bg-black/40'>
+                <AddCredentials businessId={businessId} phonenumberId={phonenumberId} access={access} setErrorManage={setErrorManage} />
+            </div>}
         </div>
     )
 }

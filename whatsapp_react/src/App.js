@@ -22,39 +22,10 @@ const Manage = lazy(() => import("./Input/Mange"));
 const Users = lazy(() => import("./Users/Users"));
 const Landing = lazy(() => import("./Landing"));
 const NotFound = lazy(() => import("./NotFound/NotFound"));
+const Plan = lazy(() => import("./Plan"));
 
 function App() {
   const accessToken = Cookies.get("accessToken");
-  // const [isvalid, setIsValid] = useState();
-
-  // function Validate() {
-  //   console.log("first");
-  //   if (!accessToken) {
-  //     setIsValid(false);
-  //     return;
-  //   }
-
-  //   const headers = {
-  //     "Content-Type": "application/json",
-  //     Authorization: "Bearer " + accessToken,
-  //   };
-
-  //   const data = {};
-  //   axios
-  //     .post(`${config.baseUrl}validate-access-token/`, data, {
-  //       headers: headers,
-  //     })
-  //     .then((response) => {
-  //       setIsValid(response.data.valid);
-  //     })
-  //     .catch((error) => {
-  //       setIsValid(false);
-  //     });
-  // }
-
-  // useEffect(() => {
-  //   Validate();
-  // }, [accessToken, isvalid]);
 
   return (
     <div className=" flex justify-center">
@@ -67,7 +38,7 @@ function App() {
       >
         <Router>
           <Routes>
-            <Route element={<PrivateRoutes />}>
+            <Route element={<PrivateRoutes accessToken={accessToken} />}>
               <Route element={<AdminRoutes />}>
                 <Route path="/admin/messages" element={<AdminPage />} />
                 <Route path="/admin/users" element={<AdminUser />} />
@@ -82,15 +53,9 @@ function App() {
                 />
                 {/* <Route path="/admin/users" element={<AdminUser />} /> */}
               </Route>
-              <Route path="/messages" element={<Message />} />
-              <Route path="/messages" element={<Message />} />
+
               <Route path="/upload" element={<Upload />} />
               <Route path="/messages" element={<Message />} />
-              <Route path="/messages" element={<Message />} />
-              <Route path="/upload" element={<Upload />} />
-              <Route path="/messages" element={<Message />} />
-              <Route path="/messages" element={<Message />} />
-              <Route path="/upload" element={<Upload />} />
               <Route path="/template" element={<Template />} />
               <Route path="/manage" element={<Manage />} />
               <Route path="/users" element={<Users />} />
@@ -103,7 +68,8 @@ function App() {
             <Route
               path="/"
               element={<Landing accessToken={accessToken} isvalid={false} />}
-            />
+            />{" "}
+            <Route path="/plan-and-pricing" element={<Plan />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Router>

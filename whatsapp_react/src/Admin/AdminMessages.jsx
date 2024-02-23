@@ -35,7 +35,8 @@ function AdminMessages() {
                     <AdminWhatsappModule select={"admin_messages"} />
                 </div>
                 <div className='flex-1 p-5'>
-                    <table>
+                    <div className=' text-3xl font-bold'>Enquiries</div>
+                    <table className='mt-3'>
                         <tr>
                             <th>name</th>
                             <th>email</th>
@@ -48,7 +49,7 @@ function AdminMessages() {
                                 <th>{message.first_name} {message.last_name}
                                 </th>
                                 <th>{message.email}</th>
-                                <th>{message.phone}</th>
+                                <th>({message.code}){message.phone}</th>
                                 <th>{message.issue_description}</th>
                             </tr>
                         ))}
