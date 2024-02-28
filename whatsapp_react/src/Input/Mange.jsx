@@ -32,14 +32,14 @@ function Mange() {
         setloading(true)
         axios.post(`${config.baseUrl}upload/credentials`, data, { headers: headers })
             .then((response) => {
-                // console.log(response.data)
+                //console.log(response.data)
                 setPhid('')
                 setWhid('')
                 setAccesstoken('')
                 setloading(false)
             })
             .catch((error) => {
-                // console.log(error)
+                //console.log(error)
                 setloading(false)
             })
     }
@@ -57,7 +57,7 @@ function Mange() {
         }, 500);
     };
     return (
-        <div className=' w-11/12 bg-[#ECE5DD] flex justify-between h-screen  rounded-2xl overflow-x-auto'>
+        <div className=' w-full bg-[#ECE5DD] flex justify-between h-screen  rounded-2xl overflow-x-auto'>
             <div className='h-full'>
                 <WhatsappModule select={"manage"} />
             </div>

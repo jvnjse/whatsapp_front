@@ -26,7 +26,7 @@ function Template() {
     const basic_feature = jwtDecode(ft).basic_feature;
     const standard_feature = jwtDecode(ft).standard_feature;
     const advanced_feature = jwtDecode(ft).advanced_feature;
-    console.log(basic_feature)
+    //console.log(basic_feature)
 
 
 
@@ -102,11 +102,11 @@ function Template() {
     }
 
     return (
-        <div className=' w-11/12 bg-[#ECE5DD] flex justify-between h-screen  rounded-2xl overflow-x-auto'>
+        <div className=' w-full bg-[#ECE5DD] flex justify-between h-screen  rounded-2xl overflow-x-auto'>
             <div className='h-full'>
                 <WhatsappModule select={"template"} />
             </div>
-            <div className='p-5 flex-1' onClick={() => {
+            <div className='p-5 flex-1 h-screen overflow-y-scroll' onClick={() => {
                 if (create_template == true) {
                     setCreateTemplate(false)
                 }
@@ -117,7 +117,7 @@ function Template() {
                         <div className=' bg-[#0d291a] text-white px-2 py-1 rounded-lg cursor-pointer select-none ' onClick={() => { setCreateTemplate(!create_template) }}>Create Template
                         </div>
                         {create_template &&
-                            <div className=' bg-white absolute z-20 top-2 right-2 rounded-lg' onClick={handleClick}>
+                            <div className=' bg-white absolute z-10 top-2 right-2 rounded-lg' onClick={handleClick}>
                                 {basic_feature && <>
                                     <li className='list-none border-b border-gray-500 text-center px-3 py-2 whitespace-nowrap select-none cursor-pointer hover:bg-slate-100' onClick={() => { settextTemplate(true) }}>Text Template</li>
                                     <li className='list-none border-b border-gray-500 text-center px-3 py-2 whitespace-nowrap select-none cursor-pointer hover:bg-slate-100 relative' onMouseEnter={() => handleMouseEnter(1)}
@@ -148,63 +148,122 @@ function Template() {
                                 </>}
 
 
-
-                                {/* <li className='list-none border-b border-gray-500 text-center px-3 py-2 whitespace-nowrap select-none cursor-pointer hover:bg-slate-100' onClick={() => { settextTemplate(true) }}>Text Template</li>
-                                <li className='list-none border-b border-gray-500 text-center px-3 py-2 whitespace-nowrap select-none cursor-pointer hover:bg-slate-100' onClick={() => { setimageTemplate(true) }}>Image Template</li>
-                                <li className='list-none border-b border-gray-500 text-center px-3 py-2 whitespace-nowrap select-none cursor-pointer hover:bg-slate-100' onClick={() => { setPersonalisedTemplate(true) }}>Personalised Template</li>
-                                <li className='list-none border-b border-gray-500 text-center px-3 py-2 whitespace-nowrap select-none cursor-pointer hover:bg-slate-100' onClick={() => { setPersonalisedImageTemplate(true) }}>Personalised Image Template</li> */}
+                                {advanced_feature &&
+                                    <>
+                                        <li className='list-none border-b border-gray-500 text-center px-3 py-2 whitespace-nowrap select-none cursor-pointer hover:bg-slate-100' onClick={() => { settextTemplate(true) }}>Text Template</li>
+                                        <li className='list-none border-b border-gray-500 text-center px-3 py-2 whitespace-nowrap select-none cursor-pointer hover:bg-slate-100' onClick={() => { setimageTemplate(true) }}>Image Template</li>
+                                        <li className='list-none border-b border-gray-500 text-center px-3 py-2 whitespace-nowrap select-none cursor-pointer hover:bg-slate-100' onClick={() => { setPersonalisedTemplate(true) }}>Personalised Template</li>
+                                        <li className='list-none border-b border-gray-500 text-center px-3 py-2 whitespace-nowrap select-none cursor-pointer hover:bg-slate-100' onClick={() => { setPersonalisedImageTemplate(true) }}>Personalised Image Template</li>
+                                    </>
+                                }
 
 
                             </div>}
                     </div>
                 </div>
                 <div>
-                    <table className="table-auto w-full mt-6 border border-gray-600">
-                        <thead className='text-left bg-slate-500'>
+                    {/* <table className="table-auto w-full mt-6 border border-gray-600"> */}
+                    <table class="min-w-full leading-normal">
+                        <thead>
+                            <tr>
+                                <th
+                                    class="px-5 py-3 border-b-2 border-gray-200 bg-[#064A42] text-left text-xs font-semibold text-white uppercase tracking-wider">
+                                    Template Name
+                                </th>
+                                <th
+                                    class="px-5 py-3 border-b-2 border-gray-200 bg-[#064A42] text-left text-xs font-semibold text-white uppercase tracking-wider">
+                                    Title
+                                </th>
+                                <th
+                                    class="px-5 py-3 border-b-2 border-gray-200 bg-[#064A42] text-left text-xs font-semibold text-white uppercase tracking-wider">
+                                    Status
+                                </th>
+                                <th
+                                    class="px-5 py-3 border-b-2 border-gray-200 bg-[#064A42] text-left text-xs font-semibold text-white uppercase tracking-wider">
+                                    Delete Template
+                                </th>
+                            </tr>
+                        </thead>
+
+                        {/* <thead className='text-left bg-slate-500'>
                             <tr>
                                 <th>Template Name</th>
                                 <th>Title</th>
                                 <th>Status</th>
                                 <th>Delete Template</th>
                             </tr>
-                        </thead>
+                        </thead> */}
                         <tbody >
                             {templates.map((template) => (
                                 <tr key={template.id} >
-                                    <td className='py-2 border-b border-gray-600'>{template.name}</td>
-                                    <td className='py-2 border-b border-gray-600'>{template.text}</td>
-                                    <td className='py-2 border-b border-gray-600'>{template.status}</td>
-                                    <td className='py-2 border-b border-gray-600'>
-                                        <div className='select-none cursor-pointer hover:bg-black hover:text-white w-min p-1 rounded-lg' onClick={() => handleDeleteClick(template.name)}><AiOutlineDelete /></div>
+                                    {/* <tr> */}
+                                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                        <div class="flex items-center">
+                                            <div class="ml-3">
+                                                <p class="text-gray-900 whitespace-no-wrap">
+                                                    {template.name}
+                                                </p>
+                                            </div>
+                                        </div>
                                     </td>
+                                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                        <p class="text-gray-900 whitespace-no-wrap">{template.text}</p>
+                                    </td>
+                                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                        {template.status === "APPROVED" ? <span
+                                            class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
+                                            <span aria-hidden
+                                                class="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
+                                            <span class="relative">{template.status}</span>
+                                        </span> : <span
+                                            class="relative inline-block px-3 py-1 font-semibold text-orange-900 leading-tight">
+                                            <span aria-hidden
+                                                class="absolute inset-0 bg-orange-200 opacity-50 rounded-full"></span>
+                                            <span class="relative">{template.status}</span>
+                                        </span>}
+
+                                    </td>
+                                    <td class="px-5 py-5 border-b border-gray-200 bg-white ">
+                                        <span onClick={() => handleDeleteClick(template.name)}
+                                            class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight cursor-pointer">
+                                            <span aria-hidden
+                                                class="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
+                                            <span class="relative">  <AiOutlineDelete /></span>
+                                        </span>
+                                        {/* <p class="text-gray-900 whitespace-no-wrap " >
+                                          
+                                        </p> */}
+                                    </td>
+
                                 </tr>
+
                             ))}
                         </tbody>
                     </table>
                 </div>
             </div>
             {textTemplate &&
-                <div className='absolute w-full h-full bg-black/30 top-0 left-0 flex justify-center' onClick={() => { settextTemplate(false) }} >
+                <div className='absolute w-full h-full bg-black/30 top-0 left-0 flex justify-center z-20' onClick={() => { settextTemplate(false) }} >
                     <CreateTemplate handleClick={handleClick} settextTemplate={settextTemplate} />
                 </div>
             }
             {personalisedTemplate &&
-                <div className='absolute w-full h-full bg-black/30 top-0 left-0 flex justify-center' onClick={() => { setPersonalisedTemplate(false) }} >
+                <div className='absolute w-full h-full bg-black/30 top-0 left-0 flex justify-center z-20' onClick={() => { setPersonalisedTemplate(false) }} >
                     <Personalised handleClick={handleClick} setPersonalisedTemplate={setPersonalisedTemplate} />
                 </div>
             }
             {personalisedImageTemplate &&
-                <div className='absolute w-full h-full bg-black/30 top-0 left-0 flex justify-center' onClick={() => { setPersonalisedImageTemplate(false) }} >
+                <div className='absolute w-full h-full bg-black/30 top-0 left-0 flex justify-center z-20' onClick={() => { setPersonalisedImageTemplate(false) }} >
                     <PersonalisedImageTemplate handleClick={handleClick} setPersonalisedImageTemplate={setPersonalisedImageTemplate} />
                 </div>
             }
             {imageTemplate &&
-                <div className='absolute w-full h-full bg-black/30 top-0 left-0 flex justify-center items-center' onClick={() => { setimageTemplate(false) }} >
+                <div className='absolute w-full h-full bg-black/30 top-0 left-0 flex justify-center z-20 items-center' onClick={() => { setimageTemplate(false) }} >
                     {/* <CreateTemplate handleClick={handleClick} /> */}
                     <ImageTemplate handleClick={handleClick} setimageTemplate={setimageTemplate} />
                 </div>
             }
-            {loading && <div className=' absolute w-full h-full top-0 left-0 flex justify-center items-center bg-black/40'>
+            {loading && <div className=' absolute w-full h-full top-0 left-0 flex justify-center z-20 items-center bg-black/40'>
                 <svg className='animate-spin' width="100px" height="100px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <g>
                         <path fill="none" d="M0 0h24v24H0z" />

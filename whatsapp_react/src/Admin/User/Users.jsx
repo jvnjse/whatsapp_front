@@ -28,10 +28,10 @@ function Users() {
         axios.get(`${config.baseUrl}users/`, { headers: headers })
             .then((response) => {
                 setuserdata(response.data.staff_users)
-                console.log(response.data)
+                //console.log(response.data)
             })
             .catch((error) => {
-                console.log(error)
+                //console.log(error)
             })
     }
     const GetuserDetails = (userid) => {
@@ -39,13 +39,13 @@ function Users() {
             .then((response) => {
                 setUserdetail(response.data)
                 setUserfeatures(response.data)
-                console.log(response.data, "gdgjgjhg")
+                //console.log(response.data, "gdgjgjhg")
             })
             .catch((error) => {
-                console.log(error)
+                //console.log(error)
             })
     }
-    // console.log(userfeatures, "sdd")
+    //console.log(userfeatures, "sdd")
     useEffect(() => {
         Getusers()
     }, [])
@@ -78,10 +78,10 @@ function Users() {
             axios.put(`${config.baseUrl}users/${selectedUserId}/`, userfeatures, { headers: headers })
                 .then((response) => {
                     // setUserfeatures(response.data);
-                    console.log(response.data, "ddd");
+                    //console.log(response.data, "ddd");
                 })
                 .catch((error) => {
-                    console.log(error);
+                    //console.log(error);
                 })
         };
         useEffect(() => {
@@ -98,8 +98,8 @@ function Users() {
                     <div className='text-xl font-bold'>User Details</div>
                     {userdetail && <div className='bg-white p-2 rounded-sm flex flex-col h-full'>
                         {/* <div className='font-semibold text-3xl py-4'>{useremail}</div> */}
-                        <label htmlFor="toggleActive" className="flex justify-between items-center cursor-pointer  p-3 rounded-xl">
-                            <div className='font-semibold text-3xl py-4'>{userfeatures.email}</div>
+                        <label htmlFor="toggleActive" className="flex justify-between items-center cursor-pointer  p-3 rounded-xl max-sm:flex-wrap">
+                            <div className='font-semibold text-3xl py-4 max-sm:text-lg'>{userfeatures.email}</div>
                             <div className="relative">
                                 <input
                                     type="checkbox"
@@ -113,9 +113,6 @@ function Users() {
                             </div>
                         </label>
                         <div className='flex flex-wrap gap-4'>
-
-
-
                             <label htmlFor="toggleImage" className="flex items-center cursor-pointer bg-slate-200 max-w-max p-3 rounded-xl">
                                 <span>Basic Plan</span>
                                 <div className="relative">
@@ -185,7 +182,7 @@ function Users() {
 
     return (
         <>
-            <div className=' w-11/12 bg-[#ECE5DD] flex justify-between h-screen  rounded-2xl overflow-x-auto'>
+            <div className=' w-full bg-[#ECE5DD] flex justify-between h-screen  rounded-2xl overflow-x-auto'>
                 <div className='h-full'>
                     <AdminWhatsappModule select={"admin_users"} />
                 </div>

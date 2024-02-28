@@ -55,7 +55,7 @@ function ImageTemplate(props) {
                     },
                 })
                 .then((response) => {
-                    console.log('Image upload successful:', response.data);
+                    //console.log('Image upload successful:', response.data);
                     setimageupload(response.data.h);
                     setuploadbtn(false);
                 })
@@ -86,11 +86,11 @@ function ImageTemplate(props) {
 
         setloading(true)
         axios.post(apiUrl, data(selectedOption), { headers: headers }).then((response) => {
-            console.log(response.data)
+            //console.log(response.data)
             setloading(false)
             props.setimageTemplate(false)
         }).catch((error) => {
-            // console.log(error)
+            //console.log(error)
             setloading(false)
         })
     }
@@ -109,7 +109,7 @@ function ImageTemplate(props) {
 
 
 
-    // console.log(templatename)
+    //console.log(templatename)
 
     const data = (option) => {
         switch (option) {

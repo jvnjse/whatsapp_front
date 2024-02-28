@@ -9,6 +9,7 @@ import WhatsappModule from '../WhatsappModule';
 import { jwtDecode } from 'jwt-decode';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { BsCheckLg } from 'react-icons/bs';
 
 function Upload() {
     const [excelfile, setexcelfile] = useState(null);
@@ -24,13 +25,14 @@ function Upload() {
     const [successMessageupload, setSuccessMessageUpload] = useState(false);
     const [headerHandle, setHeaderHandle] = useState('');
     const [apiurl1, setApiurl1] = useState();
+    const [apiurl2, setApiurl2] = useState();
     const accessToken = Cookies.get("accessToken")
     const userid = jwtDecode(accessToken).user_id;
 
     const ft = Cookies.get("ft")
 
 
-    console.log(userid)
+    //console.log(userid)
     const handleFileChange = (event) => {
         const selectedFile = event.target.files[0];
         setexcelfile(selectedFile);
@@ -70,7 +72,7 @@ function Upload() {
 
         try {
             const response = await axios.post(`${config.baseUrl}upload/data`, formData, { headers: headers1 });
-            console.log(response.data);
+            //console.log(response.data);
             setSuccessMessageUpload(true)
             setTimeout(() => {
                 setSuccessMessageUpload(false);
@@ -83,7 +85,7 @@ function Upload() {
     useEffect(() => {
         axios.get(`${config.baseUrl}get_templates/?user_id=${userid}`, { headers: headers })
             .then((response) => {
-                // console.log(response.data.data)
+                //console.log(response.data.data)
                 setTemplateData(response.data.data)
             })
             .catch((error) => {
@@ -118,14 +120,46 @@ function Upload() {
             // setTimeout(() => {
             //     setSuccessMessage(false);
             // }, 3000);
-            console.log(response.data)
+            //console.log(response.data)
             setSuccessMessage(false)
         } catch (error) {
             console.error('Error uploading file: ', error);
             setSuccessMessage(false)
         }
     };
+    const handleSubmitExcelSentPersonalised = async (event) => {
+        event.preventDefault();
 
+        if (!excelfile) {
+            alert('Please select a file to upload.');
+            return;
+        }
+        if (!select) {
+            alert('Please Select a Template for Messaging')
+        }
+
+        const formData = new FormData();
+        formData.append('excel_file', excelfile);
+        formData.append('template_name', select)
+        formData.append('user_id', userid)
+        formData.append('image_link', imageurl)
+        setSuccessMessage(true)
+        try {
+            setTimeout(() => {
+                setSuccessMessage(false);
+            }, 3000);
+            const response = await axios.post(apiurl2, formData, { headers: headers1 });
+            setexcelfile('')
+            // setTimeout(() => {
+            //     setSuccessMessage(false);
+            // }, 3000);
+            //console.log(response.data)
+            setSuccessMessage(false)
+        } catch (error) {
+            console.error('Error uploading file: ', error);
+            setSuccessMessage(false)
+        }
+    };
     const handleSelectChange = (event) => {
         const name = event.target.value;
         setSelect(name)
@@ -187,7 +221,7 @@ function Upload() {
             const headerText = header.example && header.example.header_text ? header.example.header_text[0] : '';
 
 
-            setApiurl1((prevApiurl1) => {
+            setApiurl2((prevApiurl1) => {
                 if (headerHandle !== "") {
                     return `${config.baseUrl}upload/sent/images/personalised`;
                     // toast.error("This is not a personalised message template")
@@ -205,11 +239,11 @@ function Upload() {
             setSelectedHeaderText('');
         }
     };
-
+    //console.log("first", apiurl1)
     const imageurl = config.imagebaseurl + headerHandle
 
     return (
-        <div className=' w-11/12 bg-[#ECE5DD] flex justify-between h-screen  rounded-2xl overflow-x-auto'>
+        <div className=' w-full bg-[#ECE5DD] flex justify-between h-screen  rounded-2xl overflow-x-auto'>
             <ToastContainer
                 position="top-left"
                 autoClose={2000}
@@ -225,21 +259,23 @@ function Upload() {
             <div className='h-full'>
                 <WhatsappModule select={"upload"} />
             </div>
-            <div className='p-5 flex-1'>
+            <div className='p-5 flex-1 h-screen overflow-y-scroll'>
                 <div className=' text-[#0d291a] text-4xl font-bold'>Upload Numbers using Excel</div>
-                <div className=' flex gap-10 mt-4'>
+                <div className=' flex gap-10 mt-4 text-lg max-sm:text-xs max-sm:flex-wrap max-sm:gap-1'>
                     <div className={uploadbox === "excelm" ? 'btn-active' : 'btn-nonactive'} onClick={() => { setUploadbox("excelm") }}>Excel Messaging</div>
                     <div className={uploadbox === "excelu" ? 'btn-active' : 'btn-nonactive'} onClick={() => { setUploadbox("excelu") }}>Excel Data Upload</div>
                     <div className={uploadbox === "excelp" ? 'btn-active' : 'btn-nonactive'} onClick={() => { setUploadbox("excelp") }}>Excel Personalised Message Upload</div>
                 </div>
                 {uploadbox === "excelm" &&
-                    <div className='flex '>
-                        <div className=' flex flex-col px-14 mt-7 max-w-max'>
+                    <div className='flex max-md:flex-col-reverse max-lg:flex-col-reverse max-sm:px-2'>
+                        <div className=' flex flex-col px-14 mt-7  max-sm:px-2'>
                             <div>Upload and Sent Messages to the Numbers in Excel Document </div>
 
                             <label htmlFor="excel-file" className='mt-3 excel-bg-1 bg-white h-36 text-center rounded-xl flex flex-col'> {excelfile ? fileName : ""}
                                 <input type="file" id="excel-file" accept='.xlsx' className=' invisible' onChange={handleFileChange} />
                             </label>
+
+                            <div className='px-1 bg-[#064A42] text-white text-xs'>The excel sheets first row should contain phone numbers</div>
                             <div onClick={handleSubmitExcelSent} className='select-none cursor-pointer flex justify-center items-center mt-4 bg-[#064A42] max-w-max text-white py-1 px-2 rounded-lg uppercase font-bold text-xs tracking-widest	'>
                                 <img className='h-6 object-contain' src={whatsapplogo} alt="" />
                                 &nbsp;Send Message
@@ -261,7 +297,7 @@ function Upload() {
                                 {headerHandle && (
                                     <img src={imageurl} alt="" />
                                 )}
-                                <div>
+                                <div className='text-[10px]'>
                                     {selectedBodyText && selectedBodyText}
                                 </div>
                                 <div className='font-thin text-xs'>{selectedFooterText && selectedFooterText}</div>
@@ -270,12 +306,13 @@ function Upload() {
                     </div>}
                 {uploadbox === "excelu" &&
                     <div>
-                        <div className=' flex flex-col px-14 mt-7 max-w-max'>
+                        <div className=' flex flex-col px-14 mt-7 max-w-max  max-sm:px-2'>
                             <div>Upload Numbers to List</div>
 
                             <label htmlFor="excel-file" className='mt-3 excel-bg-1 bg-white h-36 text-center rounded-xl flex flex-col'>{excelfile ? fileName : ""}
                                 <input type="file" id="excel-file" accept='.xlsx' className=' invisible' onChange={handleFileChange} />
                             </label>
+                            <div className='px-1 bg-[#064A42] text-white text-xs'>The excel sheets first row should contain phone numbers</div>
 
                             <div onClick={handleSubmitExcelUpload} className='select-none cursor-pointer flex justify-center items-center mt-4 bg-[#064A42] max-w-max text-white py-2 px-2 rounded-lg uppercase font-bold text-xs tracking-widest '>
                                 {/* <img className='h-6 object-contain' src={whatsapplogo} alt="" /> */}
@@ -284,13 +321,14 @@ function Upload() {
                         </div>
                     </div>}
                 {uploadbox === "excelp" &&
-                    <div className='flex '>
-                        <div className=' flex flex-col px-14 mt-7 max-w-max'>
+                    <div className='flex max-lg:flex-col-reverse max-sm:px-2 '>
+                        <div className=' flex flex-col px-14 mt-7 max-w-max max-sm:px-2'>
                             <div>Upload and Sent Personalised Messages to the Numbers in Excel Document </div>
                             <label htmlFor="excel-file" className='mt-3 excel-bg-1 bg-white h-36 text-center rounded-xl flex flex-col'> {excelfile ? fileName : ""}
                                 <input type="file" id="excel-file" accept='.xlsx' className=' invisible' onChange={handleFileChange} />
                             </label>
-                            <div onClick={handleSubmitExcelSent} className='select-none cursor-pointer flex justify-center items-center mt-4 bg-[#064A42] max-w-max text-white py-1 px-2 rounded-lg uppercase font-bold text-xs tracking-widest	'>
+                            <div className='px-1 bg-[#064A42] text-white text-xs'>The excel sheets first row should contain names and second row should be phone numbers</div>
+                            <div onClick={handleSubmitExcelSentPersonalised} className='select-none cursor-pointer flex justify-center items-center mt-4 bg-[#064A42] max-w-max text-white py-1 px-2 rounded-lg uppercase font-bold text-xs tracking-widest	'>
                                 <img className='h-6 object-contain' src={whatsapplogo} alt="" />
                                 &nbsp;Send Message
                             </div>
@@ -311,7 +349,7 @@ function Upload() {
                                 {headerHandle && (
                                     <img src={imageurl} alt="" />
                                 )}
-                                <div>
+                                <div className='text-[10px]'>
                                     {selectedBodyText && selectedBodyText}
                                 </div>
                                 <div className='font-thin text-xs'>{selectedFooterText && selectedFooterText}</div>

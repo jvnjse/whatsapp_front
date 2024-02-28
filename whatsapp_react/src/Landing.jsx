@@ -10,7 +10,9 @@ import Cookies from "js-cookie";
 import axios from 'axios'
 import config from './config';
 import logo from "./Icons/altoslogo.png"
-import CookieConsent from './CookieConsent';
+import CookieConsent from './CookieConsent'
+import { MdOutlineMailOutline } from "react-icons/md";
+;
 
 function Landing() {
     const accessToken = Cookies.get("accessToken") || "";
@@ -57,7 +59,7 @@ function Landing() {
         try {
 
             const response = await axios.post(`${config.baseUrl}contact-form/`, formData);
-            console.log(response.data);
+            //console.log(response.data);
             setFirstName("")
             setEmail("")
             setFirstName("")
@@ -116,7 +118,7 @@ function Landing() {
                     <button className='bg-[#2f2e2e] px-5 py-2 rounded-full hover:bg-[#f0f0f0] hover:text-[#2f2e2e] hover:border border border-[#2f2e2e] max-sm:p-2 max-sm:text-xs' >{accessToken ? <Link to={is_staff ? '/admin/messages' : (is_distributor ? '/distributor/users' : '/messages')}>Go to Module</Link> : <Link to='/login'>Get Started</Link>}</button>
                 </div>
             </section>
-            <section className='flex justify-center items-center gap-7 w-full text-center bg-[#f0f0f0] py-10 max-sm:py-2'>
+            <section id="video" className='flex justify-center items-center gap-7 w-full text-center bg-[#f0f0f0] py-10 max-sm:py-2'>
                 <iframe className='w-10/12 aspect-video' src="https://www.youtube.com/embed/GmK43VVcsWc" title="How to Send Bulk WhatsApp Messages using the official WhatsApp Cloud APIs" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
             </section>
 
@@ -300,10 +302,10 @@ function Landing() {
                                 <h4 className="text-white text-2xl mb-4">ALTOS CONNECT</h4>
                                 <p className="text-gray-400">Empower your WhatsApp marketing strategy with Alt WhatsApp's cutting-edge automation tools. Streamline messaging, scheduling, and customer interactions effortlessly, saving time and enhancing efficiency.</p>
                                 <div className="mt-4">
-                                    {/* <button className="bg-facebook py-2 px-4 text-white rounded mt-2 transition-colors duration-300">
-                                        <span className="fab fa-facebook-f mr-2"></span> Follow
+                                    <button className="bg-facebook py-2 px-4 text-white rounded mt-2 transition-colors duration-300">
+                                        <span className=' flex gap-5 items-center'><MdOutlineMailOutline className="text-4xl font-semibold" /><a href="mailto:info@altosconnect.com" target='_blank'>info@altosconnect.com</a></span>
                                     </button>
-                                    <button className="bg-twitter py-2 px-4 text-white rounded ml-2 mt-2 transition-colors duration-300">
+                                    {/* <button className="bg-twitter py-2 px-4 text-white rounded ml-2 mt-2 transition-colors duration-300">
                                         <span className="fab fa-twitter mr-2"></span> Follow @freeweb19
                                     </button> */}
                                 </div>
@@ -333,16 +335,16 @@ function Landing() {
                                 </div>
                             </div>
 
-                            <div className="md:w-1/3 md:px-4 md:text-center mt-12 lg:mt-0">
+                            {/* <div className="md:w-1/3 md:px-4 md:text-center mt-12 lg:mt-0">
                                 <h5 className="text-lg text-white font-medium mb-4">Explore our site</h5>
                                 <button className="bg-indigo-600 text-white hover:bg-indigo-700 rounded py-2 px-6 md:px-12 transition-colors duration-300">Explore</button>
-                            </div>
+                            </div> */}
 
                         </div>
 
                     </div>
 
-                    <div className="border-t border-solid border-gray-900 mt-4 py-4">
+                    {/* <div className="border-t border-solid border-gray-900 mt-4 py-4">
                         <div className="container px-4 mx-auto">
 
                             <div className="md:flex md:-mx-4 md:items-center">
@@ -356,7 +358,7 @@ function Landing() {
                             </div>
 
                         </div>
-                    </div>
+                    </div> */}
 
                 </div>
 

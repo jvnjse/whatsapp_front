@@ -22,24 +22,24 @@ function AdminPage() {
     const Getusers = () => {
         axios.get(`${config.baseUrl}users/`, { headers: headers })
             .then((response) => {
-                setuserdata(response.data.distributor_users)
+                // setuserdata(response.data.distributor_users)
                 // setuserdata(response.data.staff_users)
                 setLendistributor(response.data.distributor_users.length)
                 setLenusers(response.data.staff_users.length)
-                console.log(response.data)
+                //console.log(response.data)
             })
             .catch((error) => {
-                console.log(error)
+                //console.log(error)
             })
     }
     const GetChildrenUsers = (userid) => {
         axios.get(`${config.baseUrl}user-children/${userid}/`, { headers: headers })
             .then((response) => {
                 setUserchildren(response.data)
-                // console.log(response.data)
+                //console.log(response.data)
             })
             .catch((error) => {
-                console.log(error)
+                //console.log(error)
             })
     }
     useEffect(() => {
@@ -54,22 +54,22 @@ function AdminPage() {
     const UserDetails = () => {
         // const [active, setactive] = useState()
         const DisableUser = (key, is_active, email) => {
-            console.log("first")
+            //console.log("first")
             const data = {
                 "is_active": !is_active,
                 "email": email
             }
-            console.log("first", data)
+            //console.log("first", data)
             axios.put(`${config.baseUrl}users/${key}/`, data, { headers: headers })
                 .then((response) => {
-                    console.log(response.data)
+                    //console.log(response.data)
                     // GetChildrenUsers(key)
                     // setactive(!is_active)
                     // setUserpopup(false);
 
                 })
                 .catch((error) => {
-                    console.log(error)
+                    //console.log(error)
                 })
         }
 
@@ -116,7 +116,7 @@ function AdminPage() {
 
 
     return (
-        <div className=' w-11/12 bg-[#ECE5DD] flex justify-between h-screen  rounded-2xl overflow-x-auto'>
+        <div className=' w-full bg-[#ECE5DD] flex justify-between h-screen  rounded-2xl overflow-x-auto'>
             <div className='h-full'>
                 <AdminWhatsappModule select={"admin_message"} />
             </div>
@@ -134,7 +134,7 @@ function AdminPage() {
 
                     </div>
                 </div>
-                <div>
+                {/* <div>
                     <div>Distributors</div>
                     <div className='flex flex-col gap-3'>
                         {userdata && userdata.map((user) => (
@@ -151,7 +151,7 @@ function AdminPage() {
                         }
                     </div>
 
-                </div>
+                </div> */}
             </div>
 
         </div>

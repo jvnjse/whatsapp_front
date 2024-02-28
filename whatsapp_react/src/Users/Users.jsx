@@ -31,7 +31,7 @@ function Users() {
                         //console.log(response.data)
                         setuserdata(response.data)
                         // const filteredUsers = response.data.filter(user => !user.is_staff);
-                        // //console.log(filteredUsers);
+                        //console.log(filteredUsers);
                         // setuserdata(filteredUsers);
                     })
                     .catch((error) => {
@@ -40,7 +40,7 @@ function Users() {
                 :
                 axios.get(`${config.baseUrl}user-children/${userid}/`, { headers: headers })
                     .then((response) => {
-                        console.log(response.data)
+                        //console.log(response.data)
                         setuserdata(response.data)
                     })
                     .catch((error) => {
@@ -97,7 +97,7 @@ function Users() {
         }
         axios.patch(`${config.baseUrl}users/${key}/`, data, { headers: headers })
             .then((response) => {
-                console.log(response.data)
+                //console.log(response.data)
                 axios.get(`${config.baseUrl}user-hierarchy/${userid}/`, { headers: headers })
                     .then((response) => {
                         //console.log(response.data)
@@ -158,7 +158,7 @@ function Users() {
         );
     };
     return (
-        <div className=' w-11/12 bg-[#ECE5DD] flex justify-between h-screen  rounded-2xl overflow-x-auto'>
+        <div className=' w-full bg-[#ECE5DD] flex justify-between h-screen  rounded-2xl overflow-x-auto'>
             <div className='h-full'>
                 <WhatsappModule select={"users"} />
             </div>

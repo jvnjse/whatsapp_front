@@ -49,7 +49,7 @@ function Login() {
                     navigate('/messages');
                 }
             }).catch((error) => {
-                console.log(error)
+                //console.log(error)
                 if (error.response.data.message) {
                     seterrormesssagel(error.response.data.message)
                 }
@@ -61,7 +61,7 @@ function Login() {
     //     "email": semail,
     //     "referral_string": referralstring ? referralstring : "ALTOS12"
     // }
-    // console.log(sdata)
+    //console.log(sdata)
     const [validationErrors, setValidationErrors] = useState({
         first_name: '',
         last_name: '',
@@ -128,16 +128,21 @@ function Login() {
                 "referral_string": referral_string,
                 "known_by": referralInput
             };
-            console.log(formData)
+            //console.log(formData)
             setloading(true)
             axios.post(`${config.baseUrl}register/`, formData)
                 .then((response) => {
-                    console.log(response.data)
+                    //console.log(response.data)
                     setsignupmessage(true)
                     setloading(false)
+                    setFirstName('')
+                    setLastName('')
+                    setPhone('')
+                    setEmail('')
+                    setCompany('')
                     // navigate('/messages')
                 }).catch((error) => {
-                    console.log(error)
+                    //console.log(error)
                     if (error.response.data.email) {
                         seterrormesssage(true)
                         setloading(false)

@@ -34,10 +34,10 @@ function UsersDistributor() {
         axios.get(`${config.baseUrl}user-children/${userid}/`, { headers: headers })
             .then((response) => {
                 setuserdata(response.data)
-                // console.log(response.data)
+                //console.log(response.data)
             })
             .catch((error) => {
-                console.log(error)
+                //console.log(error)
             })
     }
 
@@ -88,11 +88,11 @@ function UsersDistributor() {
 
     return (
         <>
-            <div className=' w-11/12 bg-[#ECE5DD] flex justify-between h-screen  rounded-2xl overflow-x-auto'>
+            <div className=' w-full bg-[#ECE5DD] flex justify-between h-screen  rounded-2xl overflow-x-auto'>
                 <div className='h-full'>
                     <DistributorWhatsappModule select={"distributor_users"} />
                 </div>
-                <div className='flex-1 p-5'>
+                <div className='flex-1 p-5 h-screen overflow-y-scroll'>
                     <div className=' text-3xl font-bold'>Users</div>
                     <div className=' flex flex-col items-end'>
                         <div>Referal Id</div>
@@ -150,10 +150,10 @@ export default UsersDistributor
 //         axios.put(`${config.baseUrl}users/${userid}/`, userfeatures, { headers: headers })
 //             .then((response) => {
 //                 // setUserfeatures(response.data);
-//                 console.log(response.data, "ddd");
+//                 //console.log(response.data, "ddd");
 //             })
 //             .catch((error) => {
-//                 console.log(error);
+//                 //console.log(error);
 //             })
 //     };
 //     useEffect(() => {

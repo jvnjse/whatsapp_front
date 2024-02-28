@@ -5,6 +5,7 @@ import axios from 'axios';
 import config from '../config';
 import { jwtDecode } from 'jwt-decode';
 import { LuMailWarning } from "react-icons/lu";
+import { Link } from 'react-router-dom';
 
 function AddCredentials({ phonenumberId, businessId, access, setErrorManage }) {
     const [phid, setPhid] = useState(phonenumberId || '')
@@ -32,7 +33,7 @@ function AddCredentials({ phonenumberId, businessId, access, setErrorManage }) {
         setloading(true)
         axios.post(`${config.baseUrl}upload/credentials`, data, { headers: headers })
             .then((response) => {
-                // console.log(response.data)
+                //console.log(response.data)
                 setPhid('')
                 setWhid('')
                 setAccesstoken('')
@@ -40,7 +41,7 @@ function AddCredentials({ phonenumberId, businessId, access, setErrorManage }) {
                 setErrorManage(false)
             })
             .catch((error) => {
-                // console.log(error)
+                //console.log(error)
                 setloading(false)
             })
     }
@@ -57,13 +58,13 @@ function AddCredentials({ phonenumberId, businessId, access, setErrorManage }) {
             setActiveButton(null);
         }, 500);
     };
-    console.log(access, "scsgcjgjh")
+    //console.log(access, "scsgcjgjh")
     return (
         <div className='w-7/12 bg-white rounded-xl h-auto p-3 relative'>
-            <div className='absolute top-2 right-2  px-1 text-xs bg-red-300 text-red-600 rounded-xl'> Error !</div>
+            <div className='absolute top-2 right-2  px-1 text-xs bg-red-300 text-red-600 rounded-xl'> Message !</div>
             <h1 className='text-xl font-bold'>Add Meta Credentials</h1>
-            <div className=' flex '>
-                <form onSubmit={UploadCredentials} className='pt-5 flex flex-col gap-4 w-7/12'>
+            <div className=' flex max-md:flex-wrap-reverse'>
+                <form onSubmit={UploadCredentials} className='pt-5 flex flex-col gap-4 w-full'>
                     <label className=' flex flex-col' htmlFor='whatsapp_id'>
                         <div className=' flex justify-between'>
                             <div>Phone Number Id</div>
@@ -108,14 +109,17 @@ function AddCredentials({ phonenumberId, businessId, access, setErrorManage }) {
                             <div className=' font-bold text-red-600'>Error validating access token: Session has expired</div>
                             <div className=' text-center text-8xl font-black' ><LuMailWarning /></div>
                             <div className='font-bold text-center'>Your phone number has been disconnected from Altos Connect</div>
+                            <div className='font-bold text-center'>To Know How to add Credentials <Link to="/#video"><span className='text-blue-800 underline'>Tap Here</span></Link></div>
+
 
                         </>
                     }
                     {access == 'not-added' &&
                         <>
-                            <div className=' font-bold text-red-600'>Error validating access token: Session has expired</div>
+                            <div className=' font-bold text-blue-600'>Add Credentials </div>
                             {/* <div className=' text-center text-8xl font-black' ><LuMailWarning /></div> */}
-                            <div className='font-bold text-center'>Your phone number has been disconnected from Altos Connect</div>
+                            <div className='font-bold text-center'>Connect Your Whatsapp to Altos Connect</div>
+                            <div className='font-bold text-center'>To Know How to add Credentials <Link to="/#video"><span className='text-blue-800 underline'>Tap Here</span></Link></div>
 
                         </>}
                     {/* <div className=' font-bold text-red-600'>Error validating access token: Session has expired</div>

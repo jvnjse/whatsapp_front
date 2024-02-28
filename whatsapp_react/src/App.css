@@ -60,10 +60,17 @@ td {
 
 @layer components {
   .btn-active {
-    @apply cursor-pointer select-none py-1 px-2 text-lg bg-[#064A42] text-white rounded-md hover:shadow-xl shadow-2xl;
+    @apply cursor-pointer select-none py-1 px-2  bg-[#064A42] text-white rounded-md hover:shadow-xl shadow-2xl;
   }
   .btn-nonactive {
-    @apply py-1 px-2 text-lg bg-[white] rounded-md hover:shadow-xl cursor-pointer select-none;
+    @apply py-1 px-2  bg-[white] rounded-md hover:shadow-xl cursor-pointer select-none;
+  }
+  .sidebar {
+    @apply bg-[#064A42] pt-5  rounded-s-2xl h-full w-[250px] transition-all ease-in duration-300;
+  }
+
+  .sidebar-close {
+    @apply translate-x-[-250px];
   }
 }
 

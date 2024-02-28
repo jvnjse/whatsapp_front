@@ -55,7 +55,7 @@ function PersonalisedImageTemplate(props) {
                     },
                 })
                 .then((response) => {
-                    console.log('Image upload successful:', response.data);
+                    //console.log('Image upload successful:', response.data);
                     setimageupload(response.data.h);
                     setuploadbtn(false);
                 })
@@ -88,11 +88,11 @@ function PersonalisedImageTemplate(props) {
         // handleUpload()
         setloading(true)
         axios.post(`${config.baseUrl}post_template/image/personalised?user_id=${userid}`, data, { headers: headers }).then((response) => {
-            console.log(response.data)
+            //console.log(response.data)
             setloading(false)
             props.setPersonalisedImageTemplate(false)
         }).catch((error) => {
-            // console.log(error)
+            //console.log(error)
             setloading(false)
 
         })

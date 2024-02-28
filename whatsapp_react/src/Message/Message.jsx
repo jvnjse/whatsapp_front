@@ -33,7 +33,7 @@ function Message() {
         const name = event.target.value;
         setSelect(name)
         setSelectedName(name);
-        // //console.log("ssss", templateData.components[indexOf[name]])
+        //console.log("ssss", templateData.components[indexOf[name]])
         const imageName = templateData.images.find((image) => image[name]);
         if (imageName) {
             setHeaderHandle(imageName[name] || '');
@@ -66,7 +66,7 @@ function Message() {
                 }
             });
             setApiurl2((prevApiurl2) => {
-                if (headerHandle != null) {
+                if (headerHandle !== "") {
                     return `${config.baseUrl}sent-messages/data/images?template_name=${name}&image_url=${headerHandle}&user_id=${userid}`;
                 } else {
                     return `${config.baseUrl}sent-messages/data/?template_name=${name}&user_id=${userid}`;
@@ -78,7 +78,9 @@ function Message() {
         }
     };
     const imageurl = config.imagebaseurl + headerHandle
-    console.log(apiurl1, "sss")
+    //console.log(apiurl1, "sss")
+
+    //console.log(imageurl)
 
     const headers = {
         'Content-Type': 'application/json',
@@ -98,7 +100,7 @@ function Message() {
         }
         try {
             const response = await axios.post(apiurl1, postData, { headers: headers });
-            console.log(response.data)
+            //console.log(response.data)
             setPhoneNumberInput('')
             setSuccessMessage(true)
             setTimeout(() => {
@@ -115,7 +117,7 @@ function Message() {
         setSuccessMessage(true)
         axios.post(apiurl2, data, { headers: headers })
             .then((response) => {
-                console.log(response.data)
+                //console.log(response.data)
                 setTimeout(() => {
                     setSuccessMessage(false);
                 }, 3000);
@@ -139,7 +141,7 @@ function Message() {
 
         axios.get(`${config.baseUrl}get_templates/?user_id=${userid}`, { headers: headers })
             .then((response) => {
-                console.log("gusgsh", response.data.data)
+                //console.log("gusgsh", response.data.data)
                 setTemplateData(response.data.data)
             })
             .catch((error) => {
@@ -148,7 +150,7 @@ function Message() {
     }, [])
 
     return (
-        <div className=' w-11/12 bg-[#ECE5DD] flex justify-between h-screen  rounded-2xl overflow-x-auto'>
+        <div className=' w-full bg-[#ECE5DD] flex justify-between h-screen  rounded-2xl overflow-x-auto'>
             <ToastContainer
                 position="top-left"
                 autoClose={2000}
@@ -164,7 +166,7 @@ function Message() {
             <div className='h-full'>
                 <WhatsappModule select={"sent-message"} />
             </div>
-            <div className='flex-1 p-5'>
+            <div className='flex-1 p-5 h-screen overflow-y-scroll'>
                 <div className=' text-[#0d291a] text-4xl font-bold select-none'>Send WhatsApp Message Templates</div>
                 <div className=' flex gap-10 mt-4'>
                     <div className={messagingbox ? 'cursor-pointer select-none py-1 px-2 text-lg bg-[#064A42] text-white rounded-md hover:shadow-xl' : 'cursor-pointer select-none py-1 px-2 text-lg bg-[white] rounded-md hover:shadow-xl'} onClick={() => { setMessagingbox(true) }}>Individual Messaging</div>
@@ -172,7 +174,7 @@ function Message() {
                 </div>
                 {messagingbox ?
                     <>
-                        <div className=' flex justify-between px-10 mt-7 max-md:flex-col-reverse max-lg:flex-col-reverse'>
+                        <div className=' flex justify-between px-10 mt-7 max-md:flex-col-reverse max-lg:flex-col-reverse max-sm:px-2'>
                             <div className=' flex flex-col gap-1 w-full'>
                                 <div className=' text-base font-semibold'>Add Numbers to Send Messages</div>
                                 <div className=' text-[10px] font-thin'>Separate Numbers with a Coma</div>
@@ -212,7 +214,7 @@ function Message() {
                         </div>
                     </> :
                     <>
-                        <div className='flex justify-between px-10 mt-7 max-md:flex-col-reverse max-lg:flex-col-reverse'>
+                        <div className='flex justify-between px-10 mt-7 max-md:flex-col-reverse max-lg:flex-col-reverse max-sm:px-2'>
                             <div className='flex flex-col w-full gap-1 pr-4'>
                                 <div className=' text-base font-semibold'>List of Numbers</div>
                                 <div className=' bg-white  flex flex-col gap-1 items-center p-3 overflow-y-scroll h-[400px]'>

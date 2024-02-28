@@ -90,7 +90,7 @@ function CreateTemplate(props) {
     }
     const CreateTemplateApi = (e) => {
         e.preventDefault()
-        // console.log(data(selectedOption).template_name)
+        //console.log(data(selectedOption).template_name)
         const inputvalues = data(selectedOption)
 
         if (inputvalues.templatename || inputvalues.headertext || inputvalues.bodytext || inputvalues.footertext || inputvalues.buttontext || inputvalues.buttoncontent == "") {
@@ -101,19 +101,19 @@ function CreateTemplate(props) {
         setloading(true)
         axios.post(apiUrl, data(selectedOption), { headers: headers })
             .then((response) => {
-                console.log(response.data)
+                //console.log(response.data)
                 ModalClose()
                 setloading(false)
             })
             .catch((error) => {
-                // console.log(error)
+                //console.log(error)
                 setloading(false)
 
             })
     }
 
 
-    // console.log("data", data(selectedOption))
+    //console.log("data", data(selectedOption))
     const handleOptionChange = (event) => {
         setSelectedOption(event.target.value);
     };

@@ -94,18 +94,18 @@ function Personalised(props) {
         setloading(true)
         axios.post(apiUrl, data(selectedOption), { headers: headers })
             .then((response) => {
-                // console.log(response.data)
+                //console.log(response.data)
                 ModalClose()
                 setloading(false)
             })
             .catch((error) => {
-                // console.log(error)
+                //console.log(error)
                 setloading(false)
             })
     }
 
 
-    // console.log("data", data(selectedOption))
+    //console.log("data", data(selectedOption))
     const handleOptionChange = (event) => {
         setSelectedOption(event.target.value);
     };
