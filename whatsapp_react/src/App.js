@@ -21,6 +21,7 @@ import AdminMessages from "./Admin/AdminMessages";
 import config from "./config";
 import axios from "axios";
 import AdminDistributors from "./Admin/AdminDistributors";
+import Flip from "./Newsletter/Flip";
 // import Loading from "./Loading/Loading";
 const Login = lazy(() => import("./Login/Login"));
 const Message = lazy(() => import("./Message/Message"));
@@ -76,6 +77,7 @@ function App() {
               element={<Landing accessToken={accessToken} isvalid={false} />}
             />{" "}
             <Route path="/plan-and-pricing" element={<Plan />} />
+            <Route path="/newsletter" element={<Flip/>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Router>
