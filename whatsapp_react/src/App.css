@@ -283,3 +283,15 @@ input[type="range"]:active::-moz-range-progress {
 input[type="range"]:disabled::-moz-range-thumb {
   cursor: not-allowed;
 }
+
+
+
+/* @media only screen and (max-width: 817px) {
+  .stf__block{
+    height: 600px !important 
+  
+  }
+  .stf__wrapper{
+    padding-bottom: 100px !important;
+  }
+} */

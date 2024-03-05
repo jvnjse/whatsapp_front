@@ -1,4 +1,5 @@
 import React, { useRef } from "react";
+import { Link } from "react-router-dom";
 import HTMLFlipBook from "react-pageflip";
 import page1 from "./assets/page1.jpg";
 import page2 from "./assets/page2.jpg";
@@ -13,17 +14,17 @@ import page10 from "./assets/page10.jpg";
 import page11 from "./assets/page11.jpg";
 import page12 from "./assets/page12.jpg";
 import logo from "../Icons/altoslogo.png";
-import { jwtDecode } from "jwt-decode";
-import Cookies from "js-cookie";
-import { Link } from "react-router-dom";
 
 import { GrNext, GrPrevious } from "react-icons/gr";
+import Cookies from "js-cookie";
+import { jwtDecode } from "jwt-decode";
 
 const Flip = () => {
   const accessToken = Cookies.get("accessToken");
   const is_distributor =
     accessToken && jwtDecode(accessToken).user_is_distributor;
   const is_staff = accessToken && jwtDecode(accessToken).user_is_staff;
+
   const bookRef = useRef(null);
 
   const nextButtonClick = () => {
@@ -35,7 +36,7 @@ const Flip = () => {
   };
 
   return (
-    <div className="flex flex-col overflow-hidden    bg-[#afd5be] w-screen ">
+    <div className="overflow-hidden bg-[#afd5be]">
       <div className="bg-[#083929] text-[#f0f0f0] flex justify-between px-16 py-4 max-sm:px-2 max-sm:text-sm">
         <div className=" px-5 w-[250px]">
           <img src={logo} alt="" className="w-full" />
@@ -73,16 +74,19 @@ const Flip = () => {
           </div>
         </div>
       </div>
-       {/* Flip book part */}
-      <div className="flex flex-col items-center mt-10 sm:mt-20 sm:p-10">
+      <div className="flex flex-col w-screen items-center justify-center h-screen overflow-hidden  my-10 ">
         <HTMLFlipBook
-          size="fixed"
           showCover={true}
           width={400}
-          height={650}
-          maxShadowOpacity={0.6}
+          height={600}
+          size="stretch"
+          minWidth={315}
+          maxWidth={400}
+          minHeight={300}
+          maxHeight={500}
+          // className="flip-book"
+          maxShadowOpacity={0.5}
           ref={bookRef}
-          className="mb-10 sm:mb-20"
         >
           <div className="page">
             <img src={page1} alt="Page 1" />
@@ -121,25 +125,21 @@ const Flip = () => {
             <img src={page12} alt="Page 3" />
           </div>
         </HTMLFlipBook>
-
-        <div className="flex justify-evenly items-center w-full">
+        <div className="flex mt-5">
           <button
-            className="transform -translate-y-1/2 text-5xl sm:text-8xl transition-transform duration-300 hover:scale-110 text-[#083929]"
+            className="text-8xl transition-transform duration-300 hover:scale-110 "
             onClick={prevButtonClick}
           >
             <GrPrevious />
           </button>
-
           <button
-            className="transform -translate-y-1/2 text-5xl sm:text-8xl transition-transform duration-300 hover:scale-110 text-[#083929]"
+            className="text-8xl transition-transform duration-300 hover:scale-110 "
             onClick={nextButtonClick}
           >
             <GrNext />
           </button>
         </div>
       </div>
-      {/* Flip book part */}
-
       <section>
         <div className="footer-2 bg-gray-800 pt-6 md:pt-12">
           <div className="container px-4 mx-auto">
@@ -206,6 +206,12 @@ const Flip = () => {
                         className="text-gray-400 py-1 block hover:underline"
                       >
                         Pricing Calculator
+                      </Link>
+                      <Link
+                        to="/newsletter"
+                        className="text-gray-400 py-1 block hover:underline"
+                      >
+                        Newsletter
                       </Link>
                     </div>
                   </div>
