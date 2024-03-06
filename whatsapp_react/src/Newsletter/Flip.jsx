@@ -1,18 +1,18 @@
 import React, { useRef } from "react";
 import { Link } from "react-router-dom";
 import HTMLFlipBook from "react-pageflip";
-import page1 from "./assets/page1.jpg";
-import page2 from "./assets/page2.jpg";
-import page3 from "./assets/page3.jpg";
-import page4 from "./assets/page4.jpg";
-import page5 from "./assets/page5.jpg";
-import page6 from "./assets/page6.jpg";
-import page7 from "./assets/page7.jpg";
-import page8 from "./assets/page8.jpg";
-import page9 from "./assets/page9.jpg";
-import page10 from "./assets/page10.jpg";
-import page11 from "./assets/page11.jpg";
-import page12 from "./assets/page12.jpg";
+import page1 from "./assets/page1.webp";
+import page2 from "./assets/page2.webp";
+import page3 from "./assets/page3.webp";
+import page4 from "./assets/page4.webp";
+import page5 from "./assets/page5.webp";
+import page6 from "./assets/page6.webp";
+import page7 from "./assets/page7.webp";
+import page8 from "./assets/page8.webp";
+import page9 from "./assets/page9.webp";
+import page10 from "./assets/page10.webp";
+import page11 from "./assets/page11.webp";
+import page12 from "./assets/page12.webp";
 import logo from "../Icons/altoslogo.png";
 
 import { GrNext, GrPrevious } from "react-icons/gr";
@@ -74,19 +74,20 @@ const Flip = () => {
           </div>
         </div>
       </div>
-      <div className="flex flex-col w-screen items-center justify-center h-screen overflow-hidden  my-10 ">
+      <div className="flex flex-col w-screen items-center justify-center h-screen overflow-hidden gap-7  my-10 ">
+        
         <HTMLFlipBook
           showCover={true}
-          width={400}
-          height={600}
+          width={500}
+          height={700}
           size="stretch"
           minWidth={315}
           maxWidth={400}
           minHeight={300}
           maxHeight={500}
-          // className="flip-book"
           maxShadowOpacity={0.5}
           ref={bookRef}
+          className="lg:right-48"
         >
           <div className="page">
             <img src={page1} alt="Page 1" />
@@ -125,15 +126,16 @@ const Flip = () => {
             <img src={page12} alt="Page 3" />
           </div>
         </HTMLFlipBook>
-        <div className="flex mt-5">
+     
+        <div className="flex mt-10">
           <button
-            className="text-8xl transition-transform duration-300 hover:scale-110 "
+            className="text-6xl transition-transform duration-300 hover:scale-110 "
             onClick={prevButtonClick}
           >
             <GrPrevious />
           </button>
           <button
-            className="text-8xl transition-transform duration-300 hover:scale-110 "
+            className="text-6xl transition-transform duration-300 hover:scale-110 "
             onClick={nextButtonClick}
           >
             <GrNext />
