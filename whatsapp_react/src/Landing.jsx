@@ -84,7 +84,7 @@ function Landing() {
         <div className="flex items-center gap-6 text-sm font-medium max-sm:text-xs max-sm:gap-0">
           <div>
             <button className="p-2 hover:text-[#1a4735] hover:bg-[#eaeeec] rounded-lg" onClick={handleNewsletter}>
-              <a href="">Newsletter</a>
+              Newsletter
             </button>
           </div>
           <div>

@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import HTMLFlipBook from "react-pageflip";
 import page1 from "./assets/page1.webp";
@@ -20,12 +20,16 @@ import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 
 const Flip = () => {
+  
+  
   const accessToken = Cookies.get("accessToken");
   const is_distributor =
     accessToken && jwtDecode(accessToken).user_is_distributor;
   const is_staff = accessToken && jwtDecode(accessToken).user_is_staff;
 
   const bookRef = useRef(null);
+  const [currentPage, setCurrentPage] = useState(0);
+  
 
   const nextButtonClick = () => {
     bookRef.current.pageFlip().flipNext();
@@ -33,6 +37,17 @@ const Flip = () => {
 
   const prevButtonClick = () => {
     bookRef.current.pageFlip().flipPrev();
+  };
+  const handlePageFlip = (pageIndex) => {
+    setCurrentPage(pageIndex);
+
+    if (pageIndex === 11) {
+      console.log("Page 12 is visible. Add your custom actions here.");
+     
+      setTimeout(() => {
+        bookRef.current.pageFlip().flip(0, { x: 48, y: 0 });
+      }, 0);
+    }
   };
 
   return (
@@ -75,7 +90,7 @@ const Flip = () => {
         </div>
       </div>
       <div className="flex flex-col w-screen items-center justify-center h-screen overflow-hidden gap-7  my-10 ">
-        
+        <div className="flex flex-col w-screen items-center justify-center h-screen overflow-hidden">
         <HTMLFlipBook
           showCover={true}
           width={500}
@@ -87,6 +102,7 @@ const Flip = () => {
           maxHeight={500}
           maxShadowOpacity={0.5}
           ref={bookRef}
+          onFlip={(e) => handlePageFlip(e.data)}
           className="lg:right-48"
         >
           <div className="page">
@@ -126,6 +142,7 @@ const Flip = () => {
             <img src={page12} alt="Page 3" />
           </div>
         </HTMLFlipBook>
+        </div>
      
         <div className="flex mt-10">
           <button
