@@ -275,7 +275,7 @@ function Upload() {
                                 <input type="file" id="excel-file" accept='.xlsx' className=' invisible' onChange={handleFileChange} />
                             </label>
 
-                            <div className='px-1 bg-[#064A42] text-white text-xs'>The excel sheets first row should contain phone numbers</div>
+                            <div className='px-1 bg-[#064A42] text-white text-xs'>The excel sheets first column should contain phone numbers</div>
                             <div onClick={handleSubmitExcelSent} className='select-none cursor-pointer flex justify-center items-center mt-4 bg-[#064A42] max-w-max text-white py-1 px-2 rounded-lg uppercase font-bold text-xs tracking-widest	'>
                                 <img className='h-6 object-contain' src={whatsapplogo} alt="" />
                                 &nbsp;Send Message
@@ -312,7 +312,7 @@ function Upload() {
                             <label htmlFor="excel-file" className='mt-3 excel-bg-1 bg-white h-36 text-center rounded-xl flex flex-col'>{excelfile ? fileName : ""}
                                 <input type="file" id="excel-file" accept='.xlsx' className=' invisible' onChange={handleFileChange} />
                             </label>
-                            <div className='px-1 bg-[#064A42] text-white text-xs'>The excel sheets first row should contain phone numbers</div>
+                            <div className='px-1 bg-[#064A42] text-white text-xs'>The excel sheets first column should contain phone numbers</div>
 
                             <div onClick={handleSubmitExcelUpload} className='select-none cursor-pointer flex justify-center items-center mt-4 bg-[#064A42] max-w-max text-white py-2 px-2 rounded-lg uppercase font-bold text-xs tracking-widest '>
                                 {/* <img className='h-6 object-contain' src={whatsapplogo} alt="" /> */}
@@ -327,7 +327,7 @@ function Upload() {
                             <label htmlFor="excel-file" className='mt-3 excel-bg-1 bg-white h-36 text-center rounded-xl flex flex-col'> {excelfile ? fileName : ""}
                                 <input type="file" id="excel-file" accept='.xlsx' className=' invisible' onChange={handleFileChange} />
                             </label>
-                            <div className='px-1 bg-[#064A42] text-white text-xs'>The excel sheets first row should contain names and second row should be phone numbers</div>
+                            <div className='px-1 bg-[#064A42] text-white text-xs'>The excel sheets first column should contain names and second column should be phone numbers</div>
                             <div onClick={handleSubmitExcelSentPersonalised} className='select-none cursor-pointer flex justify-center items-center mt-4 bg-[#064A42] max-w-max text-white py-1 px-2 rounded-lg uppercase font-bold text-xs tracking-widest	'>
                                 <img className='h-6 object-contain' src={whatsapplogo} alt="" />
                                 &nbsp;Send Message
