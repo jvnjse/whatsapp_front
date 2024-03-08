@@ -110,7 +110,7 @@ function Plan() {
                     <div className='bg-white p-4 px-16 flex flex-col items-center justify-between gap-3 rounded-xl pt-16 plan-box w-[300px]'>
                         <ul className='flex items-center flex-col whitespace-nowrap gap-2 text-xs'>
                             <span className='plan-icon text-center text-9xl text-[#205846]'><BsRocketTakeoffFill /></span>
-                            <div className=' text-2xl font-extrabold mt-5 whitespace-nowrap '>&#x20B9; 2999</div>
+                            <div className=' text-2xl font-extrabold mt-5 whitespace-nowrap '>&#x20B9; 3499</div>
                             <div className=' text-2xl font-bold  whitespace-nowrap '>Advanced Plan</div>
                             <li className='flex gap-2'><BsStars />Unlimited agent logins</li>
                             <li className='flex gap-2'><BsStars />Template message APIs</li>
