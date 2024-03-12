@@ -9,13 +9,17 @@ import WhatsappModule from '../WhatsappModule';
 import { jwtDecode } from 'jwt-decode';
 import Personalised from './Personalised';
 import PersonalisedImageTemplate from './PersonalisedImageTemplate';
+import TextTemplate from './TextTemplate';
+import ImageTemplateNoButton from './ImageTemplateNoButton';
 
 
 function Template() {
     const [templates, setTemplates] = useState([]);
     const [create_template, setCreateTemplate] = useState(false)
     const [textTemplate, settextTemplate] = useState(false)
+    const [normaltextTemplate, setnormaltextTemplate] = useState(false)
     const [imageTemplate, setimageTemplate] = useState(false)
+    const [imageTemplatenotbtn, setimageTemplatenotbtn] = useState(false)
     const [personalisedTemplate, setPersonalisedTemplate] = useState(false)
     const [personalisedImageTemplate, setPersonalisedImageTemplate] = useState(false)
     const [selectedTemplateName, setSelectedTemplateName] = useState('');
@@ -84,7 +88,7 @@ function Template() {
 
     useEffect(() => {
         GetTemplates()
-    }, [personalisedImageTemplate, textTemplate, personalisedTemplate, imageTemplate]);
+    }, [personalisedImageTemplate, textTemplate, personalisedTemplate, imageTemplate, normaltextTemplate, imageTemplatenotbtn]);
 
 
 
@@ -119,10 +123,18 @@ function Template() {
                         {create_template &&
                             <div className=' bg-white absolute z-10 top-2 right-2 rounded-lg' onClick={handleClick}>
                                 {basic_feature && <>
-                                    <li className='list-none border-b border-gray-500 text-center px-3 py-2 whitespace-nowrap select-none cursor-pointer hover:bg-slate-100' onClick={() => { settextTemplate(true) }}>Text Template</li>
+                                    <li className='list-none border-b border-gray-500 text-center px-3 py-2 whitespace-nowrap select-none cursor-pointer hover:bg-slate-100' onClick={() => { setnormaltextTemplate(true) }}>Text Template</li>
+                                    <li className='list-none border-b border-gray-500 text-center px-3 py-2 whitespace-nowrap select-none cursor-pointer hover:bg-slate-100' onMouseEnter={() => handleMouseEnter(4)}
+                                        onMouseLeave={handleMouseLeave}>Text Template with Button
+                                        {activeButton === 4 && <div className='absolute bg-[#0d291a] left-[-220px] text-white text-[12px] px-2 py-1 w-[220px] rounded-lg shadow-md'>Upgrade Plan to Avail </div>}
+                                    </li>
                                     <li className='list-none border-b border-gray-500 text-center px-3 py-2 whitespace-nowrap select-none cursor-pointer hover:bg-slate-100 relative' onMouseEnter={() => handleMouseEnter(1)}
                                         onMouseLeave={handleMouseLeave}>Image Template
                                         {activeButton === 1 && <div className='absolute bg-[#0d291a] left-[-220px] text-white text-[12px] px-2 py-1 w-[220px] rounded-lg shadow-md'>Upgrade Plan to Avail </div>}
+                                    </li>
+                                    <li className='list-none border-b border-gray-500 text-center px-3 py-2 whitespace-nowrap select-none cursor-pointer hover:bg-slate-100 relative' onMouseEnter={() => handleMouseEnter(5)}
+                                        onMouseLeave={handleMouseLeave}>Image Template with Button
+                                        {activeButton === 5 && <div className='absolute bg-[#0d291a] left-[-220px] text-white text-[12px] px-2 py-1 w-[220px] rounded-lg shadow-md'>Upgrade Plan to Avail </div>}
                                     </li>
                                     <li className='list-none border-b border-gray-500 text-center px-3 py-2 whitespace-nowrap select-none cursor-pointer hover:bg-slate-100 relative' onMouseEnter={() => handleMouseEnter(2)}
                                         onMouseLeave={handleMouseLeave}>Personalised Template
@@ -134,8 +146,10 @@ function Template() {
                                     </li>
                                 </>}
                                 {standard_feature && <>
-                                    <li className='list-none border-b border-gray-500 text-center px-3 py-2 whitespace-nowrap select-none cursor-pointer hover:bg-slate-100' onClick={() => { settextTemplate(true) }}>Text Template</li>
-                                    <li className='list-none border-b border-gray-500 text-center px-3 py-2 whitespace-nowrap select-none cursor-pointer hover:bg-slate-100' onClick={() => { setimageTemplate(true) }}>Image Template</li>
+                                    <li className='list-none border-b border-gray-500 text-center px-3 py-2 whitespace-nowrap select-none cursor-pointer hover:bg-slate-100' onClick={() => { setnormaltextTemplate(true) }}>Text Template</li>
+                                    <li className='list-none border-b border-gray-500 text-center px-3 py-2 whitespace-nowrap select-none cursor-pointer hover:bg-slate-100' onClick={() => { settextTemplate(true) }}>Text Template with Button</li>
+                                    <li className='list-none border-b border-gray-500 text-center px-3 py-2 whitespace-nowrap select-none cursor-pointer hover:bg-slate-100' onClick={() => { setimageTemplatenotbtn(true) }}>Image Template</li>
+                                    <li className='list-none border-b border-gray-500 text-center px-3 py-2 whitespace-nowrap select-none cursor-pointer hover:bg-slate-100' onClick={() => { setimageTemplate(true) }}>Image Template with Button</li>
                                     <li className='list-none border-b border-gray-500 text-center px-3 py-2 whitespace-nowrap select-none cursor-pointer hover:bg-slate-100 relative' onMouseEnter={() => handleMouseEnter(2)}
                                         onMouseLeave={handleMouseLeave}>Personalised Template
                                         {activeButton === 2 && <div className='absolute bg-[#0d291a] left-[-220px] text-white text-[12px] px-2 py-1 w-[220px] rounded-lg shadow-md'>Upgrade Plan to Avail </div>}
@@ -150,8 +164,10 @@ function Template() {
 
                                 {advanced_feature &&
                                     <>
-                                        <li className='list-none border-b border-gray-500 text-center px-3 py-2 whitespace-nowrap select-none cursor-pointer hover:bg-slate-100' onClick={() => { settextTemplate(true) }}>Text Template</li>
-                                        <li className='list-none border-b border-gray-500 text-center px-3 py-2 whitespace-nowrap select-none cursor-pointer hover:bg-slate-100' onClick={() => { setimageTemplate(true) }}>Image Template</li>
+                                        <li className='list-none border-b border-gray-500 text-center px-3 py-2 whitespace-nowrap select-none cursor-pointer hover:bg-slate-100' onClick={() => { setnormaltextTemplate(true) }}>Text Template</li>
+                                        <li className='list-none border-b border-gray-500 text-center px-3 py-2 whitespace-nowrap select-none cursor-pointer hover:bg-slate-100' onClick={() => { settextTemplate(true) }}>Text Template with Button</li>
+                                        <li className='list-none border-b border-gray-500 text-center px-3 py-2 whitespace-nowrap select-none cursor-pointer hover:bg-slate-100' onClick={() => { setimageTemplatenotbtn(true) }}>Image Template</li>
+                                        <li className='list-none border-b border-gray-500 text-center px-3 py-2 whitespace-nowrap select-none cursor-pointer hover:bg-slate-100' onClick={() => { setimageTemplate(true) }}>Image Template with button</li>
                                         <li className='list-none border-b border-gray-500 text-center px-3 py-2 whitespace-nowrap select-none cursor-pointer hover:bg-slate-100' onClick={() => { setPersonalisedTemplate(true) }}>Personalised Template</li>
                                         <li className='list-none border-b border-gray-500 text-center px-3 py-2 whitespace-nowrap select-none cursor-pointer hover:bg-slate-100' onClick={() => { setPersonalisedImageTemplate(true) }}>Personalised Image Template</li>
                                     </>
@@ -242,6 +258,11 @@ function Template() {
                     </table>
                 </div>
             </div>
+            {normaltextTemplate &&
+                <div className='absolute w-full h-full bg-black/30 top-0 left-0 flex justify-center items-center z-20' onClick={() => { setnormaltextTemplate(false) }} >
+                    <TextTemplate handleClick={handleClick} settextTemplate={setnormaltextTemplate} />
+                </div>
+            }
             {textTemplate &&
                 <div className='absolute w-full h-full bg-black/30 top-0 left-0 flex justify-center z-20' onClick={() => { settextTemplate(false) }} >
                     <CreateTemplate handleClick={handleClick} settextTemplate={settextTemplate} />
@@ -261,6 +282,12 @@ function Template() {
                 <div className='absolute w-full h-full bg-black/30 top-0 left-0 flex justify-center z-20 items-center' onClick={() => { setimageTemplate(false) }} >
                     {/* <CreateTemplate handleClick={handleClick} /> */}
                     <ImageTemplate handleClick={handleClick} setimageTemplate={setimageTemplate} />
+                </div>
+            }
+            {imageTemplatenotbtn &&
+                <div className='absolute w-full h-full bg-black/30 top-0 left-0 flex justify-center z-20 items-center' onClick={() => { setimageTemplatenotbtn(false) }} >
+                    {/* <CreateTemplate handleClick={handleClick} /> */}
+                    <ImageTemplateNoButton handleClick={handleClick} setimageTemplate={setimageTemplatenotbtn} />
                 </div>
             }
             {loading && <div className=' absolute w-full h-full top-0 left-0 flex justify-center z-20 items-center bg-black/40'>

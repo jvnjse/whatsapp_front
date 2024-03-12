@@ -52,8 +52,8 @@ function Plan() {
                   is_staff
                     ? "/admin/messages"
                     : is_distributor
-                    ? "/distributor/users"
-                    : "/messages"
+                      ? "/distributor/users"
+                      : "/messages"
                 }
               >
                 <button className="p-2 hover:text-[#1a4735] hover:bg-[#eaeeec] rounded-lg">
@@ -211,15 +211,15 @@ function Plan() {
                 Downloadable reports
               </li>
             </ul>
-           
-                            More Details
-                            <svg className="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
-                            </svg>
-                        </Link> */}
+
+            More Details
+            <svg className="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
+            </svg>
+
           </div>
         </div>
-      </section>
+      </section >
       <section
         id="calculator"
         className="flex flex-col justify-center items-center gap-7 w-full text-center bg-[#afd5be] py-10 px-28 max-sm:px-4"
@@ -385,7 +385,7 @@ function Plan() {
           </div>
         </div>
       </section>
-    </div>
+    </div >
   );
 }
 

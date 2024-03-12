@@ -26,7 +26,7 @@ function Landing() {
   const [issueDescription, setIssueDescription] = useState("");
   const navigate = useNavigate();
 
-  const handleNewsletter = () =>{
+  const handleNewsletter = () => {
     navigate("/newsletter")
   }
 
@@ -99,8 +99,8 @@ function Landing() {
                   is_staff
                     ? "/admin/messages"
                     : is_distributor
-                    ? "/distributor/users"
-                    : "/messages"
+                      ? "/distributor/users"
+                      : "/messages"
                 }
               >
                 <button className="p-2 hover:text-[#1a4735] hover:bg-[#eaeeec] rounded-lg">
@@ -144,8 +144,8 @@ function Landing() {
                   is_staff
                     ? "/admin/messages"
                     : is_distributor
-                    ? "/distributor/users"
-                    : "/messages"
+                      ? "/distributor/users"
+                      : "/messages"
                 }
               >
                 Go to Module
@@ -487,8 +487,8 @@ function Landing() {
                   value={selectedCode}
                   onChange={(e) => setSelectedCode(e.target.value)}
                 >
-                  <option value="+91" selected>
-                    IN&nbsp;&nbsp;+91
+                  <option hidden >
+                    Select Code
                   </option>
                   {options &&
                     options.map((i) => (

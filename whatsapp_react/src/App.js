@@ -18,8 +18,6 @@ import DistributorRoutes from "./Routes/DistributorRoutes";
 import DistributorPage from "./Distributor/DistributorPage";
 import UsersDistributor from "./Distributor/UserDistributor/UsersDistributor";
 import AdminMessages from "./Admin/AdminMessages";
-import config from "./config";
-import axios from "axios";
 import AdminDistributors from "./Admin/AdminDistributors";
 import Flip from "./Newsletter/Flip";
 
@@ -78,8 +76,7 @@ function App() {
               element={<Landing accessToken={accessToken} isvalid={false} />}
             />{" "}
             <Route path="/plan-and-pricing" element={<Plan />} />
-            <Route path="/newsletter" element={<Flip/>} />
-            
+            <Route path="/newsletter" element={<Flip />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Router>
