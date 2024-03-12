@@ -14,6 +14,7 @@ import page10 from "./assets/page10.webp";
 import page11 from "./assets/page11.webp";
 import page12 from "./assets/page12.webp";
 import logo from "../Icons/altoslogo.png";
+import pageFlipSound from "./assets/flip.mp3"
 
 import { GrNext, GrPrevious } from "react-icons/gr";
 import Cookies from "js-cookie";
@@ -29,6 +30,36 @@ const Flip = () => {
 
   const bookRef = useRef(null);
   const [currentPage, setCurrentPage] = useState(0);
+  const [is1024x1366, setIs1024x1366] = useState(
+    window.innerWidth === 1024 && window.innerHeight === 1366
+  );
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIs1024x1366(window.innerWidth === 1024 && window.innerHeight === 1366);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+
+
+  useEffect(() => {
+    const audio = new Audio(pageFlipSound);
+    audio.load();
+  }, [pageFlipSound]);
+
+ 
+
+  // Play page flip sound
+  const playPageFlipSound = () => {
+    const audio = new Audio(pageFlipSound);
+    audio.play();
+  };
   
 
   const nextButtonClick = () => {
@@ -49,6 +80,8 @@ const Flip = () => {
       }, 0);
     }
   };
+
+  // const is1024x1366Resolution = window.innerWidth === 1024 && window.innerHeight === 1366;
 
   return (
     <div className="overflow-hidden bg-[#afd5be]">
@@ -89,76 +122,78 @@ const Flip = () => {
           </div>
         </div>
       </div>
-      <div className="flex flex-col w-screen items-center justify-center h-screen overflow-hidden gap-7  my-10 ">
-        <div className="flex flex-col w-screen items-center justify-center h-screen overflow-hidden">
-        <HTMLFlipBook
-          showCover={true}
-          width={500}
-          height={700}
-          size="stretch"
-          minWidth={315}
-          maxWidth={400}
-          minHeight={300}
-          maxHeight={500}
-          maxShadowOpacity={0.5}
-          ref={bookRef}
-          onFlip={(e) => handlePageFlip(e.data)}
-          className="lg:right-48"
+      <div className="flex w-screen items-center justify-center h-screen overflow-hidden gap-72 ">
+      <button
+          className="text-5xl transition-transform duration-300 hidden lg:inline text-white h-24 hover:bg-black hover:bg-opacity-60 hover:scale-110"
+          onClick={prevButtonClick}
         >
-          <div className="page">
-            <img src={page1} alt="Page 1" />
-          </div>
-          <div className="page">
-            <img src={page2} alt="Page 2" />
-          </div>
-          <div className="page">
-            <img src={page3} alt="Page 3" />
-          </div>
-          <div className="page">
-            <img src={page4} alt="Page 3" />
-          </div>
-          <div className="page">
-            <img src={page5} alt="Page 3" />
-          </div>
-          <div className="page">
-            <img src={page6} alt="Page 3" />
-          </div>
-          <div className="page">
-            <img src={page7} alt="Page 3" />
-          </div>
-          <div className="page">
-            <img src={page8} alt="Page 3" />
-          </div>
-          <div className="page">
-            <img src={page9} alt="Page 3" />
-          </div>
-          <div className="page">
-            <img src={page10} alt="Page 3" />
-          </div>
-          <div className="page">
-            <img src={page11} alt="Page 3" />
-          </div>
-          <div className="page">
-            <img src={page12} alt="Page 3" />
-          </div>
-        </HTMLFlipBook>
+          <GrPrevious />
+        </button>
+      <HTMLFlipBook
+        showCover={true}
+        width={400}
+        height={600}
+        size="stretch"
+        minWidth={250}
+        maxWidth={1024}
+        minHeight={400}
+        maxHeight={600}
+        maxShadowOpacity={0.5}
+        ref={bookRef}
+        onFlip={(e) => {
+          handlePageFlip(e.data);
+          playPageFlipSound();
+        }}
+        className="lg:right-48"
+      >
+        <div className="page">
+          <img src={page1} alt="Page 1" />
         </div>
-     
-        <div className="flex mt-10">
-          <button
-            className="text-6xl transition-transform duration-300 hover:scale-110 "
-            onClick={prevButtonClick}
-          >
-            <GrPrevious />
-          </button>
-          <button
-            className="text-6xl transition-transform duration-300 hover:scale-110 "
-            onClick={nextButtonClick}
-          >
-            <GrNext />
-          </button>
+        <div className="page">
+          <img src={page2} alt="Page 2" />
         </div>
-      </div>
+        <div className="page">
+          <img src={page3} alt="Page 3" />
+        </div>
+        <div className="page">
+          <img src={page4} alt="Page 3" />
+        </div>
+        <div className="page">
+          <img src={page5} alt="Page 3" />
+        </div>
+        <div className="page">
+          <img src={page6} alt="Page 3" />
+        </div>
+        <div className="page">
+          <img src={page7} alt="Page 3" />
+        </div>
+        <div className="page">
+          <img src={page8} alt="Page 3" />
+        </div>
+        <div className="page">
+          <img src={page9} alt="Page 3" />
+        </div>
+        <div className="page">
+          <img src={page10} alt="Page 3" />
+        </div>
+        <div className="page">
+          <img src={page11} alt="Page 3" />
+        </div>
+        <div className="page">
+          <img src={page12} alt="Page 3" />
+        </div>
+      </HTMLFlipBook>
+      
+       
+        <button
+           className="text-5xl transition-transform duration-300 hidden lg:inline text-white h-24 hover:bg-black hover:bg-opacity-60 hover:scale-110"
+          onClick={nextButtonClick}
+        >
+          <GrNext />
+        </button>
+       
+
+    </div>
       <section>
         <div className="footer-2 bg-gray-800 pt-6 md:pt-12">
           <div className="container px-4 mx-auto">
