@@ -285,8 +285,6 @@ input[type="range"]:disabled::-moz-range-thumb {
   cursor: not-allowed;
 }
 
-
-
 /* @media only screen and (max-width: 817px) {
   .stf__block{
     height: 600px !important 
@@ -300,6 +298,7 @@ input[type="range"]:disabled::-moz-range-thumb {
 /* .stf__wrapper {
   overflow:hidden
 } */
+
 
 @media (min-width: 1024px)  {
 
@@ -338,3 +337,4 @@ input[type="range"]:disabled::-moz-range-thumb {
     display: none;
   }
 }
+

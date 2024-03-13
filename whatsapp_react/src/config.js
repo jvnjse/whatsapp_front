@@ -1,8 +1,8 @@
 const config = {
-  // baseUrl: "https://altosconnectweb.com/",
-  // imagebaseurl: "https://altosconnectweb.com",
-  baseUrl: "https://deltacare247ltd.co.uk/",
-  imagebaseurl: "https://deltacare247ltd.co.uk",
+  // baseUrl: "https://altosconnectonline.com/",
+  // imagebaseurl: "https://altosconnectonline.com",
+  baseUrl: " http://127.0.0.1:8000/",
+  imagebaseurl: "http://127.0.0.1:8000",
 };
 
 export default config;
