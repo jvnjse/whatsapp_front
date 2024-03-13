@@ -4,7 +4,7 @@ import config from '../config'
 import axios from 'axios'
 import Cookies from "js-cookie";
 
-function AdminMessages() {
+function AdminPurchases() {
     const [messages, setMessages] = useState()
     const accessToken = Cookies.get("accessToken")
 
@@ -95,4 +95,4 @@ function AdminMessages() {
     )
 }
 
-export default AdminMessages
+export default AdminPurchases

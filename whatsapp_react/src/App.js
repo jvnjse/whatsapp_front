@@ -55,6 +55,7 @@ function App() {
                 element={<AdminDistributors />}
               />
               <Route path="/admin/contact" element={<AdminMessages />} />
+              <Route path="/admin/purchases" element={<AdminMessages />} />
             </Route>
             <Route element={<DistributorRoutes />}>
               <Route path="/distributor/users" element={<UsersDistributor />} />

@@ -142,7 +142,7 @@ function WhatsappModule(props) {
                         {notifications && <div className='absolute text-black bg-white w-[300px] rounded-lg text-base p-2'>
                             <h1 className='text-center bg-slate-200'>Notifications</h1>
 
-                            {notdata && notdata.map((notification) => (<div className='text-xs border border-slate-900 font-semibold'>{notification.notification}</div>))}
+                            {notdata && notdata.map((notification) => (<div className='text-xs border border-slate-900 font-semibold px-2'>{notification.notification}</div>))}
                         </div>}
                     </div>
                 </div>

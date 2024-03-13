@@ -70,6 +70,11 @@ function AdminWhatsappModule(props) {
                             <span className='px-10'>Enquiries</span>
                         </Link>
                     </li>
+                    <li onClick={() => handleLinkClick('admin_purchases')}>
+                        <Link to="/admin/purchases" className={activeComponent === 'admin_purchases' ? "text-[#064A42] bg-[#ECE5DD] flex items-center space-x-3 p-2 whitespace-nowrap" : " whitespace-nowrap flex items-center space-x-3 p-2 text-white  rounded-md font-thin hover:bg-[#ECE5DD] hover:text-[#064A42]"}>
+                            <span className='px-10'>Purchases</span>
+                        </Link>
+                    </li>
                     {/* 
                 <li onClick={() => handleLinkClick('template')}>
                     <Link to="/template" className={activeComponent === 'template' ? "text-[#064A42] bg-[#ECE5DD] flex items-center space-x-3 p-2 whitespace-nowrap" : " whitespace-nowrap flex items-center space-x-3 p-2 text-white  rounded-md font-thin hover:bg-[#ECE5DD] hover:text-[#064A42]"}>
