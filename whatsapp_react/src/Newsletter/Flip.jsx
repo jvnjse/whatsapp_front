@@ -30,21 +30,7 @@ const Flip = () => {
 
   const bookRef = useRef(null);
   const [currentPage, setCurrentPage] = useState(0);
-  const [is1024x1366, setIs1024x1366] = useState(
-    window.innerWidth === 1024 && window.innerHeight === 1366
-  );
 
-  useEffect(() => {
-    const handleResize = () => {
-      setIs1024x1366(window.innerWidth === 1024 && window.innerHeight === 1366);
-    };
-
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
 
 
 
@@ -122,9 +108,9 @@ const Flip = () => {
           </div>
         </div>
       </div>
-      <div className="flex w-screen items-center justify-center h-screen overflow-hidden gap-72 ">
+      <div className="flex w-screen items-center justify-center my-3 overflow-hidden gap-72 ">
       <button
-          className="text-5xl transition-transform duration-300 hidden lg:inline text-white h-24 hover:bg-black hover:bg-opacity-60 hover:scale-110"
+          className="text-5xl btn-flip transition-transform duration-300  text-white h-24 hover:bg-black hover:bg-opacity-60 hover:scale-110"
           onClick={prevButtonClick}
         >
           <GrPrevious />
@@ -135,7 +121,7 @@ const Flip = () => {
         height={600}
         size="stretch"
         minWidth={250}
-        maxWidth={1024}
+        maxWidth={400}
         minHeight={400}
         maxHeight={600}
         maxShadowOpacity={0.5}
@@ -144,7 +130,8 @@ const Flip = () => {
           handlePageFlip(e.data);
           playPageFlipSound();
         }}
-        className="lg:right-48"
+        className="flipbook"
+        
       >
         <div className="page">
           <img src={page1} alt="Page 1" />
@@ -186,14 +173,28 @@ const Flip = () => {
       
        
         <button
-           className="text-5xl transition-transform duration-300 hidden lg:inline text-white h-24 hover:bg-black hover:bg-opacity-60 hover:scale-110"
+           className="text-5xl btn-flip transition-transform duration-300  text-white h-24 hover:bg-black hover:bg-opacity-60 hover:scale-110"
+          onClick={nextButtonClick}
+        >
+          <GrNext />
+        </button>       
+    </div>
+    <div className="flex justify-center btn-lg mb-2">
+        <button
+          className="text-5xl transition-transform duration-300  text-white h-24 hover:bg-black hover:bg-opacity-60 hover:scale-110"
+          onClick={prevButtonClick}
+        >
+          <GrPrevious />
+        </button>
+        
+        <button
+           className="text-5xl transition-transform duration-300  text-white h-24 hover:bg-black hover:bg-opacity-60 hover:scale-110"
           onClick={nextButtonClick}
         >
           <GrNext />
         </button>
-       
 
-    </div>
+        </div>
       <section>
         <div className="footer-2 bg-gray-800 pt-6 md:pt-12">
           <div className="container px-4 mx-auto">
