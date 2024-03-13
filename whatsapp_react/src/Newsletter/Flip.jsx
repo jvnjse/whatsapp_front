@@ -39,33 +39,59 @@ const Flip = () => {
     audio.load();
   }, [pageFlipSound]);
 
- 
+  function playSound(pageIndex) {
+    return new Promise((resolve, reject) => {
+        const audio = new Audio(pageFlipSound);
+        audio.play();
+        audio.onended = () => {
+            console.log("Sound finished playing.");
+            setCurrentPage(pageIndex); // Set current page after sound finishes
+            console.log("above if in handlepageflip");
 
+            if (pageIndex === 11) {
+                console.log("Page 12 is visible. Add your custom actions here.");
+                setTimeout(() => {
+                    bookRef.current.pageFlip().flip(0, { x: 48, y: 0 }); // Flip page after sound finishes
+                }, 0);
+            }
+
+            resolve(); // Resolve the promise after all actions are completed
+        };
+        audio.onerror = (error) => {
+            reject(error); // Reject the promise if there's an error
+        };
+        
+    });
+}
   // Play page flip sound
-  const playPageFlipSound = () => {
-    const audio = new Audio(pageFlipSound);
-    audio.play();
-  };
+  // const playPageFlipSound = () => {
+  //   const audio = new Audio(pageFlipSound);
+  //   audio.play();
+  // };
   
 
   const nextButtonClick = () => {
+    
     bookRef.current.pageFlip().flipNext();
   };
 
   const prevButtonClick = () => {
+    
     bookRef.current.pageFlip().flipPrev();
+    
   };
-  const handlePageFlip = (pageIndex) => {
-    setCurrentPage(pageIndex);
+  // const handlePageFlip = (pageIndex) => {
+  //   setCurrentPage(pageIndex);
+  //   console.log("above if in handlepageflip");
 
-    if (pageIndex === 11) {
-      console.log("Page 12 is visible. Add your custom actions here.");
+  //   if (pageIndex === 11) {
+  //     console.log("Page 12 is visible. Add your custom actions here.");
      
-      setTimeout(() => {
-        bookRef.current.pageFlip().flip(0, { x: 48, y: 0 });
-      }, 0);
-    }
-  };
+  //     setTimeout(() => {
+  //       bookRef.current.pageFlip().flip(0, { x: 48, y: 0 });
+  //     }, 0);
+  //   }
+  // };
 
   // const is1024x1366Resolution = window.innerWidth === 1024 && window.innerHeight === 1366;
 
@@ -127,8 +153,8 @@ const Flip = () => {
         maxShadowOpacity={0.5}
         ref={bookRef}
         onFlip={(e) => {
-          handlePageFlip(e.data);
-          playPageFlipSound();
+          playSound(e.data)
+
         }}
         className="flipbook"
         
