@@ -6,6 +6,80 @@ import config from '../config';
 import WhatsappModule from '../WhatsappModule';
 import { jwtDecode } from 'jwt-decode';
 
+
+
+function Plan() {
+    const [plan, setPlan] = useState('');
+    const [startedDate, setStartedDate] = useState(new Date().toISOString().split('T')[0]);
+    const [image, setImage] = useState(null);
+    const accessToken = Cookies.get("accessToken")
+    const userid = jwtDecode(accessToken).user_id;
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        try {
+            const formData = new FormData();
+            formData.append('user', userid);
+            formData.append('plan', plan);
+            formData.append('started_date', startedDate);
+            formData.append('image', image);
+
+            const response = await axios.post(`${config.baseUrl}plan-purchases/`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+
+            console.log('Plan purchase created:', response.data);
+            setImage("")
+            setPlan("")
+            // Handle success, e.g., redirect to another page or show a success message
+        } catch (error) {
+            console.error('Error creating plan purchase:', error);
+            // Handle error, e.g., display error message to the user
+        }
+    };
+    return (
+        <>
+            <div className=' text-[#0d291a] text-4xl font-bold select-none mt-3'>Submit Purchase Details</div>
+
+            <form onSubmit={handleSubmit} className='pt-5 flex flex-col gap-4 w-7/12'>
+                {/* <input
+                type="text"
+                placeholder="Plan"
+                value={plan}
+                onChange={(e) => setPlan(e.target.value)}
+            /> */}
+                <label className=' flex flex-col' htmlFor='plan'>
+
+                    <select id='plan' onChange={(e) => setPlan(e.target.value)} className="text-black bg-white px-3 py-2 transition-all cursor-pointer hover:border-blue-600/30 border border-gray-200 rounded-lg outline-blue-600/50 appearance-none invalid:text-black/30 w-64">
+                        <option value="" hidden>Choose a Plan</option>
+                        <option value="Basic Plan">Basic Plan</option>
+                        <option value="Standard Plan">Standard Plan</option>
+                        <option value="Advanced Plan">Advanced Plan</option>
+                    </select>
+                </label>
+
+                <label className=' flex flex-col p-2 rounded-md bg-green-500/50 gap-2 font-semibold' htmlFor='file-plan'>
+                    Attach screenshot of payment done
+                    <input
+                        type="file"
+                        id='file-plan'
+                        onChange={(e) => setImage(e.target.files[0])}
+                    />
+
+                </label>
+                <button type="submit" className=' p-2 bg-[#0d291a] text-white w-min whitespace-nowrap rounded-lg self-start'>Submit</button>
+            </form>
+        </>
+    )
+}
+
+
+
+
+
 function Mange() {
     const [phid, setPhid] = useState()
     const [whid, setWhid] = useState()
@@ -102,6 +176,7 @@ function Mange() {
                     </label>
                     <button className=' p-2 bg-[#0d291a] text-white w-min whitespace-nowrap rounded-lg self-end'>Submit Credentials</button>
                 </form>
+                <Plan />
             </div>
             {loading && <div className=' absolute w-full h-full top-0 flex justify-center items-center bg-black/40'>
                 <svg className='animate-spin' width="100px" height="100px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

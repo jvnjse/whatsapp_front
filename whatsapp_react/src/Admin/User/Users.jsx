@@ -6,6 +6,7 @@ import axios from 'axios';
 
 function Users() {
     const [userdata, setuserdata] = useState()
+    const [trialuserdata, settrialuserdata] = useState()
     const [userpopup, setUserpopup] = useState()
     const [userdetail, setUserdetail] = useState()
     const [selectedUserId, setSelectedUserId] = useState(null);
@@ -28,6 +29,7 @@ function Users() {
         axios.get(`${config.baseUrl}users/`, { headers: headers })
             .then((response) => {
                 setuserdata(response.data.staff_users)
+                settrialuserdata(response.data.trial_users)
                 //console.log(response.data)
             })
             .catch((error) => {
@@ -39,7 +41,7 @@ function Users() {
             .then((response) => {
                 setUserdetail(response.data)
                 setUserfeatures(response.data)
-                //console.log(response.data, "gdgjgjhg")
+                console.log(response.data, "gdgjgjhg")
             })
             .catch((error) => {
                 //console.log(error)
@@ -171,6 +173,20 @@ function Users() {
                                 <div className="dot absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition"></div>
                             </div>
                         </label>
+                        <label htmlFor="toggleTrial" className="flex justify-between items-center  cursor-pointer  p-3 rounded-xl">
+                            <div className='font-semibold text-3xl py-4'>Trial User</div>
+                            <div className="relative">
+                                <input
+                                    type="checkbox"
+                                    id="toggleTrial"
+                                    className="sr-only"
+                                    checked={userfeatures.trial_user}
+                                    onChange={() => handleFeatureToggle('trial_user')}
+                                />
+                                <div className="block bg-gray-500 w-14 h-8 rounded-full back-check"></div>
+                                <div className="dot absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition"></div>
+                            </div>
+                        </label>
 
                     </div>}
                 </div>
@@ -187,7 +203,7 @@ function Users() {
                     <AdminWhatsappModule select={"admin_users"} />
                 </div>
                 <div className='flex-1 p-5  h-screen overflow-y-scroll'>
-                    <div className=' text-3xl font-bold'>Clients</div>
+                    <div className=' text-3xl font-bold bg-[#446649] px-2 text-white'> Clients</div>
 
                     <div className='flex flex-wrap gap-4 pt-2'>
                         {userdata && userdata.map((user) => (
@@ -216,8 +232,37 @@ function Users() {
                         </div>
                         }
                     </div>
+                    <div className=' text-3xl font-bold mt-5 bg-[#446649] px-2 text-white'>Trial Clients</div>
+
+                    <div className='flex flex-wrap gap-4 pt-2'>
+                        {trialuserdata && trialuserdata.map((user) => (
+                            <>
+                                {/* <div key={user.id} className='bg-white p-2 rounded-sm flex flex-col'>
+                <div className='font-semibold'>{user.email}</div>
+                <div className='text-sm bg-[#064A42] max-w-max text-white px-2 rounded-md cursor-pointer select-none self-end border border-[#064A42] hover:text-[#064A42] hover:bg-white'
+                    onClick={() => { HandleUserDetails(user.id) }}
+                >more details</div>
+            </div> */}
+                                <div key={user.id} className="flex flex-col bg-[#fcfcfc] p-3  whitespace-nowrap rounded-xl w-[400px]">
+                                    <div className=' font-semibold'>Name: {user.first_name} {user.last_name}</div>
+                                    <div className=' font-semibold'>Company: {user.company_name}</div>
+                                    <div className=' font-semibold'>Email: {user.email}</div>
+                                    <div className=' font-semibold'>Phone: {user.phone}</div>
+                                    <div className='text-sm bg-[#064A42] max-w-max text-white px-2 rounded-md cursor-pointer select-none self-end border border-[#064A42] hover:text-[#064A42] hover:bg-white'
+                                        onClick={() => { HandleUserDetails(user.id) }}
+                                    >more details</div>
+                                </div>
+
+                            </>
+                        ))}
+
+                    </div>
+
 
                 </div>
+
+
+
             </div>
         </>
     )
