@@ -5,6 +5,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Questrial&display=swap");
 
+
 * {
   font-family: "Montserrat", sans-serif;
 }
@@ -297,3 +298,43 @@ input[type="range"]:disabled::-moz-range-thumb {
 /* .stf__wrapper {
   overflow:hidden
 } */
+
+
+@media (min-width: 1024px)  {
+
+  .flipbook {
+    /* right: 0 !important;  */
+    right: 12rem;
+  }
+  .btn-flip {
+    display: block;
+  }
+  .btn-lg{
+    display: none;
+  }
+}
+
+@media (max-width: 1024px)  {
+
+  .flipbook {
+    right: 0 !important; 
+  }
+  .btn-flip {
+    display: none;
+  }
+  .btn-lg{
+    display: flex;
+  }
+}
+
+@media (max-width: 1024px) and (max-height: 600px) {
+  .flipbook {
+    /* right: 0 !important;  */
+    margin-top: 3% !important;
+  }
+
+  .btn-flip{
+    display: none;
+  }
+}
+
