@@ -41,11 +41,7 @@ const Flip = () => {
 
   function playSound(pageIndex) {
     return new Promise((resolve, reject) => {
-        const audio = new Audio(pageFlipSound);
-        audio.play();
-        audio.onended = () => {
-            console.log("Sound finished playing.");
-            setCurrentPage(pageIndex); // Set current page after sound finishes
+      setCurrentPage(pageIndex); // Set current page after sound finishes
             console.log("above if in handlepageflip");
 
             if (pageIndex === 11) {
@@ -54,6 +50,11 @@ const Flip = () => {
                     bookRef.current.pageFlip().flip(0, { x: 48, y: 0 }); // Flip page after sound finishes
                 }, 0);
             }
+        const audio = new Audio(pageFlipSound);
+        audio.play();
+        audio.onended = () => {
+            console.log("Sound finished playing.");
+            
 
             resolve(); // Resolve the promise after all actions are completed
         };
