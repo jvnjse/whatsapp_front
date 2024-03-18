@@ -72,7 +72,7 @@ function WhatsappModule(props) {
             })
             .catch((error) => {
                 //console.log(error.response.data)
-                // setErrorManage(true)
+                setErrorManage(true)
                 if (error.response.data.access === "added-not-valid") {
                     setBusinessId(error.response.data.message.business_id)
                     setPhonenumberId(error.response.data.message.phone_number_id)
@@ -85,10 +85,26 @@ function WhatsappModule(props) {
 
             })
     }
+
+    function CheckNotifications() {
+        axios
+            .get(`${config.baseUrl}check/notifications/?userid=${userid}`)
+            .then((response) => {
+                console.log("gusgsh", response.data);
+                setnotifications(response.data.unread)
+
+
+
+            })
+            .catch((error) => {
+                console.log(error.response.data);
+
+            });
+    }
     useEffect(() => {
         CheckToken();
         CheckNotifications()
-        // CredValidate()
+        CredValidate()
         // if (access) {
         //     setSidebar(true)
         //     localStorage.setItem('sidebar', true)
@@ -111,19 +127,6 @@ function WhatsappModule(props) {
                 }
             });
     }
-    function CheckNotifications() {
-        axios
-            .get(`${config.baseUrl}check/notifications/?userid=${userid}`)
-            .then((response) => {
-                console.log("gusgsh", response.data);
-                setnotdata(response.data)
-
-            })
-            .catch((error) => {
-                console.log(error.response.data);
-
-            });
-    }
 
 
 
@@ -136,15 +139,7 @@ function WhatsappModule(props) {
 
                         <img src={logo} alt="" className='object-contain w-full' />
                     </Link>
-                    <div className='absolute -bottom-4 left-[200px] text-3xl text-white ' onMouseEnter={() => { setnotifications(true) }} onMouseLeave={() => { setnotifications(false) }}>
-                        <IoMdNotifications />
 
-                        {notifications && <div className='absolute text-black bg-white w-[300px] rounded-lg text-base p-2'>
-                            <h1 className='text-center bg-slate-200'>Notifications</h1>
-
-                            {notdata && notdata.map((notification) => (<div className='text-xs border border-slate-900 font-semibold px-2'>{notification.notification}</div>))}
-                        </div>}
-                    </div>
                 </div>
                 <ul className="space-y-2 text-base font-thin pt-8 select-none">
                     <li onClick={() => handleLinkClick('sent-message')} >
@@ -174,7 +169,16 @@ function WhatsappModule(props) {
 
                     <li onClick={() => handleLinkClick('manage')}>
                         <Link to="/manage" className={activeComponent === 'manage' ? "text-[#064A42] bg-[#ECE5DD] flex items-center space-x-3 p-2 whitespace-nowrap" : " whitespace-nowrap flex items-center space-x-3 p-2 text-white  rounded-md font-thin hover:bg-[#ECE5DD] hover:text-[#064A42]"}>
-                            <span className='px-10'>Manage</span>
+                            <span class="px-10">Manage</span>
+                        </Link>
+                    </li>
+                    <li onClick={() => handleLinkClick('notifications')}>
+                        <Link to="/notifications" className={activeComponent === 'notifications' ? "text-[#064A42] bg-[#ECE5DD] flex items-center space-x-3 p-2 whitespace-nowrap" : " whitespace-nowrap flex items-center space-x-3 p-2 text-white  rounded-md font-thin hover:bg-[#ECE5DD] hover:text-[#064A42]"}>
+                            <span className='px-10 relative'>Notifications   {notifications && notifications.length >= 1 && <span class="absolute top-0 right-0 bg-[#ECE5DD] text-[#064A42] rounded-full px-2 py-1 text-xs">
+                                <div>{notifications.length}</div>
+                            </span>}
+                            </span>
+                            {/* {props.notificationlength} */}
                         </Link>
                     </li>
                     <li onClick={Logout}>

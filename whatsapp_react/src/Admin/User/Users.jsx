@@ -30,7 +30,7 @@ function Users() {
             .then((response) => {
                 setuserdata(response.data.staff_users)
                 settrialuserdata(response.data.trial_users)
-                //console.log(response.data)
+                console.log(response.data)
             })
             .catch((error) => {
                 //console.log(error)
@@ -81,6 +81,7 @@ function Users() {
                 .then((response) => {
                     // setUserfeatures(response.data);
                     //console.log(response.data, "ddd");
+                    // Getusers()
                 })
                 .catch((error) => {
                     //console.log(error);
@@ -94,8 +95,8 @@ function Users() {
 
 
         return (
-            <div className='absolute w-screen h-screen top-0 left-0 bg-black/10 flex justify-center items-center '
-                onClick={() => { setUserpopup(false); }} >
+            <div className='absolute z-30 w-screen h-screen top-0 left-0 bg-black/10 flex justify-center items-center '
+                onClick={() => { setUserpopup(false); Getusers() }} >
                 <div className='bg-white w-10/12 h-[80%] rounded-lg p-4' onClick={(event) => { event.stopPropagation(); }}>
                     <div className='text-xl font-bold'>User Details</div>
                     {userdetail && <div className='bg-white p-2 rounded-sm flex flex-col h-full'>
@@ -214,7 +215,7 @@ function Users() {
                                         onClick={() => { HandleUserDetails(user.id) }}
                                     >more details</div>
                                 </div> */}
-                                <div key={user.id} className="flex flex-col bg-[#fcfcfc] p-3  whitespace-nowrap rounded-xl w-[400px]">
+                                <div key={user.id} className="flex flex-col bg-[#fcfcfc] p-3  whitespace-nowrap rounded-xl w-[400px] relative">
                                     <div className=' font-semibold'>Name: {user.first_name} {user.last_name}</div>
                                     <div className=' font-semibold'>Company: {user.company_name}</div>
                                     <div className=' font-semibold'>Email: {user.email}</div>
@@ -222,6 +223,13 @@ function Users() {
                                     <div className='text-sm bg-[#064A42] max-w-max text-white px-2 rounded-md cursor-pointer select-none self-end border border-[#064A42] hover:text-[#064A42] hover:bg-white'
                                         onClick={() => { HandleUserDetails(user.id) }}
                                     >more details</div>
+                                    <span className="absolute top-2 right-2">
+                                        <UserFeatures
+                                            basicFeature={user.basic_feature}
+                                            standardFeature={user.standard_feature}
+                                            advancedFeature={user.advanced_feature} />
+                                    </span>
+
                                 </div>
 
                             </>
@@ -243,7 +251,7 @@ function Users() {
                     onClick={() => { HandleUserDetails(user.id) }}
                 >more details</div>
             </div> */}
-                                <div key={user.id} className="flex flex-col bg-[#fcfcfc] p-3  whitespace-nowrap rounded-xl w-[400px]">
+                                <div key={user.id} className="flex flex-col bg-[#fcfcfc] p-3  whitespace-nowrap rounded-xl w-[400px] relative">
                                     <div className=' font-semibold'>Name: {user.first_name} {user.last_name}</div>
                                     <div className=' font-semibold'>Company: {user.company_name}</div>
                                     <div className=' font-semibold'>Email: {user.email}</div>
@@ -251,6 +259,12 @@ function Users() {
                                     <div className='text-sm bg-[#064A42] max-w-max text-white px-2 rounded-md cursor-pointer select-none self-end border border-[#064A42] hover:text-[#064A42] hover:bg-white'
                                         onClick={() => { HandleUserDetails(user.id) }}
                                     >more details</div>
+                                    <span className="absolute top-2 right-2">
+                                        <UserFeatures
+                                            basicFeature={user.basic_feature}
+                                            standardFeature={user.standard_feature}
+                                            advancedFeature={user.advanced_feature} />
+                                    </span>
                                 </div>
 
                             </>
@@ -269,3 +283,24 @@ function Users() {
 }
 
 export default Users
+const UserFeatures = ({ basicFeature, standardFeature, advancedFeature }) => {
+    return (
+        <div className="flex justify-around text-xs">
+            {basicFeature && (
+                <div className="bg-green-200 px-3 py-1 rounded-lg">
+                    Basic
+                </div>
+            )}
+            {standardFeature && (
+                <div className="bg-blue-200 px-3 py-1 rounded-lg">
+                    Standard
+                </div>
+            )}
+            {advancedFeature && (
+                <div className="bg-yellow-200 px-3 py-1 rounded-lg">
+                    Advanced
+                </div>
+            )}
+        </div>
+    );
+};

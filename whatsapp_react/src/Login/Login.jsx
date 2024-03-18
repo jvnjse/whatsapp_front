@@ -126,7 +126,7 @@ function Login() {
                 "email": email,
                 "company_name": company,
                 "referral_string": referral_string,
-                "known_by": referralInput
+                "trial_plan": referralInput
             };
             //console.log(formData)
             setloading(true)
@@ -245,33 +245,26 @@ function Login() {
                                     </div>
                                     <div className="flex mb-4 ">
                                         <div className={referralInput ? " w-1/2 mr-1" : ""}>
-                                            <label className="block text-grey-darker text-sm font-bold mb-2" htmlFor="company">How you got to know about Altos Connect ?</label>
-                                            <select className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="company" onChange={(e) => {
+                                            <label className="block text-grey-darker text-sm font-bold mb-2" htmlFor="company">Choose a Plan to Continue</label>
+                                            <select className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" required id="company" onChange={(e) => {
                                                 setReferralInput(e.target.value);
-                                                if (e.target.value === "Referral") {
-                                                    setReferbox(true);
-                                                } else {
-                                                    setReferbox(false);
-                                                }
                                             }}>
-                                                <option value="" hidden>Select an Option</option>
-                                                <option value="Referral">Referral</option>
-                                                <option value="Website">Website</option>
-                                                <option value="WhatsApp">WhatsApp</option>
-                                                <option value="Instagram">Instagram</option>
-                                                <option value="Facebook">Facebook</option>
+                                                <option value="" hidden>Select a Plan</option>
+                                                <option value="basic">Basic Plan</option>
+                                                <option value="standard">Standard Plan</option>
+                                                <option value="advanced">Advanced Plan</option>
                                             </select>
                                         </div>
-                                        {referbox &&
+                                        {/* {referbox &&
                                             <div className=" w-1/2 mt-5">
                                                 <label className="block text-grey-darker text-sm font-bold mb-2" htmlFor="referral">Referral Code</label>
                                                 <input className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="referral" type="text" placeholder="Your referral code" onChange={(e) => setReferralCode(e.target.value)} />
                                                 <div className="text-red-500 text-[10px] text-center">
-                                                    {validationErrors.referral_string && <p>{validationErrors.referral_string}</p>}
+                                                    // {validationErrors.referral_string && <p>{validationErrors.referral_string}</p>}
                                                 </div>
                                             </div>
 
-                                        }
+                                        } */}
                                     </div>
                                     {errormesssage
                                         && <div className='text-xs text-center whitespace-nowrap font-semibold text-red-500'>Email already Exists</div>

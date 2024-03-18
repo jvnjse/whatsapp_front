@@ -6,6 +6,7 @@ module.exports = {
       fontFamily: {
         Quest: ["Questrial", "sans-serif"],
       },
+      visibility: ["group-hover"],
     },
   },
   plugins: [],

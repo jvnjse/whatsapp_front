@@ -20,6 +20,7 @@ import UsersDistributor from "./Distributor/UserDistributor/UsersDistributor";
 import AdminMessages from "./Admin/AdminMessages";
 import AdminDistributors from "./Admin/AdminDistributors";
 import Flip from "./Newsletter/Flip";
+import AdminPurchases from "./Admin/AdminPurchases";
 
 // import Loading from "./Loading/Loading";
 const Login = lazy(() => import("./Login/Login"));
@@ -27,6 +28,7 @@ const Message = lazy(() => import("./Message/Message"));
 const Upload = lazy(() => import("./Message/Upload"));
 const Template = lazy(() => import("./Message/Template"));
 const Manage = lazy(() => import("./Input/Mange"));
+const Notifications = lazy(() => import("./Input/Notifications"));
 const Users = lazy(() => import("./Users/Users"));
 const Landing = lazy(() => import("./Landing"));
 const NotFound = lazy(() => import("./NotFound/NotFound"));
@@ -55,7 +57,7 @@ function App() {
                 element={<AdminDistributors />}
               />
               <Route path="/admin/contact" element={<AdminMessages />} />
-              <Route path="/admin/purchases" element={<AdminMessages />} />
+              <Route path="/admin/purchases" element={<AdminPurchases />} />
             </Route>
             <Route element={<DistributorRoutes />}>
               <Route path="/distributor/users" element={<UsersDistributor />} />
@@ -65,6 +67,7 @@ function App() {
               <Route path="/messages" element={<Message />} />
               <Route path="/template" element={<Template />} />
               <Route path="/manage" element={<Manage />} />
+              <Route path="/notifications" element={<Notifications />} />
               <Route path="/users" element={<Users />} />
               {/* <Route
                 path="/"

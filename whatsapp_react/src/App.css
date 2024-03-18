@@ -5,7 +5,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Questrial&display=swap");
 
-
 * {
   font-family: "Montserrat", sans-serif;
 }
@@ -299,9 +298,7 @@ input[type="range"]:disabled::-moz-range-thumb {
   overflow:hidden
 } */
 
-
-@media (min-width: 1024px)  {
-
+@media (min-width: 1024px) {
   .flipbook {
     /* right: 0 !important;  */
     right: 12rem;
@@ -309,20 +306,19 @@ input[type="range"]:disabled::-moz-range-thumb {
   .btn-flip {
     display: block;
   }
-  .btn-lg{
+  .btn-lg {
     display: none;
   }
 }
 
-@media (max-width: 1024px)  {
-
+@media (max-width: 1024px) {
   .flipbook {
-    right: 0 !important; 
+    right: 0 !important;
   }
   .btn-flip {
     display: none;
   }
-  .btn-lg{
+  .btn-lg {
     display: flex;
   }
 }
@@ -333,8 +329,13 @@ input[type="range"]:disabled::-moz-range-thumb {
     margin-top: 3% !important;
   }
 
-  .btn-flip{
+  .btn-flip {
     display: none;
   }
 }
-
+.purple_border {
+  box-shadow: 4px 4px 1px rgb(23, 78, 6);
+}
+.black_border {
+  box-shadow: 4px 4px 1px rgb(0, 0, 0);
+}
