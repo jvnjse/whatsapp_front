@@ -18,6 +18,7 @@ function ImageTemplateNoButton(props) {
     const [buttoncontent, setbuttoncontent] = useState(' ')
     const [imageupload, setimageupload] = useState('')
     const [uploadbtn, setuploadbtn] = useState(true)
+    const [buttonloading, setbuttonloading] = useState(false);
     const [loading, setloading] = useState(false)
     const [errormessage, seterrormessage] = useState()
     const accessToken = Cookies.get("accessToken")
@@ -46,7 +47,7 @@ function ImageTemplateNoButton(props) {
             formData.append('template_image', headerimage);
             formData.append('template_name', templatename);
 
-
+            setbuttonloading(true);
             axios
                 .post(`${config.baseUrl}upload/image?user_id=${userid}`, formData, {
                     headers: {
@@ -62,6 +63,7 @@ function ImageTemplateNoButton(props) {
                 .catch((error) => {
                     console.error('Error uploading image:', error);
                 });
+            setbuttonloading(false);
         } else {
             alert("add template name")
         }
@@ -88,7 +90,7 @@ function ImageTemplateNoButton(props) {
         axios.post(apiUrl, data(selectedOption), { headers: headers }).then((response) => {
             //console.log(response.data)
             setloading(false)
-            props.setimageTemplate(false)
+            props.setCreateTemplateModal(null)
         }).catch((error) => {
             //console.log(error)
             setloading(false)
@@ -99,13 +101,14 @@ function ImageTemplateNoButton(props) {
     const getApiUrl = (option) => {
         switch (option) {
             case 'URL':
-                return `${config.baseUrl}post_template/image/url?user_id=${userid}`;
+                return `${config.baseUrl}post_template/image/url?user_id=${userid}&type="IMAGE"`;
             case 'PHONE_NUMBER':
-                return `${config.baseUrl}post_template/image/call?user_id=${userid}`;
+                return `${config.baseUrl}post_template/image/call?user_id=${userid}&type="IMAGE"`;
             default:
-                return `${config.baseUrl}post_template/image?user_id=${userid}`;
+                return `${config.baseUrl}post_template/image?user_id=${userid}&type="IMAGE"`;
         }
     };
+
 
 
 
@@ -186,7 +189,7 @@ function ImageTemplateNoButton(props) {
                                 <input type="file" placeholder='' id="" required className='border border-gray-400 rounded-md h-9 px-3' onChange={handleImageChange} />
                             </label>
                             {uploadbtn &&
-                                <div className='py-1 px-2 rounded-lg select-none cursor-pointer text-white bg-[#133624] whitespace-nowrap h-fit' onClick={handleUpload}>Upload Image</div>
+                                <div className='py-1 px-2 rounded-lg select-none cursor-pointer text-white bg-[#133624] whitespace-nowrap h-fit' onClick={handleUpload}> {buttonloading ? 'Loading...' : 'Upload Image'}</div>
                             }
                         </div>
 

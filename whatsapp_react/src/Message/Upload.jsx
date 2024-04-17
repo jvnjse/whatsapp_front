@@ -36,6 +36,8 @@ function Upload() {
     const handleFileChange = (event) => {
         const selectedFile = event.target.files[0];
         setexcelfile(selectedFile);
+        event.target.value = null
+
     };
 
     const headers = {
@@ -149,7 +151,7 @@ function Upload() {
                 setSuccessMessage(false);
             }, 3000);
             const response = await axios.post(apiurl2, formData, { headers: headers1 });
-            setexcelfile('')
+            // setexcelfile(null)
             // setTimeout(() => {
             //     setSuccessMessage(false);
             // }, 3000);
@@ -283,7 +285,7 @@ function Upload() {
                         </div>
                         <div>
                             <div>Select Templates</div>
-                            <select value={selectedName} onChange={handleSelectChange}>
+                            <select value={selectedName} onChange={handleSelectChange} >
                                 <option value="">Select a name</option>
 
                                 {templateData && templateData.names.map((item, index) => (

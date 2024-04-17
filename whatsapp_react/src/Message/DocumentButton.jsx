@@ -7,16 +7,19 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 
-function PersonalisedImageTemplate(props) {
+function DocumentButton(props) {
+    const [selectedOption, setSelectedOption] = useState('');
     const [templatename, settemplatename] = useState(' ')
     const [headerimage, setheaderimage] = useState(' ')
     const [headerimageview, setheaderimageview] = useState(' ')
     const [bodytext, setbodytext] = useState(' ')
     const [footertext, setfootertext] = useState(' ')
     const [buttontext, setbuttontext] = useState(' ')
+    const [buttoncontent, setbuttoncontent] = useState(' ')
     const [imageupload, setimageupload] = useState('')
     const [uploadbtn, setuploadbtn] = useState(true)
     const [loading, setloading] = useState(false)
+    const [buttonloading, setbuttonloading] = useState(false);
     const [errormessage, seterrormessage] = useState()
     const accessToken = Cookies.get("accessToken")
     const userid = jwtDecode(accessToken).user_id;
@@ -38,15 +41,13 @@ function PersonalisedImageTemplate(props) {
 
 
 
-    const handleUpload = (e) => {
-        e.preventDefault()
-
+    const handleUpload = () => {
         if (templatename !== ' ') {
             const formData = new FormData();
             formData.append('template_image', headerimage);
             formData.append('template_name', templatename);
 
-
+            setbuttonloading(true);
             axios
                 .post(`${config.baseUrl}upload/image?user_id=${userid}`, formData, {
                     headers: {
@@ -57,16 +58,17 @@ function PersonalisedImageTemplate(props) {
                 .then((response) => {
                     //console.log('Image upload successful:', response.data);
                     setimageupload(response.data.h);
-                    setuploadbtn(false);
+                    // setuploadbtn(false);
                 })
                 .catch((error) => {
                     console.error('Error uploading image:', error);
                 });
+
+            setbuttonloading(false);
         } else {
             alert("add template name")
         }
     };
-
 
 
     const headers = {
@@ -74,36 +76,79 @@ function PersonalisedImageTemplate(props) {
         'Authorization': 'Bearer ' + accessToken
     }
 
-    const data = {
-        'template_name': templatename,
-        'header_text': imageupload,
-        'body_text': bodytext,
-        'footer_text': footertext,
-        // 'button_text': buttontext,
-    }
+    // const data = {
+    //     'template_name': templatename,
+    //     'header_text': imageupload,
+    //     'body_text': bodytext,
+    //     'footer_text': footertext,
+    //     // 'button_text': buttontext,
+    // }
     const HandleTemplateUpload = (e) => {
-        if (e) {
-            e.preventDefault();
-        }
-        // handleUpload()
+        e.preventDefault()
+        const apiUrl = getApiUrl(selectedOption)
+
         setloading(true)
-        axios.post(`${config.baseUrl}post_template/image/personalised?user_id=${userid}`, data, { headers: headers }).then((response) => {
+        axios.post(apiUrl, data(selectedOption), { headers: headers }).then((response) => {
             //console.log(response.data)
             setloading(false)
             props.setCreateTemplateModal(null)
         }).catch((error) => {
             //console.log(error)
             setloading(false)
-
         })
     }
 
-    const handleAddVariable = () => {
-        setbodytext((prevHeaderText) => `${prevHeaderText}{{1}}`);
-        // setVariableAdded(true)
+
+    const getApiUrl = (option) => {
+        switch (option) {
+            case 'URL':
+                return `${config.baseUrl}post_template/image/url?user_id=${userid}&type=DOCUMENT`;
+            case 'PHONE_NUMBER':
+                return `${config.baseUrl}post_template/image/call?user_id=${userid}&type=DOCUMENT`;
+            default:
+                return `${config.baseUrl}post_template/image?user_id=${userid}&type=DOCUMENT`;
+        }
     };
 
 
+
+    //console.log(templatename)
+
+    const data = (option) => {
+        switch (option) {
+            case 'URL':
+                return {
+                    'template_name': templatename,
+                    'header_text': imageupload,
+                    'body_text': bodytext,
+                    'footer_text': footertext,
+                    'button_text': buttontext,
+                    'button_url': buttoncontent,
+                };
+            case 'PHONE_NUMBER':
+                return {
+                    'template_name': templatename,
+                    'header_text': imageupload,
+                    'body_text': bodytext,
+                    'footer_text': footertext,
+                    'button_text': buttontext,
+                    'button_url': buttoncontent,
+                };
+            default:
+                return {
+                    'template_name': templatename,
+                    'header_text': imageupload,
+                    'body_text': bodytext,
+                    'footer_text': footertext,
+                    'button_text': "buttontext",
+                    'button_url': "buttoncontent",
+                };
+        }
+    };
+
+    const handleOptionChange = (event) => {
+        setSelectedOption(event.target.value);
+    };
 
     return (<>
         <div className='text-xs'>
@@ -120,13 +165,13 @@ function PersonalisedImageTemplate(props) {
                 theme="light"
             />
         </div>
-        <div className='w-10/12 bg-white mt-10 p-10 rounded-xl h-full overflow-y-scroll' onClick={props.handleClick}>
-            <div className=' text-[#0d291a] text-2xl font-bold select-none'>Create Image Template</div>
+        <form onSubmit={HandleTemplateUpload} className='w-10/12 bg-white mt-10 p-10 rounded-xl ' onClick={props.handleClick}>
+            <div className=' text-[#0d291a] text-2xl font-bold select-none'>Create Document Template</div>
             <div className=' flex justify-between flex-wrap-reverse'>
-                <form onSubmit={HandleTemplateUpload} className='flex-1'>
+                <div className='flex-1'>
                     <div className=' flex-1 flex flex-col px-5 mt-2 gap-2'>
                         <label className='flex flex-col'>Template Name
-                            <input required className='lowercase border border-gray-400 rounded-md h-9 px-3' onChange={(e) => {
+                            <input className='lowercase border border-gray-400 rounded-md h-9 px-3' required onChange={(e) => {
                                 const inputValue = e.target.value;
                                 const isValidInput = /^[a-z\s]*$/.test(inputValue);
                                 if (isValidInput) {
@@ -144,13 +189,12 @@ function PersonalisedImageTemplate(props) {
                                 <input type="file" placeholder='' id="" required className='border border-gray-400 rounded-md h-9 px-3' onChange={handleImageChange} />
                             </label>
                             {uploadbtn &&
-
-                                <div className='py-1 px-2 rounded-lg select-none cursor-pointer text-white bg-[#133624] whitespace-nowrap h-fit' onClick={handleUpload}>Upload Image</div>
+                                <div className='py-1 px-2 rounded-lg select-none cursor-pointer text-white bg-[#133624] whitespace-nowrap h-fit' onClick={handleUpload}> {buttonloading ? 'Loading...' : 'Upload Image'}</div>
                             }
                         </div>
 
                         <label className=' flex flex-col' htmlFor='text-body'>Text Body
-                            <textarea type="text" required placeholder='' id="text-body" className='border border-gray-400 rounded-md h-9 px-3 [field-sizing:content]' value={bodytext} onChange={(e) => {
+                            <textarea type="text" placeholder='' required id="text-body" className='border border-gray-400 rounded-md h-9 px-3' value={bodytext} onChange={(e) => {
                                 const inputValue = e.target.value;
                                 const sanitizedValue = inputValue.replace(/(\r\n|\n|\r){3,}/g, '\n\n');
 
@@ -160,19 +204,13 @@ function PersonalisedImageTemplate(props) {
                                     toast.error('Body should not exceed 1024 characters.');
                                 }
                             }} />
-                            <button
-                                className='bg-[#0d291a] text-white max-w-min whitespace-nowrap p-1 rounded-lg self-end'
-                                onClick={handleAddVariable}
-                            >
-                                Add Variable
-                            </button>
                         </label>
                         <label className=' flex flex-col' htmlFor='footer-body'>Footer
-                            <input type="text" placeholder=' ' required id="footer-body" className='border border-gray-400 rounded-md h-9 px-3' onChange={(e) => { setfootertext(e.target.value) }} />
+                            <input type="text" placeholder='' id="footer-body" required className='border border-gray-400 rounded-md h-9 px-3' onChange={(e) => { setfootertext(e.target.value) }} />
                         </label>
-                        <button type='submit' className='bg-[#064A42] text-white rounded-md ' >submit</button>
+                        {/* <button onClick={HandleTemplateUpload} disabled={uploadbtn} className='bg-[#064A42] text-white rounded-md ' >submit</button> */}
                     </div>
-                </form>
+                </div>
                 <div className='flex-1 flex justify-center'>
                     <div className=' wallpaper-bg w-[300px] p-3'>
                         <div className=' font-semibold'>{templatename}</div>
@@ -186,7 +224,25 @@ function PersonalisedImageTemplate(props) {
                     </div>
                 </div>
             </div>
-        </div>
+            <div className='flex flex-col gap-2'>
+                <div className=' text-[#0d291a] text-lg font-bold select-none mt-4'>Button Action</div>
+                <select
+                    className=' border border-gray-400 text-sm'
+                    value={selectedOption}
+                    onChange={handleOptionChange}>
+                    <option value="">No Button</option>
+                    <option value="URL">URL Button</option>
+                    <option value="PHONE_NUMBER">Call Button</option>
+                </select>
+                <label className=' flex flex-col' htmlFor='button-text'>Button Text
+                    <input type="text" name="" id="button-text" className='border border-gray-400 rounded-md h-9 px-3' onChange={(e) => { setbuttontext(e.target.value) }} />
+                </label>
+                <label className=' flex flex-col' htmlFor='button-text'>Button Url/Number
+                    <input type="text" name="" placeholder='add number with country code' id="button-text" className='border border-gray-400 rounded-md h-9 px-3' onChange={(e) => { setbuttoncontent(e.target.value) }} />
+                </label>
+                <button type="submit" disabled={uploadbtn} className='bg-[#064A42] text-white rounded-md ' >submit</button>
+            </div>
+        </form>
         {loading && <div className=' absolute w-full h-full top-0 left-0 flex justify-center items-center bg-black/40'>
             <svg className='animate-spin' width="100px" height="100px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <g>
@@ -199,4 +255,4 @@ function PersonalisedImageTemplate(props) {
     )
 }
 
-export default PersonalisedImageTemplate
+export default DocumentButton

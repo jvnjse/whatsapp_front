@@ -28,7 +28,11 @@ function Message() {
     const accessToken = Cookies.get("accessToken")
     const userid = jwtDecode(accessToken).user_id;
 
-
+    const findFormat = (components) => {
+        const selectedComponent = components.find(component => component.type === 'HEADER');
+        const format = selectedComponent ? selectedComponent.format : null;
+        return format ? format.toLowerCase() : null;
+    };
     const handleSelectChange = (event) => {
         const name = event.target.value;
         setSelect(name)
@@ -54,17 +58,9 @@ function Message() {
 
 
             setApiurl1((prevApiurl1) => {
-                if (headerHandle !== "") {
-                    return `${config.baseUrl}sent-messages/images`;
-                    // } else if (headerText !== "") {
-                    //     // toast.error("This is a personalised message template")
-                    //     // alert("this is a personalised template message")
-                    //     return `${config.baseUrl}sent-messages`;
-
-                } else {
-                    return `${config.baseUrl}sent-messages/`;
-                }
+                return `${config.baseUrl}sent-messages/images?template_format=${findFormat(selectedComponent)}`;
             });
+
             setApiurl2((prevApiurl2) => {
                 if (headerHandle !== "") {
                     return `${config.baseUrl}sent-messages/data/images?template_name=${name}&image_url=${headerHandle}&user_id=${userid}`;
@@ -78,7 +74,7 @@ function Message() {
         }
     };
     const imageurl = config.imagebaseurl + headerHandle
-    //console.log(apiurl1, "sss")
+    console.log(apiurl1, "sss")
 
     //console.log(imageurl)
 
@@ -141,7 +137,7 @@ function Message() {
 
         axios.get(`${config.baseUrl}get_templates/?user_id=${userid}`, { headers: headers })
             .then((response) => {
-                //console.log("gusgsh", response.data.data)
+                console.log("gusgsh", response.data.data)
                 setTemplateData(response.data.data)
             })
             .catch((error) => {
@@ -202,9 +198,16 @@ function Message() {
                                         </option>
                                     ))}
                                 </select>
-                                <div className="bg-[#262d31] text-gray-300 rounded-tr-lg  rounded-bl-lg rounded-br-lg mb-4 px-4 py-2 mt-4 w-[300px]">
+                                <div className="bg-[#262d31] text-gray-300 rounded-tr-lg  rounded-bl-lg rounded-br-lg mb-4 px-4 py-2 mt-4 w-[300px] overflow-hidden">
                                     <div className='font-bold'>{selectedHeaderText && selectedHeaderText}</div>
-                                    <img src={imageurl} alt="" />
+                                    {componentData && findFormat(componentData) === 'document' && (
+                                        <iframe src={imageurl} title="document" />
+                                    )}
+
+                                    {componentData && findFormat(componentData) === 'image' && (
+                                        <img src={imageurl} alt="Image" />
+                                    )}
+
                                     <div className='text-[10px]'>
                                         {selectedBodyText && selectedBodyText}
                                     </div>
@@ -243,7 +246,8 @@ function Message() {
                                     <div className='font-bold'>{selectedHeaderText && selectedHeaderText}</div>
                                     {/* <img src={headerHandle && config.baseUrl + headerHandle} alt="" /> */}
                                     {headerHandle && (
-                                        <img src={imageurl} alt="" />
+                                        <iframe src={imageurl} width='100%' height='500px' />
+                                        // <img src={imageurl} alt="" />
                                     )}
 
                                     <div className='text-[10px]'>

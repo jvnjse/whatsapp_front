@@ -83,6 +83,7 @@ function Plan() {
 function Mange() {
     const [phid, setPhid] = useState()
     const [whid, setWhid] = useState()
+    const [appid, setAppid] = useState()
     const [accesstoken, setAccesstoken] = useState()
     const [activeButton, setActiveButton] = useState(null);
     const accessToken = Cookies.get("accessToken")
@@ -94,7 +95,8 @@ function Mange() {
         "user_id": userid,
         "phone_number_id": phid,
         "whatsapp_business_id": whid,
-        "permanent_access_token": accesstoken
+        "permanent_access_token": accesstoken,
+        "app_id": appid
     }
     const headers = {
         'Content-Type': 'application/json',
@@ -161,6 +163,18 @@ function Mange() {
                             </div>
                         </div>
                         <input required type="text" placeholder='' id="business_id" className='border border-gray-400 rounded-md h-9  px-3' value={whid} onChange={(e) => { setWhid(e.target.value) }} />
+                    </label>
+                    <label className=' flex flex-col' htmlFor='business_id'>
+                        <div className=' flex justify-between'>
+                            <div>App Id</div>
+                            <div className=' cursor-help relative'
+                                onMouseEnter={() => handleMouseEnter(4)}
+                                onMouseLeave={handleMouseLeave}>
+                                <AiOutlineInfoCircle />
+                                {activeButton === 4 && <div className='absolute bg-[#f2efeb] text-black text-[8px] px-2 py-1 w-[220px] rounded-lg shadow-md'>get the app id from whatsapp Credentials manager in the facebook developer console</div>}
+                            </div>
+                        </div>
+                        <input required type="text" placeholder='' id="business_id" className='border border-gray-400 rounded-md h-9  px-3' value={appid} onChange={(e) => { setAppid(e.target.value) }} />
                     </label>
                     <label className=' flex flex-col' htmlFor='acccess_token'>
                         <div className=' flex justify-between'>

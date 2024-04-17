@@ -16,6 +16,8 @@ function WhatsappModule(props) {
     const userid = jwtDecode(accessToken).user_id;
     const [errorManage, setErrorManage] = useState()
     const [phonenumberId, setPhonenumberId] = useState()
+    const [appid1, setAppid] = useState()
+
     const [access, setAccess] = useState()
     const [businessId, setBusinessId] = useState()
     const [notifications, setnotifications] = useState()
@@ -67,7 +69,7 @@ function WhatsappModule(props) {
     function CredValidate() {
         axios.get(`${config.baseUrl}validate/credentials?user_id=${userid}`, { headers: headers })
             .then((response) => {
-                //console.log("gusgsh", response.data.data)
+                console.log("gusgsh", response.data.data)
                 // setTemplateData(response.data.data)
             })
             .catch((error) => {
@@ -76,6 +78,8 @@ function WhatsappModule(props) {
                 if (error.response.data.access === "added-not-valid") {
                     setBusinessId(error.response.data.message.business_id)
                     setPhonenumberId(error.response.data.message.phone_number_id)
+                    setAppid(error.response.data.message.app_id)
+                    console.log(error.response.data.message.app_id)
                     setAccess(error.response.data.access)
                     setSidebar(true)
                 } else {
@@ -189,7 +193,7 @@ function WhatsappModule(props) {
 
                 </ul>
                 {errorManage && <div className=' absolute z-50 w-full h-full top-0 left-0 flex justify-center items-center bg-black/40'>
-                    <AddCredentials businessId={businessId} phonenumberId={phonenumberId} access={access} setErrorManage={setErrorManage} />
+                    <AddCredentials businessId={businessId} phonenumberId={phonenumberId} access={access} appid1={appid1} setErrorManage={setErrorManage} />
                 </div>}
             </div>
             <div className={sidebar ? 'transition-all ease-in duration-300 h-fit hover:bg-[#064A42] cursor-pointer' : 'transition-all ease-in duration-300 -ml-[240px] h-fit hover:bg-[#064A42] cursor-pointer'} onClick={SIdeBar}>    <span className='text-5xl text-[#064A42]  hover:text-white'>{sidebar ? <RiMenuFoldFill /> : <RiMenuUnfoldFill />}</span></div>

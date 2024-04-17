@@ -59,7 +59,7 @@ function TextTemplate(props) {
 
 
     const ModalClose = () => {
-        props.settextTemplate(false)
+        props.setCreateTemplateModal(null)
     }
     const headers = {
         'Content-Type': 'application/json',

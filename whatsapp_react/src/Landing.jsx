@@ -134,9 +134,9 @@ function Landing() {
           business to reach new heights in communication and efficiency.
         </div>
         <div className="flex gap-16 justify-center text-[#f0f0f0] py-10 max-sm:gap-4">
-          <button className="bg-[#2f2e2e] px-5 py-2 rounded-full hover:bg-[#f0f0f0] hover:text-[#2f2e2e] hover:border border border-[#2f2e2e] max-sm:p-2 max-sm:text-xs">
+          {/* <button className="bg-[#2f2e2e] px-5 py-2 rounded-full hover:bg-[#f0f0f0] hover:text-[#2f2e2e] hover:border border border-[#2f2e2e] max-sm:p-2 max-sm:text-xs">
             Try Demo
-          </button>
+          </button> */}
           <button className="bg-[#2f2e2e] px-5 py-2 rounded-full hover:bg-[#f0f0f0] hover:text-[#2f2e2e] hover:border border border-[#2f2e2e] max-sm:p-2 max-sm:text-xs">
             {accessToken ? (
               <Link
@@ -156,7 +156,7 @@ function Landing() {
           </button>
         </div>
       </section>
-      <section
+      {/* <section
         id="video"
         className="flex justify-center items-center gap-7 w-full text-center bg-[#f0f0f0] py-10 max-sm:py-2"
       >
@@ -168,7 +168,7 @@ function Landing() {
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           allowfullscreen
         ></iframe>
-      </section>
+      </section> */}
 
       <section className="flex flex-col gap-20 w-full text-center px-5 bg-[#f0f0f0] text-[#000] max-sm:gap-5 ">
         <div className=" font-extrabold text-3xl pt-20 px-20 leading-snug max-sm:pt-3">

@@ -82,7 +82,7 @@ function Personalised(props) {
 
 
     const ModalClose = () => {
-        props.setPersonalisedTemplate(false)
+        props.setCreateTemplateModal(null)
     }
     const headers = {
         'Content-Type': 'application/json',

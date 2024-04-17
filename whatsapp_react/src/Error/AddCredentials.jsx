@@ -7,9 +7,10 @@ import { jwtDecode } from 'jwt-decode';
 import { LuMailWarning } from "react-icons/lu";
 import { Link } from 'react-router-dom';
 
-function AddCredentials({ phonenumberId, businessId, access, setErrorManage }) {
+function AddCredentials({ phonenumberId, businessId, access, setErrorManage, appid1 }) {
     const [phid, setPhid] = useState(phonenumberId || '')
     const [whid, setWhid] = useState(businessId || '')
+    const [appid, setAppid] = useState(appid1 || '')
     const [accesstoken, setAccesstoken] = useState()
     const [activeButton, setActiveButton] = useState(null);
     const accessToken = Cookies.get("accessToken")
@@ -21,7 +22,8 @@ function AddCredentials({ phonenumberId, businessId, access, setErrorManage }) {
         "user_id": userid,
         "phone_number_id": phid,
         "whatsapp_business_id": whid,
-        "permanent_access_token": accesstoken
+        "permanent_access_token": accesstoken,
+        "app_id": appid
     }
     const headers = {
         'Content-Type': 'application/json',
@@ -37,6 +39,7 @@ function AddCredentials({ phonenumberId, businessId, access, setErrorManage }) {
                 setPhid('')
                 setWhid('')
                 setAccesstoken('')
+                setAppid('')
                 setloading(false)
                 setErrorManage(false)
             })
@@ -88,6 +91,18 @@ function AddCredentials({ phonenumberId, businessId, access, setErrorManage }) {
                             </div>
                         </div>
                         <input required type="text" placeholder='Add whatsapp business id' id="business_id" className='border border-gray-400 rounded-md h-9  px-3' value={whid} onChange={(e) => { setWhid(e.target.value) }} />
+                    </label>
+                    <label className=' flex flex-col' htmlFor='business_id'>
+                        <div className=' flex justify-between'>
+                            <div>App Id</div>
+                            <div className=' cursor-help relative'
+                                onMouseEnter={() => handleMouseEnter(4)}
+                                onMouseLeave={handleMouseLeave}>
+                                <AiOutlineInfoCircle />
+                                {activeButton === 4 && <div className='absolute bg-[#f2efeb] text-black text-[8px] px-2 py-1 w-[220px] rounded-lg shadow-md'>get the app id from whatsapp Credentials manager in the facebook developer console</div>}
+                            </div>
+                        </div>
+                        <input required type="text" placeholder='' id="business_id" className='border border-gray-400 rounded-md h-9  px-3' value={appid1} onChange={(e) => { setAppid(e.target.value) }} />
                     </label>
                     <label className=' flex flex-col' htmlFor='acccess_token'>
                         <div className=' flex justify-between'>
