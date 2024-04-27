@@ -21,6 +21,10 @@ import AdminMessages from "./Admin/AdminMessages";
 import AdminDistributors from "./Admin/AdminDistributors";
 import Flip from "./Newsletter/Flip";
 import AdminPurchases from "./Admin/AdminPurchases";
+import Blog from "./Blog/Blog";
+import AdminBlog from "./Admin/AdminBlog";
+import BlogCreate from "./Blog/BlogCreate";
+import BlogPage from "./Blog/BlogPage";
 
 // import Loading from "./Loading/Loading";
 const Login = lazy(() => import("./Login/Login"));
@@ -58,6 +62,8 @@ function App() {
               />
               <Route path="/admin/contact" element={<AdminMessages />} />
               <Route path="/admin/purchases" element={<AdminPurchases />} />
+              <Route path="/admin/blog" element={<AdminBlog />} />
+              <Route path="/admin/blog/create" element={<BlogCreate />} />
             </Route>
             <Route element={<DistributorRoutes />}>
               <Route path="/distributor/users" element={<UsersDistributor />} />
@@ -81,6 +87,8 @@ function App() {
             />{" "}
             <Route path="/plan-and-pricing" element={<Plan />} />
             <Route path="/newsletter" element={<Flip />} />
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/blog/:id/:title" element={<BlogPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Router>

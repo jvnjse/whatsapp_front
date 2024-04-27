@@ -133,7 +133,7 @@ function CreateTemplate(props) {
                     theme="light"
                 />
             </div>
-            <div className='w-10/12 bg-white mt-10 p-10 rounded-xl min-h-fit overflow-x-auto' onClick={props.handleClick}>
+            <div className='w-10/12 bg-white mt-10 p-10 rounded-xl min-h-fit overflow-x-auto max-h-full overflow-y-scroll' onClick={props.handleClick}>
                 <div className=' text-[#0d291a] text-2xl font-bold select-none'>Create Template</div>
                 <form onSubmit={CreateTemplateApi}>
                     <div className=' flex justify-between'>
@@ -175,7 +175,9 @@ function CreateTemplate(props) {
                                         onChange={(e) => {
                                             const inputValue = e.target.value;
                                             const sanitizedValue = inputValue.replace(/(\r\n|\n|\r){3,}/g, '\n\n');
-
+                                            e.target.style.height = 'auto';
+                                            e.target.style.height = `${e.target.scrollHeight}px`;
+                                            // setHeight(`${e.target.scrollHeight}px`);
                                             if (sanitizedValue.length <= 1023) {
                                                 setbodytext(sanitizedValue);
                                             } else {

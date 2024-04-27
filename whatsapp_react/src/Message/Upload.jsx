@@ -16,6 +16,7 @@ function Upload() {
     const [fileName, setFileName] = useState('');
     const [uploadbox, setUploadbox] = useState("excelm")
     const [templateData, setTemplateData] = useState();
+    const [componentData, setcomponentData] = useState()
     const [selectedHeaderText, setSelectedHeaderText] = useState('');
     const [selectedName, setSelectedName] = useState('');
     const [selectedBodyText, setSelectedBodyText] = useState('')
@@ -162,11 +163,17 @@ function Upload() {
             setSuccessMessage(false)
         }
     };
+    const findFormat = (components) => {
+        const selectedComponent = components.find(component => component.type === 'HEADER');
+        const format = selectedComponent ? selectedComponent.format : null;
+        return format ? format.toLowerCase() : null;
+    };
     const handleSelectChange = (event) => {
         const name = event.target.value;
         setSelect(name)
         setSelectedName(name);
         const selectedComponent = templateData.components[templateData.names.indexOf(name)];
+        setcomponentData(selectedComponent)
         const imageName = templateData.images.find((image) => image[name]);
         if (imageName) {
             setHeaderHandle(imageName[name]);
@@ -184,21 +191,12 @@ function Upload() {
             const headerText = header.example && header.example.header_text ? header.example.header_text[0] : '';
 
 
-            setApiurl1((prevApiurl1) => {
-                if (headerHandle !== "") {
-                    return `${config.baseUrl}upload/sent/images`;
-                } else if (headerText !== "") {
-                    // return `${config.baseUrl}upload/sent/personalised`;
-                    toast.error("This is a personalised message template")
-                    // alert("this is a personalised template message")
-                } else {
-                    return `${config.baseUrl}upload/sent`;
-                }
-            });
+            setApiurl1(`${config.baseUrl}upload/sent/images?template_format=${findFormat(selectedComponent)}`);
         } else {
             setSelectedHeaderText('');
         }
     };
+    console.log(apiurl1)
 
 
     const handleSelectChangePersonalised = (event) => {
@@ -296,8 +294,12 @@ function Upload() {
                             </select>
                             <div className="bg-[#262d31] text-gray-300 rounded-tr-lg  rounded-bl-lg rounded-br-lg mb-4 px-4 py-2 mt-4 w-[300px]">
                                 <div className='font-bold'>{selectedHeaderText && selectedHeaderText}</div>
-                                {headerHandle && (
-                                    <img src={imageurl} alt="" />
+                                {componentData && findFormat(componentData) === 'document' && (
+                                    <iframe src={imageurl} title="document" />
+                                )}
+
+                                {componentData && findFormat(componentData) === 'image' && (
+                                    <img src={imageurl} alt="Image" />
                                 )}
                                 <div className='text-[10px]'>
                                     {selectedBodyText && selectedBodyText}

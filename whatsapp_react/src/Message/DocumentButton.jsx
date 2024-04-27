@@ -58,7 +58,7 @@ function DocumentButton(props) {
                 .then((response) => {
                     //console.log('Image upload successful:', response.data);
                     setimageupload(response.data.h);
-                    // setuploadbtn(false);
+                    setuploadbtn(false);
                 })
                 .catch((error) => {
                     console.error('Error uploading image:', error);
@@ -165,7 +165,7 @@ function DocumentButton(props) {
                 theme="light"
             />
         </div>
-        <form onSubmit={HandleTemplateUpload} className='w-10/12 bg-white mt-10 p-10 rounded-xl ' onClick={props.handleClick}>
+        <form onSubmit={HandleTemplateUpload} className='w-10/12 bg-white mt-10 p-10 rounded-xl max-h-full overflow-y-scroll' onClick={props.handleClick}>
             <div className=' text-[#0d291a] text-2xl font-bold select-none'>Create Document Template</div>
             <div className=' flex justify-between flex-wrap-reverse'>
                 <div className='flex-1'>
@@ -197,6 +197,8 @@ function DocumentButton(props) {
                             <textarea type="text" placeholder='' required id="text-body" className='border border-gray-400 rounded-md h-9 px-3' value={bodytext} onChange={(e) => {
                                 const inputValue = e.target.value;
                                 const sanitizedValue = inputValue.replace(/(\r\n|\n|\r){3,}/g, '\n\n');
+                                e.target.style.height = 'auto';
+                                e.target.style.height = `${e.target.scrollHeight}px`;
 
                                 if (sanitizedValue.length <= 1023) {
                                     setbodytext(sanitizedValue);

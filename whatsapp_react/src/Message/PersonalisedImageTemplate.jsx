@@ -120,7 +120,7 @@ function PersonalisedImageTemplate(props) {
                 theme="light"
             />
         </div>
-        <div className='w-10/12 bg-white mt-10 p-10 rounded-xl h-full overflow-y-scroll' onClick={props.handleClick}>
+        <div className='w-10/12 bg-white mt-10 p-10 rounded-xl max-h-full overflow-y-scroll' onClick={props.handleClick}>
             <div className=' text-[#0d291a] text-2xl font-bold select-none'>Create Image Template</div>
             <div className=' flex justify-between flex-wrap-reverse'>
                 <form onSubmit={HandleTemplateUpload} className='flex-1'>
@@ -153,6 +153,8 @@ function PersonalisedImageTemplate(props) {
                             <textarea type="text" required placeholder='' id="text-body" className='border border-gray-400 rounded-md h-9 px-3 [field-sizing:content]' value={bodytext} onChange={(e) => {
                                 const inputValue = e.target.value;
                                 const sanitizedValue = inputValue.replace(/(\r\n|\n|\r){3,}/g, '\n\n');
+                                e.target.style.height = 'auto';
+                                e.target.style.height = `${e.target.scrollHeight}px`;
 
                                 if (sanitizedValue.length <= 1023) {
                                     setbodytext(sanitizedValue);

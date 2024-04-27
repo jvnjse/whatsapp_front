@@ -12,6 +12,7 @@ import config from "./config";
 import logo from "./Icons/altoslogo.png";
 import CookieConsent from "./CookieConsent";
 import { MdOutlineMailOutline } from "react-icons/md";
+import Nav from "./Nav";
 function Landing() {
   const accessToken = Cookies.get("accessToken") || "";
   const [options, setOptions] = useState();
@@ -77,7 +78,7 @@ function Landing() {
   return (
     <div className=" w-screen h-[100%] overflow-hidden ">
       {/* <CookieConsent /> */}
-      <div className="bg-[#083929] text-[#f0f0f0] flex justify-between px-16 py-4 max-sm:px-2 max-sm:text-sm">
+      {/* <div className="bg-[#083929] text-[#f0f0f0] flex justify-between px-16 py-4 max-sm:px-2 max-sm:text-sm">
         <div className=" px-5 w-[250px]">
           <img src={logo} alt="" className="w-full" />
         </div>
@@ -118,7 +119,8 @@ function Landing() {
             )}
           </div>
         </div>
-      </div>
+      </div> */}
+      <Nav></Nav>
 
       <section
         id="started"
@@ -129,9 +131,7 @@ function Landing() {
           & Efficient Whatsapp Marketing!
         </div>
         <div className="max-sm:text-xs">
-          Unlock the fut potence of WhatsApp marketing with at WhatsApp the
-          engagement With a robust set of features, Alt WhatsAdo empowers your
-          business to reach new heights in communication and efficiency.
+          Utilize the potential of this widely-used platform to reach your target audience, engage with customers, and drive business growth. With its rich features and global reach, WhatsApp offers an unparalleled opportunity for innovative, effective, and impactful marketing.
         </div>
         <div className="flex gap-16 justify-center text-[#f0f0f0] py-10 max-sm:gap-4">
           {/* <button className="bg-[#2f2e2e] px-5 py-2 rounded-full hover:bg-[#f0f0f0] hover:text-[#2f2e2e] hover:border border border-[#2f2e2e] max-sm:p-2 max-sm:text-xs">

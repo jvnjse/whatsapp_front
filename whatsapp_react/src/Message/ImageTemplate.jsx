@@ -23,7 +23,7 @@ function ImageTemplate(props) {
     const [errormessage, seterrormessage] = useState()
     const accessToken = Cookies.get("accessToken")
     const userid = jwtDecode(accessToken).user_id;
-
+    const [height, setHeight] = useState('auto');
 
 
 
@@ -58,7 +58,7 @@ function ImageTemplate(props) {
                 .then((response) => {
                     //console.log('Image upload successful:', response.data);
                     setimageupload(response.data.h);
-                    // setuploadbtn(false);
+                    setuploadbtn(false);
                 })
                 .catch((error) => {
                     console.error('Error uploading image:', error);
@@ -102,11 +102,11 @@ function ImageTemplate(props) {
     const getApiUrl = (option) => {
         switch (option) {
             case 'URL':
-                return `${config.baseUrl}post_template/image/url?user_id=${userid}&type="IMAGE"`;
+                return `${config.baseUrl}post_template/image/url?user_id=${userid}&type=IMAGE`;
             case 'PHONE_NUMBER':
-                return `${config.baseUrl}post_template/image/call?user_id=${userid}&type="IMAGE"`;
+                return `${config.baseUrl}post_template/image/call?user_id=${userid}&type=IMAGE`;
             default:
-                return `${config.baseUrl}post_template/image?user_id=${userid}&type="IMAGE"`;
+                return `${config.baseUrl}post_template/image?user_id=${userid}&type=IMAGE`;
         }
     };
 
@@ -164,7 +164,7 @@ function ImageTemplate(props) {
                 theme="light"
             />
         </div>
-        <form onSubmit={HandleTemplateUpload} className='w-10/12 bg-white mt-10 p-10 rounded-xl ' onClick={props.handleClick}>
+        <form onSubmit={HandleTemplateUpload} className='w-10/12 bg-white mt-10 p-10 rounded-xl max-h-full overflow-y-scroll' onClick={props.handleClick}>
             <div className=' text-[#0d291a] text-2xl font-bold select-none'>Create Image Template</div>
             <div className=' flex justify-between flex-wrap-reverse'>
                 <div className='flex-1'>
@@ -185,7 +185,7 @@ function ImageTemplate(props) {
                         </label>
                         <div className='flex items-end gap-3'>
                             <label className=' flex flex-col'>Select an Image
-                                <input type="file" placeholder='' id="" required className='border border-gray-400 rounded-md h-9 px-3' onChange={handleImageChange} />
+                                <input type="file" placeholder='' accept=".jpg, .jpeg, .png" id="" required className='border border-gray-400 rounded-md h-9 px-3' onChange={handleImageChange} />
                             </label>
                             {uploadbtn &&
                                 <div className='py-1 px-2 rounded-lg select-none cursor-pointer text-white bg-[#133624] whitespace-nowrap h-fit' onClick={handleUpload}> {buttonloading ? 'Loading...' : 'Upload Image'}</div>
@@ -193,10 +193,12 @@ function ImageTemplate(props) {
                         </div>
 
                         <label className=' flex flex-col' htmlFor='text-body'>Text Body
-                            <textarea type="text" placeholder='' required id="text-body" className='border border-gray-400 rounded-md h-9 px-3' value={bodytext} onChange={(e) => {
+                            <textarea type="text" placeholder='' required id="text-body" className='border border-gray-400 rounded-md  px-3' value={bodytext} onChange={(e) => {
                                 const inputValue = e.target.value;
                                 const sanitizedValue = inputValue.replace(/(\r\n|\n|\r){3,}/g, '\n\n');
-
+                                e.target.style.height = 'auto';
+                                e.target.style.height = `${e.target.scrollHeight}px`;
+                                // setHeight(`${e.target.scrollHeight}px`);
                                 if (sanitizedValue.length <= 1023) {
                                     setbodytext(sanitizedValue);
                                 } else {

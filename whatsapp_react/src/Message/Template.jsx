@@ -36,13 +36,10 @@ function Template() {
     };
 
     const handleDeleteClick = (templateName) => {
-        setSelectedTemplateName(templateName);
-        if (selectedTemplateName) {
-            DeleteApiCall()
-        }
-        else {
+        // setSelectedTemplateName(templateName);
 
-        }
+        DeleteApiCall()
+
     };
     const headers = {
         'Content-Type': 'application/json',
@@ -50,14 +47,15 @@ function Template() {
     }
 
 
-    const DeleteApiCall = () => {
+    const DeleteApiCall = (templatename) => {
         setloading(true)
         const data = {}
-        axios.post(`${config.baseUrl}delete/template?template_name="${selectedTemplateName}"&user_id=${userid}`, data, { headers: headers })
+        axios.post(`${config.baseUrl}delete/template?template_name="${templatename}"&user_id=${userid}`, data, { headers: headers })
             .then((response) => {
                 //console.log(response.data)
                 setloading(false)
                 GetTemplates()
+                // setSelectedTemplateName(null)
             })
             .catch((error) => {
                 setloading(false)
@@ -490,7 +488,7 @@ function Template() {
 
                                     </td>
                                     <td class="px-5 py-5 border-b border-gray-200 bg-white ">
-                                        <span onClick={() => handleDeleteClick(template.name)}
+                                        <span onClick={() => { DeleteApiCall(template.name) }}
                                             class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight cursor-pointer">
                                             <span aria-hidden
                                                 class="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
@@ -541,15 +539,17 @@ function Template() {
                     <ImageTemplateNoButton handleClick={handleClick} setimageTemplate={setimageTemplatenotbtn} />
                 </div>
             } */}
-            {loading && <div className=' absolute w-full h-full top-0 left-0 flex justify-center z-20 items-center bg-black/40'>
-                <svg className='animate-spin' width="100px" height="100px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <g>
-                        <path fill="none" d="M0 0h24v24H0z" />
-                        <path d="M12 3a9 9 0 0 1 9 9h-2a7 7 0 0 0-7-7V3z" fill='#ffffff' />
-                    </g>
-                </svg>
-            </div>}
-        </div>
+            {
+                loading && <div className=' absolute w-full h-full top-0 left-0 flex justify-center z-20 items-center bg-black/40'>
+                    <svg className='animate-spin' width="100px" height="100px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <g>
+                            <path fill="none" d="M0 0h24v24H0z" />
+                            <path d="M12 3a9 9 0 0 1 9 9h-2a7 7 0 0 0-7-7V3z" fill='#ffffff' />
+                        </g>
+                    </svg>
+                </div>
+            }
+        </div >
     )
 }
 
