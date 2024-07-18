@@ -16,12 +16,11 @@
     @apply text-lg;
   }
 }
-* {
-  font-family: "Montserrat", sans-serif;
-}
+
 body {
   background-color: #363636;
   margin: 0;
+  font-family: "Montserrat", sans-serif;
 }
 html {
   scroll-behavior: smooth;

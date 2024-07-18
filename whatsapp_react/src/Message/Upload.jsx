@@ -10,6 +10,7 @@ import { jwtDecode } from 'jwt-decode';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { BsCheckLg } from 'react-icons/bs';
+import useTemplateApi from '../Context/TemplatesApi';
 
 function Upload() {
     const [excelfile, setexcelfile] = useState(null);
@@ -84,18 +85,12 @@ function Upload() {
             console.error('Error uploading file: ', error);
         }
     };
+    const { data, loading } = useTemplateApi();
 
     useEffect(() => {
-        axios.get(`${config.baseUrl}get_templates/?user_id=${userid}`, { headers: headers })
-            .then((response) => {
-                //console.log(response.data.data)
-                setTemplateData(response.data.data)
-            })
-            .catch((error) => {
-                //console.log(error)
-            })
+        setTemplateData(data.data)
 
-    }, [])
+    }, [data])
 
     const handleSubmitExcelSent = async (event) => {
         event.preventDefault();
@@ -196,7 +191,6 @@ function Upload() {
             setSelectedHeaderText('');
         }
     };
-    console.log(apiurl1)
 
 
     const handleSelectChangePersonalised = (event) => {
@@ -264,7 +258,7 @@ function Upload() {
                 <div className=' flex gap-10 mt-4 text-lg max-sm:text-xs max-sm:flex-wrap max-sm:gap-1'>
                     <div className={uploadbox === "excelm" ? 'btn-active' : 'btn-nonactive'} onClick={() => { setUploadbox("excelm") }}>Excel Messaging</div>
                     <div className={uploadbox === "excelu" ? 'btn-active' : 'btn-nonactive'} onClick={() => { setUploadbox("excelu") }}>Excel Data Upload</div>
-                    <div className={uploadbox === "excelp" ? 'btn-active' : 'btn-nonactive'} onClick={() => { setUploadbox("excelp") }}>Excel Personalised Message Upload</div>
+                    {/* <div className={uploadbox === "excelp" ? 'btn-active' : 'btn-nonactive'} onClick={() => { setUploadbox("excelp") }}>Excel Personalised Message Upload</div> */}
                 </div>
                 {uploadbox === "excelm" &&
                     <div className='flex max-md:flex-col-reverse max-lg:flex-col-reverse max-sm:px-2'>
@@ -301,6 +295,12 @@ function Upload() {
                                 {componentData && findFormat(componentData) === 'image' && (
                                     <img src={imageurl} alt="Image" />
                                 )}
+                                {componentData && findFormat(componentData) === 'video' && (
+                                    <video controls>
+                                        <source src={imageurl} type="video/mp4" />
+                                        Your browser does not support the video tag.
+                                    </video>
+                                )}
                                 <div className='text-[10px]'>
                                     {selectedBodyText && selectedBodyText}
                                 </div>
@@ -324,7 +324,7 @@ function Upload() {
                             </div>
                         </div>
                     </div>}
-                {uploadbox === "excelp" &&
+                {/* {uploadbox === "excelp" &&
                     <div className='flex max-lg:flex-col-reverse max-sm:px-2 '>
                         <div className=' flex flex-col px-14 mt-7 max-w-max max-sm:px-2'>
                             <div>Upload and Sent Personalised Messages to the Numbers in Excel Document </div>
@@ -359,7 +359,7 @@ function Upload() {
                                 <div className='font-thin text-xs'>{selectedFooterText && selectedFooterText}</div>
                             </div>
                         </div>
-                    </div>}
+                    </div>} */}
                 {successMessage && <div className="transition-all ease-in duration-1000 absolute w-full h-full bg-green-950/25 top-0 left-0 flex justify-center items-center">
                     <div className='w-2/6 bg-white rounded-lg flex flex-col items-center p-7'>
                         <div>

@@ -25,6 +25,10 @@ import Blog from "./Blog/Blog";
 import AdminBlog from "./Admin/AdminBlog";
 import BlogCreate from "./Blog/BlogCreate";
 import BlogPage from "./Blog/BlogPage";
+import TemplateAnalytics from "./Message/TemplateAnalytics";
+import Contacts from "./Contacts/Contacts";
+import { DataProvider } from "./Context/TemplatesApi";
+// import MyEditor from "./Blog/MyEditor";
 
 // import Loading from "./Loading/Loading";
 const Login = lazy(() => import("./Login/Login"));
@@ -51,6 +55,7 @@ function App() {
           </div>
         }
       >
+        {/* <DataProvider> */}
         <Router>
           <Routes>
             <Route element={<AdminRoutes />}>
@@ -71,14 +76,15 @@ function App() {
             <Route element={<PrivateRoutes accessToken={accessToken} />}>
               <Route path="/upload" element={<Upload />} />
               <Route path="/messages" element={<Message />} />
+              <Route path="/contacts" element={<Contacts />} />
               <Route path="/template" element={<Template />} />
+              <Route
+                path="/template/analytics"
+                element={<TemplateAnalytics />}
+              />
               <Route path="/manage" element={<Manage />} />
               <Route path="/notifications" element={<Notifications />} />
               <Route path="/users" element={<Users />} />
-              {/* <Route
-                path="/"
-                element={<Landing accessToken={true} isvalid={true} />}
-              /> */}
             </Route>
             <Route path="/login" element={<Login />} />
             <Route
@@ -92,6 +98,7 @@ function App() {
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Router>
+        {/* </DataProvider> */}
       </Suspense>
     </div>
   );

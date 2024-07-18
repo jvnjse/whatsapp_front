@@ -1,21 +1,42 @@
 import React, { useEffect, useState } from 'react'
 import AdminWhatsappModule from './AdminWhatsappModule'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import config from '../config';
 import axios from 'axios';
+import { MdDelete, MdEditSquare } from "react-icons/md";
+import Cookies from 'js-cookie';
 
 function AdminBlog() {
     const [data, setdata] = useState()
     const navigate = useNavigate()
+    const accessToken = Cookies.get("accessToken")
+    const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + accessToken
+    }
 
     const GetBlogs = async () => {
         try {
-            const response = await axios.get(`${config.baseUrl}blogs/`);
+            const response = await axios.get(`${config.baseUrl}blogs/`, { headers: headers });
             console.log('Blog created successfully:', response.data);
             setdata(response.data)
         } catch (error) {
             console.error('Error creating blog:', error);
         }
+    };
+    const DeleteBlog = async (id) => {
+        try {
+            const response = await axios.delete(`${config.baseUrl}blogs/${id}/`, { headers: headers });
+            console.log('Blog created successfully:', response.data);
+            setdata(response.data)
+            GetBlogs()
+        } catch (error) {
+            console.error('Error creating blog:', error);
+        }
+    };
+    const EditBlog = (id) => {
+        navigate(`/admin/blog/create/?editid=${id}`)
+
     };
 
     useEffect(() => {
@@ -39,13 +60,19 @@ function AdminBlog() {
                     <div className='flex flex-wrap gap-10'>
 
                         {data && data.map((blog) => (
-                            <div class="bg-white rounded-lg shadow-lg w-[200px]">
-                                <img src="https://images.unsplash.com/photo-1600054800747-be294a6a0d26?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1053&q=80" alt="" class="rounded-t-lg" />
+                            <div class="bg-white rounded-lg shadow-lg w-[300px] relative">
                                 <div class="p-6">
-                                    <h2 class="font-bold mb-2 text-2xl text-purple-800">{blog.link}
+                                    <h2 class="font-bold mb-2 text-xl text-purple-800">{blog.link}
                                     </h2>
-                                    <a href="#" class="text-purple-600 hover:text-purple-500 underline text-sm">See Blog 👉</a>
+                                    <Link to={`/blog/${blog.id}/${blog.link}`} target='_blank' class="text-purple-600 hover:text-purple-500 underline text-sm">See Blog 👉</Link>
                                 </div>
+
+                                <button onClick={() => { EditBlog(blog.id) }}>
+                                    <MdEditSquare className='text-xl absolute right-14 bottom-6' />
+                                </button>
+                                <button onClick={() => { DeleteBlog(blog.id) }}>
+                                    <MdDelete className='text-xl absolute right-6 bottom-6' />
+                                </button>
 
                             </div>
                         ))}

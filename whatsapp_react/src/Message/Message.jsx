@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import axios from 'axios';
 import whatsapplogo from "../Icons/whatsapp.png"
 import whatsappgif from "../Icons/whatsappgif.gif"
@@ -8,6 +8,7 @@ import WhatsappModule from '../WhatsappModule';
 import { jwtDecode } from 'jwt-decode';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import TemplateApi, { DataContext } from '../Context/TemplatesApi';
 
 function Message() {
     const [phoneNumberInput, setPhoneNumberInput] = useState('');
@@ -27,7 +28,7 @@ function Message() {
     const [apiurl2, setApiurl2] = useState();
     const accessToken = Cookies.get("accessToken")
     const userid = jwtDecode(accessToken).user_id;
-
+    // console.log("data", data)
     const findFormat = (components) => {
         const selectedComponent = components.find(component => component.type === 'HEADER');
         const format = selectedComponent ? selectedComponent.format : null;
@@ -74,9 +75,8 @@ function Message() {
         }
     };
     const imageurl = config.imagebaseurl + headerHandle
-    console.log(apiurl1, "sss")
+    // console.log(apiurl1, "sss")
 
-    //console.log(imageurl)
 
     const headers = {
         'Content-Type': 'application/json',
@@ -126,6 +126,10 @@ function Message() {
     }
 
 
+
+
+    const { data, loading } = TemplateApi();
+
     useEffect(() => {
         axios.get(`${config.baseUrl}phone-numbers/?user_id=${userid}`, { headers: headers })
             .then((response) => {
@@ -135,15 +139,9 @@ function Message() {
                 //console.log(error.data)
             })
 
-        axios.get(`${config.baseUrl}get_templates/?user_id=${userid}`, { headers: headers })
-            .then((response) => {
-                console.log("gusgsh", response.data.data)
-                setTemplateData(response.data.data)
-            })
-            .catch((error) => {
-                //console.log(error)
-            })
-    }, [])
+
+        setTemplateData(data.data)
+    }, [data])
 
     return (
         <div className=' w-full bg-[#ECE5DD] flex justify-between h-screen  rounded-2xl overflow-x-auto'>
@@ -207,6 +205,12 @@ function Message() {
                                     {componentData && findFormat(componentData) === 'image' && (
                                         <img src={imageurl} alt="Image" />
                                     )}
+                                    {componentData && findFormat(componentData) === 'video' && (
+                                        <video controls>
+                                            <source src={imageurl} type="video/mp4" />
+                                            Your browser does not support the video tag.
+                                        </video>
+                                    )}
 
                                     <div className='text-[10px]'>
                                         {selectedBodyText && selectedBodyText}
@@ -245,9 +249,18 @@ function Message() {
                                 <div className="bg-[#262d31] text-gray-300 rounded-tr-lg  rounded-bl-lg rounded-br-lg mb-4 px-4 py-2 mt-4 w-[300px]">
                                     <div className='font-bold'>{selectedHeaderText && selectedHeaderText}</div>
                                     {/* <img src={headerHandle && config.baseUrl + headerHandle} alt="" /> */}
-                                    {headerHandle && (
-                                        <iframe src={imageurl} width='100%' height='500px' />
-                                        // <img src={imageurl} alt="" />
+                                    {componentData && findFormat(componentData) === 'document' && (
+                                        <iframe src={imageurl} title="document" />
+                                    )}
+
+                                    {componentData && findFormat(componentData) === 'image' && (
+                                        <img src={imageurl} alt="Image" />
+                                    )}
+                                    {componentData && findFormat(componentData) === 'video' && (
+                                        <video controls>
+                                            <source src={imageurl} type="video/mp4" />
+                                            Your browser does not support the video tag.
+                                        </video>
                                     )}
 
                                     <div className='text-[10px]'>

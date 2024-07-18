@@ -207,7 +207,7 @@ function ImageTemplateNoButton(props) {
                                 const sanitizedValue = inputValue.replace(/(\r\n|\n|\r){3,}/g, '\n\n');
                                 e.target.style.height = 'auto';
                                 e.target.style.height = `${e.target.scrollHeight}px`;
-                                if (sanitizedValue.length <= 1023) {
+                                if (sanitizedValue.length <= 550) {
                                     setbodytext(sanitizedValue);
                                 } else {
                                     toast.error('Body should not exceed 1024 characters.');

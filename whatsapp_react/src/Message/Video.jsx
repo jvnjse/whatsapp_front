@@ -7,7 +7,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 
-function Document(props) {
+function Video(props) {
     const [selectedOption, setSelectedOption] = useState('');
     const [templatename, settemplatename] = useState(' ')
     const [headerimage, setheaderimage] = useState(' ')
@@ -101,11 +101,11 @@ function Document(props) {
     const getApiUrl = (option) => {
         switch (option) {
             case 'URL':
-                return `${config.baseUrl}post_template/image/url?user_id=${userid}&type=DOCUMENT`;
+                return `${config.baseUrl}post_template/image/url?user_id=${userid}&type=VIDEO`;
             case 'PHONE_NUMBER':
-                return `${config.baseUrl}post_template/image/call?user_id=${userid}&type=DOCUMENT`;
+                return `${config.baseUrl}post_template/image/call?user_id=${userid}&type=VIDEO`;
             default:
-                return `${config.baseUrl}post_template/image?user_id=${userid}&type=DOCUMENT`;
+                return `${config.baseUrl}post_template/image?user_id=${userid}&type=VIDEO`;
         }
     };
 
@@ -165,7 +165,7 @@ function Document(props) {
             />
         </div>
         <form onSubmit={HandleTemplateUpload} className='w-10/12 bg-white mt-10 p-10 rounded-xl max-h-full overflow-y-scroll' onClick={props.handleClick}>
-            <div className=' text-[#0d291a] text-2xl font-bold select-none'>Create Document Template</div>
+            <div className=' text-[#0d291a] text-2xl font-bold select-none'>Create Video Template</div>
             <div className=' flex justify-between flex-wrap-reverse'>
                 <div className='flex-1'>
                     <div className=' flex-1 flex flex-col px-5 mt-2 gap-2'>
@@ -185,7 +185,8 @@ function Document(props) {
                         </label>
                         <div className='flex items-end gap-3'>
                             <label className=' flex flex-col'>Select an Image
-                                <input type="file" placeholder='' id="" required className='border border-gray-400 rounded-md h-9 px-3' onChange={handleImageChange} />
+                                <input type="file" accept=".mp4, .3gp"
+                                    placeholder='' id="" required className='border border-gray-400 rounded-md h-9 px-3' onChange={handleImageChange} />
                             </label>
                             {uploadbtn &&
                                 <div className='py-1 px-2 rounded-lg select-none cursor-pointer text-white bg-[#133624] whitespace-nowrap h-fit' onClick={handleUpload}> {buttonloading ? <div class="w-6 h-6 rounded-full animate-spin
@@ -201,7 +202,7 @@ function Document(props) {
                                 e.target.style.height = 'auto';
                                 e.target.style.height = `${e.target.scrollHeight}px`;
 
-                                if (sanitizedValue.length <= 550) {
+                                if (sanitizedValue.length <= 1023) {
                                     setbodytext(sanitizedValue);
                                 } else {
                                     toast.error('Body should not exceed 1024 characters.');
@@ -260,4 +261,4 @@ function Document(props) {
     )
 }
 
-export default Document
+export default Video

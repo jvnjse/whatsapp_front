@@ -42,8 +42,7 @@ function WhatsappModule(props) {
 
     useEffect(() => {
         window.addEventListener("resize", function () {
-
-            if (window.innerWidth <= '700' && sidebar === true) {
+            if (window.innerWidth <= '700') {
                 setSidebar(false)
             } else {
                 setSidebar(true)
@@ -57,10 +56,7 @@ function WhatsappModule(props) {
         navigate("/")
 
     }
-    const ft = Cookies.get("ft")
-    const basic_feature = jwtDecode(ft).basic_feature;
-    const standard_feature = jwtDecode(ft).standard_feature
-    const advanced_feature = jwtDecode(ft).advanced_feature
+
     const headers = {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + accessToken
@@ -116,21 +112,27 @@ function WhatsappModule(props) {
         // }
 
     }, [])
-
     function CheckToken() {
-        axios
-            .get(`${config.baseUrl}check/token/?token=${accessToken}`)
-            .then((response) => {
-                //console.log("gusgsh", response.data.detail);
-            })
-            .catch((error) => {
-                //console.log(error.response.data);
-                if (error.response.data) {
-                    Cookies.remove('accessToken')
-                    navigate("/");
-                }
-            });
+        if (!accessToken) {
+            navigate("/");
+        }
+
+        try {
+            const decodedToken = jwtDecode(accessToken);
+            const currentTime = Date.now() / 1000;
+            if (decodedToken.exp < currentTime) {
+                Cookies.remove('accessToken');
+                navigate("/");
+            } else {
+                // console.log('Token is valid', decodedToken);
+            }
+        } catch (error) {
+            // console.error('Invalid token', error);
+            Cookies.remove('accessToken');
+            navigate("/");
+        }
     }
+
 
 
 
@@ -163,13 +165,17 @@ function WhatsappModule(props) {
                             <span className='px-10'>Templates</span>
                         </Link>
                     </li>
-                    {/* {user_role == true &&
-                    <li onClick={() => handleLinkClick('users')}>
-                        <Link to="/users" className={activeComponent === 'users' ? "text-[#064A42] bg-[#ECE5DD] flex items-center space-x-3 p-2 whitespace-nowrap" : " whitespace-nowrap flex items-center space-x-3 p-2 text-white  rounded-md font-thin hover:bg-[#ECE5DD] hover:text-[#064A42]"}>
-                            <span className='px-10'>Users</span>
+                    <li onClick={() => handleLinkClick('templateanalytics')}>
+                        <Link to="/template/analytics" className={activeComponent === 'templateanalytics' ? "text-[#064A42] bg-[#ECE5DD] flex items-center space-x-3 p-2 whitespace-nowrap" : " whitespace-nowrap flex items-center space-x-3 p-2 text-white  rounded-md font-thin hover:bg-[#ECE5DD] hover:text-[#064A42]"}>
+                            <span className='px-10'>Template Analytics</span>
                         </Link>
                     </li>
-                } */}
+
+                    <li onClick={() => handleLinkClick('contacts')}>
+                        <Link to="/contacts" className={activeComponent === 'contacts' ? "text-[#064A42] bg-[#ECE5DD] flex items-center space-x-3 p-2 whitespace-nowrap" : " whitespace-nowrap flex items-center space-x-3 p-2 text-white  rounded-md font-thin hover:bg-[#ECE5DD] hover:text-[#064A42]"}>
+                            <span class="px-10">Contacts</span>
+                        </Link>
+                    </li>
 
                     <li onClick={() => handleLinkClick('manage')}>
                         <Link to="/manage" className={activeComponent === 'manage' ? "text-[#064A42] bg-[#ECE5DD] flex items-center space-x-3 p-2 whitespace-nowrap" : " whitespace-nowrap flex items-center space-x-3 p-2 text-white  rounded-md font-thin hover:bg-[#ECE5DD] hover:text-[#064A42]"}>

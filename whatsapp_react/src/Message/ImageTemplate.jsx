@@ -199,7 +199,7 @@ function ImageTemplate(props) {
                                 e.target.style.height = 'auto';
                                 e.target.style.height = `${e.target.scrollHeight}px`;
                                 // setHeight(`${e.target.scrollHeight}px`);
-                                if (sanitizedValue.length <= 1023) {
+                                if (sanitizedValue.length <= 550) {
                                     setbodytext(sanitizedValue);
                                 } else {
                                     toast.error('Body should not exceed 1024 characters.');

@@ -27,6 +27,11 @@ function Nav() {
                     </button>
                 </div>
                 <div>
+                    <button className="p-2 hover:text-[#1a4735] hover:bg-[#eaeeec] rounded-lg" onClick={() => { navigate("/blog") }}>
+                        Blog
+                    </button>
+                </div>
+                <div>
                     <button className="p-2 hover:text-[#1a4735] hover:bg-[#eaeeec] rounded-lg">
                         <a href="#contact">Contact Us</a>
                     </button>

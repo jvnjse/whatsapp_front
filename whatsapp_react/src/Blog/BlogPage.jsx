@@ -3,10 +3,17 @@ import { useParams } from 'react-router-dom';
 import Nav from '../Nav';
 import axios from 'axios';
 import config from '../config';
+import Cookies from 'js-cookie';
 
 function BlogPage() {
     const { id, title } = useParams();
     const [data, setdata] = useState()
+
+    const accessToken = Cookies.get("accessToken")
+    const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + accessToken
+    }
     const GetBlogs = async () => {
         try {
             const response = await axios.get(`${config.baseUrl}blogs/${id}/`);
@@ -28,11 +35,10 @@ function BlogPage() {
             <Nav></Nav>
 
             {data &&
-                <div className='ql-container  '>
+                <div className='ql-container  px-20 max-md:px-4 '>
                     <div className='ql-editor'>
-                        <div className='text-justify-around' dangerouslySetInnerHTML={{ __html: data.blog_content }} />
+                        <div className='text-justify-around font-serif' dangerouslySetInnerHTML={{ __html: data.blog_content }} />
                     </div>
-
                 </div>
             }
 

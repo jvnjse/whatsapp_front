@@ -13,12 +13,15 @@ import TextTemplate from './TextTemplate';
 import ImageTemplateNoButton from './ImageTemplateNoButton';
 import Document from './Document';
 import DocumentButton from './DocumentButton';
+import Video from './Video';
+import VideoButton from './VideoButton';
+import useTemplateApi from '../Context/TemplatesApi';
 
 
 function Template() {
     const [templates, setTemplates] = useState([]);
     const [create_template, setCreateTemplate] = useState(false)
-    const [selectedTemplateName, setSelectedTemplateName] = useState('');
+    const [forceFetch, setForceFetch] = useState(false);
     const [createTemplateModal, setCreateTemplateModal] = useState(null);
     const [loading, setloading] = useState(false)
     const accessToken = Cookies.get("accessToken")
@@ -80,9 +83,12 @@ function Template() {
                 console.error('Error fetching data:', error);
             });
     }
+    const { data } = useTemplateApi(forceFetch);
 
     useEffect(() => {
         GetTemplates()
+        setForceFetch(true)
+
     }, [createTemplateModal]);
 
 
@@ -147,6 +153,18 @@ function Template() {
                 return (
                     <div className='absolute w-full h-full bg-black/30 top-0 left-0 flex justify-center z-20 items-center' onClick={() => setCreateTemplateModal(null)}>
                         <DocumentButton handleClick={handleClick} setCreateTemplateModal={setCreateTemplateModal} />
+                    </div>
+                );
+            case 'VideoTemplate':
+                return (
+                    <div className='absolute w-full h-full bg-black/30 top-0 left-0 flex justify-center z-20 items-center' onClick={() => setCreateTemplateModal(null)}>
+                        <Video handleClick={handleClick} setCreateTemplateModal={setCreateTemplateModal} />
+                    </div>
+                );
+            case 'VideoTemplateWithButton':
+                return (
+                    <div className='absolute w-full h-full bg-black/30 top-0 left-0 flex justify-center z-20 items-center' onClick={() => setCreateTemplateModal(null)}>
+                        <VideoButton handleClick={handleClick} setCreateTemplateModal={setCreateTemplateModal} />
                     </div>
                 );
             default:
@@ -358,6 +376,32 @@ function Template() {
                                                                 <li className='list-none  text-center px-3 py-2 whitespace-nowrap select-none cursor-pointer hover:bg-slate-100' onClick={() => { setCreateTemplateModal('ImageTemplateWithButton') }}>Image Template with Button</li>
                                                             </ul>
 
+                                                        </article>
+
+                                                    </details>
+                                                </li>
+                                            </ul>
+                                            <ul class="flex flex-col gap-2 max-w-[280px] min-w-[280px] mx-auto text-xs">
+                                                <li>
+                                                    <details class="group">
+                                                        <summary
+                                                            class="flex items-center justify-between gap-2 p-2 font-medium marker:content-none hover:cursor-pointer">
+
+                                                            <span class="flex gap-2">
+                                                                <li className='list-none text-center px-3 py-2 whitespace-nowrap select-none cursor-pointer hover:bg-slate-100' >Video Template</li>
+                                                            </span>
+                                                            <svg class="w-5 h-5 text-gray-500 transition group-open:rotate-90 duration-500" xmlns="http://www.w3.org/2000/svg"
+                                                                width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                                                <path fill-rule="evenodd"
+                                                                    d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z">
+                                                                </path>
+                                                            </svg>
+                                                        </summary>
+
+                                                        <article class="px-4 pb-4">
+                                                            <ul class="flex flex-col ">
+                                                                <li className='list-none text-center px-3 py-2 whitespace-nowrap select-none cursor-pointer hover:bg-slate-100' onClick={() => { setCreateTemplateModal('VideoTemplate') }}>Video Template</li>
+                                                                <li className='list-none text-center px-3 py-2 whitespace-nowrap select-none cursor-pointer hover:bg-slate-100' onClick={() => { setCreateTemplateModal('VideoTemplateWithButton') }}>Video Template with Button</li>  </ul>
                                                         </article>
 
                                                     </details>
